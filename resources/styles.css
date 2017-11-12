@@ -14,7 +14,7 @@
   font-size: 30;
   font-family: Colfax-Medium;
   text-length: 50;
-  text-anchor: left;
+  text-anchor: start;
   x: 20;
   y: 22;
   fill: white;
@@ -54,7 +54,7 @@
 #stepStatsLabel {
   font-size: 30;
   font-family: Colfax-Bold;
-  text-anchor: left;
+  text-anchor: start;
   text-length: 32;
   x: 10;
   y: 10%;
@@ -64,7 +64,7 @@
 #distStatsLabel {
   font-size: 30;
   font-family: Colfax-Bold;
-  text-anchor: left;
+  text-anchor: start;
   text-length: 32;
   x: 10;
   y: 30%;
@@ -74,7 +74,7 @@
 #floorsStatsLabel {
   font-size: 30;
   font-family: Colfax-Bold;
-  text-anchor: left;
+  text-anchor: start;
   text-length: 32;
   x: 10;
   y: 50%;
@@ -84,7 +84,7 @@
 #activeStatsLabel {
   font-size: 30;
   font-family: Colfax-Bold;
-  text-anchor: left;
+  text-anchor: start;
   text-length: 32;
   x: 10;
   y: 70%;
@@ -94,7 +94,7 @@
 #calsStatsLabel {
   font-size: 30;
   font-family: Colfax-Bold;
-  text-anchor: left;
+  text-anchor: start;
   text-length: 32;
   x: 10;
   y: 90%;
