@@ -83,7 +83,7 @@ export function goalToColor(value, total){
   if (percent < 33.33){
     color = '#F83C40'; //fb-red
   } else if (percent < 66.66){
-    color = '#FC6B3A'; //fb-orange
+    color = '#FFCC33'; //fb-peach
   } else if (percent < 100){
     color = '#14D3F5';  //fb-cyan
   } else {

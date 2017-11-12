@@ -2,13 +2,21 @@
   viewport-fill: black;
 }
 
+#clickbg {
+  width: 100%;
+  height: 100%;
+  fill: black;
+  opacity: 0
+}
+
+/* Clock View Labels */
 #dateLabel {
   font-size: 30;
   font-family: Colfax-Medium;
   text-length: 50;
   text-anchor: left;
   x: 20;
-  y: 40;
+  y: 20;
   fill: white;
 }
 
@@ -18,7 +26,7 @@
   text-length: 32;
   text-anchor: middle;
   x: 50%;
-  y: 50%;
+  y: 40%;
   fill: white;
 }
 
@@ -28,7 +36,7 @@
   text-anchor: middle;
   text-length: 32;
   x: 50%;
-  y: 63%;
+  y: 53%;
   fill: white;
 }
 
@@ -38,6 +46,59 @@
   text-anchor: middle;
   text-length: 32;
   x: 50%;
-  y: 75%;
+  y: 65%;
   fill: white;
 }
+
+/* Stats View Labels */
+#stepStatsLabel {
+  font-size: 30;
+  font-family: Colfax-Bold;
+  text-anchor: left;
+  text-length: 32;
+  x: 10;
+  y: 10%;
+  fill: white;
+}
+
+#distStatsLabel {
+  font-size: 30;
+  font-family: Colfax-Bold;
+  text-anchor: left;
+  text-length: 32;
+  x: 10;
+  y: 30%;
+  fill: white;
+}
+
+#floorsStatsLabel {
+  font-size: 30;
+  font-family: Colfax-Bold;
+  text-anchor: left;
+  text-length: 32;
+  x: 10;
+  y: 50%;
+  fill: white;
+}
+
+#activeStatsLabel {
+  font-size: 30;
+  font-family: Colfax-Bold;
+  text-anchor: left;
+  text-length: 32;
+  x: 10;
+  y: 70%;
+  fill: white;
+}
+
+#calsStatsLabel {
+  font-size: 30;
+  font-family: Colfax-Bold;
+  text-anchor: left;
+  text-length: 32;
+  x: 10;
+  y: 90%;
+  fill: white;
+}
+
+
