@@ -78,6 +78,10 @@ export function toMonth(month){
 }
 
 export function goalToColor(value, total){
+  if (!value || !total){
+    color = '#F83C40'; //fb-red
+    return color;
+  }
   let percent = value/total*100;
   let color = '#FFFFFF';
   if (percent < 33.33){
@@ -90,4 +94,11 @@ export function goalToColor(value, total){
     color = '#5BE37D'; //fb-mint
   }
   return color
+}
+
+export function round2(number){
+  var factor = Math.pow(10, 2);
+  var tempNumber = number * factor;
+  var roundedTempNumber = Math.round(tempNumber);
+  return roundedTempNumber / factor;
 }

@@ -98,19 +98,22 @@ function updateClockData() {
 
 function updateStatsData(){
   stepStatsLabel.style.fill = util.goalToColor(today.local.steps, goals.steps);
-  stepStatsLabel.innerText = `Steps: ${today.local.steps.toLocaleString()} / ${goals.steps.toLocaleString()}`;
+  stepStatsLabel.innerText = `Steps: ${today.local.steps ? today.local.steps.toLocaleString() : 0} / ${goals.steps.toLocaleString()}`;
   
+  // Multiply by .000621371 to convert from meters to miles
   distStatsLabel.style.fill = util.goalToColor(today.local.distance, goals.distance);
-  distStatsLabel.innerText = `Distance: ${today.local.distance.toLocaleString()} / ${goals.distance.toLocaleString()}`;
+  distStatsLabel.innerText = `Distance: ${today.local.distance ? util.round2(today.local.distance * 0.000621371) : 0 } / ${util.round2(goals.distance*0.000621371)}`;
   
-  floorsStatsLabel.style.fill = util.goalToColor(today.local.elevationGain, goals.elevationGain);
-  floorsStatsLabel.innerText = `Floors: ${today.local.elevationGain} / ${goals.elevationGain}`;
+  // Divide by 10 due to weird error
+  floorsStatsLabel.style.fill = util.goalToColor(today.local.elevationGain, goals.elevationGain/10);
+  floorsStatsLabel.innerText = `Floors: ${today.local.elevationGain ? today.local.elevationGain : 0} / ${goals.elevationGain/10}`;
   
   activeStatsLabel.style.fill = util.goalToColor(today.local.activeMinutes, goals.activeMinutes);
-  activeStatsLabel.innerText = `Active: ${today.local.activeMinutes} / ${goals.activeMinutes}`;
+  activeStatsLabel.innerText = `Active: ${today.local.activeMinutes ? today.local.activeMinutes.toLocaleString() : 0} / ${goals.activeMinutes}`;
   
-  calsStatsLabel.style.fill = util.goalToColor(today.local.calories, goals.calories);
-  calsStatsLabel.innerText = `Calories: ${today.local.calories} / ${goals.calories}`;
+  // Divide by 6.78 due to weird error
+  calsStatsLabel.style.fill = util.goalToColor(today.local.calories, goals.calories/6.78);
+  calsStatsLabel.innerText = `Calories: ${today.local.calories ? today.local.calories.toLocaleString() : 0} / ${(goals.calories/6.78).toLocaleString()}`;
 }
 
 // Handle Click
@@ -132,12 +135,13 @@ background.onclick = function(evt) {
   console.log("ShowClock is " + showClock);
 }
 
-updateClock();
+
 // Update the clock every tick event
 clock.ontick = () => updateClock();
 setInterval(updateClockData, 100);
 setInterval(updateStatsData, 100);
 
 // Don't start with a blank screen
-update();
+updateClock();
+updateClockData();
 
