@@ -1,3 +1,5 @@
+console.log("Kearsarge Time Started");
+
 /*
  * Entry point for the watch app
  */
@@ -12,10 +14,16 @@ import { preferences } from "user-settings";
 
 
 import * as util from "../common/utils";
-import * as schedule from "schedule.js";
+//import * as schedule from "schedule.js";
 import * as schedUtils from "scheduleUtils.js";
 
-console.log("Kearsarge Time Started");
+
+
+//---Shedule Test Work Here---
+console.log(schedUtils.isInSchedule("MF","6:35a"));
+
+
+
 
 // Update the clock every minute
 clock.granularity = "minutes";
@@ -58,9 +66,11 @@ function updateClock() {
   console.log(preferences.clockDisplay);
   if (preferences.clockDisplay == "12h"){
     if (hours> 12){
-      let ampm = " pm";
+      ampm = " pm";
       hours -= 12;
-    } 
+    } else if (hours == 0 && ampm == " am"){
+      hours += 12;
+    }
   } else {
     ampm = ""
   }
@@ -79,9 +89,9 @@ function updateClockData() {
     }
   };
   
-  console.log("Data:");
-  console.log(data.heart.theHeartRate);
-  console.log(data.step.steps.toLocaleString());
+  //console.log("Data:");
+  //console.log(data.heart.theHeartRate);
+  //console.log(data.step.steps.toLocaleString());
   
   hrLabel.style.fill = 'white';
   stepsLabel.style.fill = 'white';

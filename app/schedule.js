@@ -1,4 +1,4 @@
-export let schedule = {
+export var schedule = {
     "MF": [
            {name: "Before School", start: "6:35a", end: "7:35a"},
            {name: "Warning Bell", start: "7:35a", end: "7:40a"},

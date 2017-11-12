@@ -66,3 +66,7 @@ export function round2(number){
   var roundedTempNumber = Math.round(tempNumber);
   return roundedTempNumber / factor;
 }
+
+export function isInRange(value, low, high){
+  return value >= low && value <= high;
+}

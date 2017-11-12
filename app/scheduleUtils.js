@@ -1,5 +1,7 @@
 import * as util from "../common/utils";
 
+import * as sched from "schedule.js";
+
 export function timeToMin(time){
   let splitTime = time.split(":");
   let hours = parseInt(splitTime[0]);
@@ -48,4 +50,17 @@ export function timeDiff(time1, time2){
 	}
 	
 	return diff
+}
+
+export function getDailySchedule(typeOfDay){
+  return sched.schedule[typeOfDay];
+}
+
+export function isInSchedule(typeOfDay, time){
+  let min = timeToMin(time);
+  let todaySched = getDailySchedule(typeOfDay);
+  let start = timeToMin(todaySched[0].start);
+  let end = timeToMin(todaySched[todaySched.length-1].end);
+  
+  return util.isInRange(min, start, end);
 }
