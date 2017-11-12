@@ -1,0 +1,8 @@
+<svg class="background">
+  <text id="dateLabel" />
+  <section x="5%" y="21%" width="90%" height="5">
+    <rect width="100%" height="100%" fill="fb-blue" />
+  </section>
+  <text id="clockLabel" />
+  <text id="hrLabel"/>
+</svg>
