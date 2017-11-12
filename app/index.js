@@ -5,7 +5,8 @@ import clock from "clock";
 import document from "document";
 import { HeartRateSensor } from "heart-rate";
 import { today } from "user-activity";
-
+import { goals } from "user-activity";
+import { user } from "user-profile";
 
 import * as util from "../common/utils";
 
@@ -17,7 +18,8 @@ clock.granularity = "minutes";
 // Get a handle on the <text> element
 let clockLabel = document.getElementById("clockLabel");
 let dateLabel = document.getElementById("dateLabel");
-let hrmData = document.getElementById("hrLabel");
+let hrLabel = document.getElementById("hrLabel");
+let stepsLabel = document.getElementById("stepsLabel");
 
 let hrm = new HeartRateSensor();
 
@@ -25,7 +27,7 @@ hrm.start();
 
 function update(){
   updateClock();
-  refreshData();
+  updateData();
 }
 
 // Update the <text> element with the current time
@@ -45,27 +47,51 @@ function updateClock() {
   }
 
   dateLabel.innerText = `${util.toDay(day)}, ${util.toMonth(month)} ${date}`;
-  clockLabel.innerText = `${hours}:${mins}`;
+  clockLabel.innerText = `${hours}:${mins} ${ampm}`;
 }
 
-function refreshData() {
+function updateData() {
   let data = {
-    hrm: {
-      heartRate: hrm.heartRate ? hrm.heartRate : 0
+    heart: {
+      theHeartRate: hrm.heartRate ? hrm.heartRate : 0
     },
     step: {
       steps: today.local.steps ? today.local.steps: 0
     }
   };
   
-  console.log(data.hrm);
-  console.log(data.step);
-  hrmData.innerText = `${data.hrm} bpm`;
+  console.log("Data:");
+  console.log(data.heart.theHeartRate);
+  console.log(data.step.steps.toLocaleString());
+  
+  hrLabel.style.fill = 'white';
+  stepsLabel.style.fill = 'white';
+  
+  if (data.heart.theHeartRate == 0) {
+      hrLabel.innerText = `--`;
+  } else {
+      if (user.heartRateZone(data.heart.theHeartRate) == "out-of-range"){
+        hrLabel.style.fill = '#14D3F5';  //fb-cyan
+      } else if (user.heartRateZone(data.heart.theHeartRate) == "fat-burn"){
+        hrLabel.style.fill = '#5BE37D'; //fb-mint
+      } else if (user.heartRateZone(data.heart.theHeartRate) == "cardio"){
+        hrLabel.style.fill = '#FC6B3A'; //fb-orange
+      } else if (user.heartRateZone(data.heart.theHeartRate) == "peak"){
+        hrLabel.style.fill = '#F83C40'; //fb-red
+      }
+    
+      hrLabel.innerText = `${data.heart.theHeartRate} bpm`;
+  }
+  
+  stepsLabel.style.fill = util.goalToColor(data.step.steps, goals.steps);
+  
+  stepsLabel.innerText = `${data.step.steps.toLocaleString()} steps`;
+  
 }
 
 // Update the clock every tick event
 clock.ontick = () => update();
 
 // Don't start with a blank screen
-updateClock();
+update();
 

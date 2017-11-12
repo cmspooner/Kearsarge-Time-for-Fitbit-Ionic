@@ -21,10 +21,23 @@
   y: 50%;
   fill: white;
 }
+
 #hrLabel {
-  font-size: 20;
-  font-family: Colfax-light;
+  font-size: 25;
+  font-family: Colfax-Regular;
   text-anchor: middle;
   text-length: 32;
+  x: 50%;
+  y: 63%;
+  fill: white;
+}
+
+#stepsLabel {
+  font-size: 25;
+  font-family: Colfax-Regular;
+  text-anchor: middle;
+  text-length: 32;
+  x: 50%;
+  y: 75%;
   fill: white;
 }

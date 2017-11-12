@@ -37,42 +37,57 @@ export function toDay(day){
 export function toMonth(month){
   let monthText = ""
   switch (month){
-    case 0:
+    case 1:
       monthText = "Jan.";
       break;
-    case 1:
+    case 2:
       monthText = "Feb.";
       break;
-    case 2:
+    case 3:
       monthText = "Mar.";
       break;
-    case 3:
+    case 4:
       monthText = "Apr.";
       break;
-    case 4:
+    case 5:
       monthText = "May.";
       break;
-    case 5:
+    case 6:
       monthText = "June";
       break;
-    case 6:
+    case 7:
       monthText = "July";
       break;
-    case 7:
+    case 8:
       monthText = "Aug.";
       break;
-    case 8:
+    case 9:
       monthText = "Sept.";
       break;
-    case 9:
+    case 10:
       monthText = "Oct.";
       break;
-    case 10:
+    case 11:
       monthText = "Nov.";
       break;
-    case 11:
+    case 12:
       monthText = "Dec.";
       break;
   }
   return monthText
+}
+
+export function goalToColor(value, total){
+  let percent = value/total*100;
+  let color = '#FFFFFF';
+  if (percent < 33.33){
+    color = '#F83C40'; //fb-red
+  } else if (percent < 66.66){
+    color = '#FC6B3A'; //fb-orange
+  } else if (percent < 100){
+    color = '#14D3F5';  //fb-cyan
+  } else {
+    color = '#5BE37D'; //fb-mint
+  }
+  return color
 }
