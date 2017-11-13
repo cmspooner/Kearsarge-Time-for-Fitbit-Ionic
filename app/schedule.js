@@ -1,4 +1,7 @@
 export var schedule = {
+    "No School" : [
+          {name: "No School", start: "12:00a", end: "12:00a"}
+         ], 
     "MF": [
            {name: "Before School", start: "6:35a", end: "7:35a"},
            {name: "Warning Bell", start: "7:35a", end: "7:40a"},

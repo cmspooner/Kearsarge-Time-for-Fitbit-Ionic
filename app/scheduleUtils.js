@@ -16,7 +16,7 @@ export function timeToMin(time){
   
   minutes += hours * 60;
   
-  console.log(minutes);
+  //console.log(minutes);
   return minutes;
 }
 
@@ -34,7 +34,7 @@ function minToTime(min){
   
   let time = hours + ":" + util.zeroPad(mins) + ampm
   
-  console.log(time);
+  //console.log(time);
   return time
 }
 
@@ -46,13 +46,27 @@ export function timeDiff(time1, time2){
 	if (min2 > min1){
 		diff = min2 - min1;
 	} else {
-		diff = min1 - min2
+		diff = min1 - min2;
 	}
 	
-	return diff
+	return diff;
 }
 
 export function getDailySchedule(typeOfDay){
+  if (typeOfDay == "Regular"){
+    let today = new Date();
+    let day = today.getDay();
+    let days = {
+      0: "No School",
+      1: "MF",
+      2: "Tuesday",
+      3: "Wednesday",
+      4: "Thursday",
+      5: "MF",
+      6: "No School"
+    }
+    typeOfDay = days[day];
+  }
   return sched.schedule[typeOfDay];
 }
 
@@ -64,3 +78,36 @@ export function isInSchedule(typeOfDay, time){
   
   return util.isInRange(min, start, end);
 }
+
+export function getCurrentPeriod(typeOfDay, time){
+  let min = timeToMin(time);
+  let todaySched = getDailySchedule(typeOfDay);
+  let start = timeToMin(todaySched[0].start);
+  
+  if (isInSchedule(typeOfDay, time)){
+    for (let i = 0; i < todaySched.length-1; i++){
+      if (min < timeToMin(todaySched[i].end)){
+        return todaySched[i].name;
+      }
+    }
+  } else {
+    return "No School";
+  }
+}
+
+export function getTimeLeftInPeriod(typeOfDay, time){
+  let min = timeToMin(time);
+  let todaySched = getDailySchedule(typeOfDay);
+  let start = timeToMin(todaySched[0].start);
+  
+  if (isInSchedule(typeOfDay, time)){
+    for (let i = 0; i < todaySched.length-1; i++){
+      if (min < timeToMin(todaySched[i].end)){
+        return timeToMin(todaySched[i].end) - min;
+      }
+    }
+  } else {
+    return 0;
+  }
+}
+

@@ -20,10 +20,11 @@ import * as schedUtils from "scheduleUtils.js";
 
 
 //---Shedule Test Work Here---
-console.log(schedUtils.isInSchedule("MF","6:35a"));
-
-
-
+let sched = "Regular";
+let t = "9:01a"
+console.log("Is in Schedule: " + schedUtils.isInSchedule(sched,t));
+console.log("Period: " + schedUtils.getCurrentPeriod (sched,t));
+console.log("Time Left: " +schedUtils.getTimeLeftInPeriod(sched,t));
 
 // Update the clock every minute
 clock.granularity = "minutes";
@@ -63,7 +64,7 @@ function updateClock() {
   let mins = util.zeroPad(today.getMinutes());
   let ampm = " am"
   
-  console.log(preferences.clockDisplay);
+  //console.log(preferences.clockDisplay);
   if (preferences.clockDisplay == "12h"){
     if (hours> 12){
       ampm = " pm";
@@ -139,7 +140,7 @@ function updateStatsData(){
 // Handle Click
 let showClock = true;
 background.onclick = function(evt) {
-  console.log("Click");
+  //console.log("Click");
   if (showClock){           // In Clock -> Switching to Stats
     showClock = false;
     updateStatsData()
@@ -153,7 +154,7 @@ background.onclick = function(evt) {
     clockView.style.display = "inline";
     statsView.style.display = "none"; 
   }
-  console.log("ShowClock is " + showClock);
+  //console.log("ShowClock is " + showClock);
 }
 
 display.onchange = function() {
