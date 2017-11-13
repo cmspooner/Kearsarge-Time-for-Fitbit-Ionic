@@ -111,3 +111,27 @@ export function getTimeLeftInPeriod(typeOfDay, time){
   }
 }
 
+export function getPeriodList(typeOfDay){
+  let ignoredPeriods = ["No School",
+                      "Before School",
+                      "Warning Bell",
+                      "Passing Time",
+                      "Teacher Time"
+                     ];
+  let todaySched = getDailySchedule(typeOfDay);
+  let periods = {};
+  
+  //Please tell me a more elegant way of handeling this!
+  for (let i = 0; i < todaySched.length-1; i++){
+    let notInList = true;
+    for (let j = 0; j < ignoredPeriods.length-1; i++){
+      if (todaySched[i].name == ignoredPeriods[j]){
+        notInList = false;
+      }
+    }
+    if (notInList){
+      periods += todaySched[i];
+    }
+  }
+  return periods;
+}
