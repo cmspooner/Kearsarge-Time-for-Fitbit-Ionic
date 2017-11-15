@@ -11,6 +11,7 @@ import { goals } from "user-activity";
 import { user } from "user-profile";
 import { display } from "display";
 import { preferences } from "user-settings";
+import { vibration } from "haptics"
 
 
 import * as util from "../common/utils";
@@ -20,7 +21,7 @@ import * as schedUtils from "scheduleUtils.js";
 
 
 //---Shedule Test Work Here---
-let sched = "Exam";
+var sched = "Regular";
 let t = "9:01a"
 console.log("Is in Schedule: " + schedUtils.isInSchedule(sched,t));
 console.log("Period: " + schedUtils.getCurrentPeriod (sched,t));
@@ -49,6 +50,8 @@ let clockLabel = document.getElementById("clockLabel");
 let dateLabel = document.getElementById("dateLabel");
 let hrLabel = document.getElementById("hrLabel");
 let stepsLabel = document.getElementById("stepsLabel");
+let periodLabel = document.getElementById("periodLabel");
+let timeRemainingLabel = document.getElementById("timeRemainingLabel");
 
 // Stats View
 let stepStatsLabel = document.getElementById("stepStatsLabel");
@@ -122,7 +125,23 @@ function updateClockData() {
   
   stepsLabel.style.fill = util.goalToColor(data.step.steps, goals.steps);
   stepsLabel.text = `${data.step.steps.toLocaleString()} steps`;
+}
+
+function updatePeriodData() {
+  let today = new Date();
+  let time = schedUtils.hourAndMinToTime(today.getHours(), today.getMinutes())
+  //let time = "11:08a";
+  let remaining = schedUtils.getTimeLeftInPeriod(sched, time);
+  console.log(time);
   
+  if (schedUtils.isInSchedule(sched, time)){
+      periodLabel.text = `${schedUtils.getCurrentPeriod(sched, time)}`;
+      if (remaining <= 2){
+        timeRemainingLabel.style.fill = 'fb-red';
+        vibration.start("nudge-max");   
+      }
+      timeRemainingLabel.text = `Remaining: ${remaining} min`;
+  }
 }
 
 function updateStatsData(){
@@ -179,9 +198,11 @@ display.onchange = function() {
 // Update the clock every tick event
 clock.ontick = () => updateClock();
 setInterval(updateClockData, 3000);
+setInterval(updatePeriodData, 20000);
 setInterval(updateStatsData, 3000);
 
 // Don't start with a blank screen
 updateClock();
 updateClockData();
+updatePeriodData()
 

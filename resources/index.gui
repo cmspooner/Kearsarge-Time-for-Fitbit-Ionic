@@ -7,6 +7,8 @@
     <text id="clockLabel" />
     <text id="hrLabel" />
     <text id="stepsLabel" />
+    <text id="periodLabel" />
+    <text id="timeRemainingLabel" />
   </svg>
   <svg id="stats" display="none">
     <text id="stepStatsLabel" />

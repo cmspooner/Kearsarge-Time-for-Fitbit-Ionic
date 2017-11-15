@@ -101,4 +101,24 @@
   fill: white;
 }
 
+#periodLabel {
+  font-size: 30;
+  font-family: Colfax-Bold;
+  text-length: 50;
+  text-anchor: start;
+  x: 30;
+  y: 82%;
+  fill: silver;
+}
+
+#timeRemainingLabel {
+  font-size: 30;
+  font-family: Colfax-Regular;
+  text-length: 50;
+  text-anchor: start;
+  x: 30;
+  y: 94%;
+  fill: silver;
+}
+
 
