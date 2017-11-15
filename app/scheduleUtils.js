@@ -20,7 +20,7 @@ export function timeToMin(time){
   return minutes;
 }
 
-function minToTime(min){
+export function minToTime(min){
   let hours = parseInt(min/60);
   let mins = parseInt(min%60);
   let ampm = "a";
@@ -31,25 +31,28 @@ function minToTime(min){
   } else if (hours == 0){
   	hours += 12;
   }
-  
+    
   let time = hours + ":" + util.zeroPad(mins) + ampm
   
   //console.log(time);
-  return time
+  return time;
+}
+
+//useing pre-converted 24 hour time
+export function hourAndMinToMin(hour, min){
+  return hour*60 + min;
+}
+
+//useing pre-converted 24 hour time
+export function hourAndMinToTime(hour, min){
+  return minToTime(hourAndMinToMin(hour, min));
 }
 
 export function timeDiff(time1, time2){
 	let min1 = timeToMin(time1);
 	let min2 = timeToMin(time2);
 	
-	let diff = 0;
-	if (min2 > min1){
-		diff = min2 - min1;
-	} else {
-		diff = min1 - min2;
-	}
-	
-	return diff;
+	return Math.abs(min2 - min1);
 }
 
 export function getDailySchedule(typeOfDay){
@@ -119,19 +122,7 @@ export function getPeriodList(typeOfDay){
                       "Teacher Time"
                      ];
   let todaySched = getDailySchedule(typeOfDay);
-  let periods = {};
+  let periods = todaySched.filter(x => ignoredPeriods.indexOf(x.name) === -1);
   
-  //Please tell me a more elegant way of handeling this!
-  for (let i = 0; i < todaySched.length-1; i++){
-    let notInList = true;
-    for (let j = 0; j < ignoredPeriods.length-1; i++){
-      if (todaySched[i].name == ignoredPeriods[j]){
-        notInList = false;
-      }
-    }
-    if (notInList){
-      periods += todaySched[i];
-    }
-  }
-  return periods;
+  return periods
 }

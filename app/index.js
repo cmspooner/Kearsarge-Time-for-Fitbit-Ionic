@@ -20,17 +20,19 @@ import * as schedUtils from "scheduleUtils.js";
 
 
 //---Shedule Test Work Here---
-let sched = "MF";
+let sched = "Exam";
 let t = "9:01a"
 console.log("Is in Schedule: " + schedUtils.isInSchedule(sched,t));
 console.log("Period: " + schedUtils.getCurrentPeriod (sched,t));
 console.log("Time Left: " +schedUtils.getTimeLeftInPeriod(sched,t));
 
-//let periods = schedUtils.getPeriodList(sched);
-//console.log(periods.length);
-//for (let i = 0; periods.length-1; i++){
-//  console.log(periods[i].name);
-//}
+/*
+let periods = schedUtils.getPeriodList(sched);
+console.log(periods.length);
+for (let i = 0; periods.length-1; i++){
+  console.log(periods[i].name);
+}
+*/
 
 // Update the clock every minute
 clock.granularity = "minutes";
