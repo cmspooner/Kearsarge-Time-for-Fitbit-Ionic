@@ -22,7 +22,7 @@ import * as schedUtils from "scheduleUtils.js";
 
 //---Shedule Test Work Here---
 var sched = "Regular";
-let t = "9:01a"
+let t = "3:00p"
 console.log("Is in Schedule: " + schedUtils.isInSchedule(sched,t));
 console.log("Period: " + schedUtils.getCurrentPeriod (sched,t));
 console.log("Time Left: " +schedUtils.getTimeLeftInPeriod(sched,t));
@@ -93,88 +93,96 @@ function updateClock() {
 
   dateLabel.text = `${util.toDay(day)}, ${util.toMonth(month)} ${date}`;
   clockLabel.text = `${hours}:${mins}${ampm}`;
-  updatePeriodData();
+  if (showClock && display.on){
+    updatePeriodData();
+  }
 }
 
 function updateClockData() {
-  let data = {
-    heart: {
-      theHeartRate: hrm.heartRate ? hrm.heartRate : 0
-    },
-    step: {
-      steps: today.local.steps ? today.local.steps: 0
-    }
-  };
-  
-  //console.log("Data:");
-  //console.log(data.heart.theHeartRate);
-  //console.log(data.step.steps.toLocaleString());
-  
-  hrLabel.style.fill = 'white';
-  stepsLabel.style.fill = 'white';
-  
-  if (data.heart.theHeartRate == 0) {
-      hrLabel.text = `--`;
-  } else {
-      if (user.heartRateZone(data.heart.theHeartRate) == "out-of-range"){
-        hrLabel.style.fill = 'fb-cyan';  // #14D3F5
-      } else if (user.heartRateZone(data.heart.theHeartRate) == "fat-burn"){
-        hrLabel.style.fill = 'fb-mint'; // #5BE37D
-      } else if (user.heartRateZone(data.heart.theHeartRate) == "cardio"){
-        hrLabel.style.fill = 'fb-peach'; // #FFCC33
-      } else if (user.heartRateZone(data.heart.theHeartRate) == "peak"){
-        hrLabel.style.fill = 'fb-red'; // #F83C40
+  if (showClock && display.on){
+    let data = {
+      heart: {
+        theHeartRate: hrm.heartRate ? hrm.heartRate : 0
+      },
+      step: {
+        steps: today.local.steps ? today.local.steps: 0
       }
-      hrLabel.text = `${data.heart.theHeartRate} bpm`;
-  }
+    };
+
+    //console.log("Data:");
+    //console.log(data.heart.theHeartRate);
+    //console.log(data.step.steps.toLocaleString());
+
+    hrLabel.style.fill = 'white';
+    stepsLabel.style.fill = 'white';
+
+    if (data.heart.theHeartRate == 0) {
+        hrLabel.text = `--`;
+    } else {
+        if (user.heartRateZone(data.heart.theHeartRate) == "out-of-range"){
+          hrLabel.style.fill = 'fb-cyan';  // #14D3F5
+        } else if (user.heartRateZone(data.heart.theHeartRate) == "fat-burn"){
+          hrLabel.style.fill = 'fb-mint'; // #5BE37D
+        } else if (user.heartRateZone(data.heart.theHeartRate) == "cardio"){
+          hrLabel.style.fill = 'fb-peach'; // #FFCC33
+        } else if (user.heartRateZone(data.heart.theHeartRate) == "peak"){
+          hrLabel.style.fill = 'fb-red'; // #F83C40
+        }
+        hrLabel.text = `${data.heart.theHeartRate} bpm`;
+    }
   
-  stepsLabel.style.fill = util.goalToColor(data.step.steps, goals.steps);
-  stepsLabel.text = `${data.step.steps.toLocaleString()} steps`;
+    stepsLabel.style.fill = util.goalToColor(data.step.steps, goals.steps);
+    stepsLabel.text = `${data.step.steps.toLocaleString()} steps`;
+  }
 }
 
 function updatePeriodData() {
-  let today = new Date();
-  let time = schedUtils.hourAndMinToTime(today.getHours(), today.getMinutes())
-  //let time = "11:08a";
-  let remaining = schedUtils.getTimeLeftInPeriod(sched, time);
-  //console.log(time);
-  
-  if (schedUtils.isInSchedule(sched, time)){
-      periodLabel.text = `${schedUtils.getCurrentPeriod(sched, time)}`;
-      if (remaining <= 2){
-        timeRemainingLabel.style.fill = 'fb-red';
-        if (!didVib){
-          vibration.start("nudge-max");
-          didVib = true;
+  if (showClock && display.on){
+    let today = new Date();
+    let time = schedUtils.hourAndMinToTime(today.getHours(), today.getMinutes())
+    //let time = "11:08a";
+    let remaining = schedUtils.getTimeLeftInPeriod(sched, time);
+    //console.log(time);
+
+    if (schedUtils.isInSchedule(sched, time)){
+        periodLabel.text = `${schedUtils.getCurrentPeriod(sched, time)}`;
+        if (remaining <= 2){
+          timeRemainingLabel.style.fill = 'fb-red';
+          if (!didVib){
+            vibration.start("nudge-max");
+            didVib = true;
+          }
+        } else if (remaining > 2 && didVib){
+          didVib = false;
+          timeRemainingLabel.style.fill = 'silver';
+        } else {
+          timeRemainingLabel.style.fill = 'silver';
         }
-      } else if (remaining > 2 && didVib){
-        didVib = false;
-        timeRemainingLabel.style.fill = 'silver';
-      } else {
-        timeRemainingLabel.style.fill = 'silver';
-      }
-      timeRemainingLabel.text = `Remaining: ${remaining} min`;
+        timeRemainingLabel.text = `Remaining: ${remaining} min`;
+    }
   }
 }
 
 function updateStatsData(){
-  stepStatsLabel.style.fill = util.goalToColor(today.local.steps, goals.steps);
-  stepStatsLabel.text = `Steps: ${today.local.steps ? today.local.steps.toLocaleString() : 0} / ${goals.steps.toLocaleString()}`;
-  
-  // Multiply by .000621371 to convert from meters to miles
-  distStatsLabel.style.fill = util.goalToColor(today.local.distance, goals.distance);
-  distStatsLabel.text = `Distance: ${today.local.distance ? util.round2(today.local.distance * 0.000621371) : 0 } / ${util.round2(goals.distance*0.000621371)}`;
-  
-  // Divide by 10 due to weird error
-  floorsStatsLabel.style.fill = util.goalToColor(today.local.elevationGain, goals.elevationGain/10);
-  floorsStatsLabel.text = `Floors: ${today.local.elevationGain ? today.local.elevationGain : 0} / ${goals.elevationGain/10}`;
-  
-  activeStatsLabel.style.fill = util.goalToColor(today.local.activeMinutes, goals.activeMinutes);
-  activeStatsLabel.text = `Active: ${today.local.activeMinutes ? today.local.activeMinutes.toLocaleString() : 0} / ${goals.activeMinutes}`;
-  
-  // Divide by 6.8 due to weird error
-  calsStatsLabel.style.fill = util.goalToColor(today.local.calories, goals.calories/6.8);
-  calsStatsLabel.text = `Calories: ${today.local.calories ? today.local.calories.toLocaleString() : 0} / ${parseInt(goals.calories/6.8).toLocaleString()}`;
+  if (!showClock && display.on){
+    stepStatsLabel.style.fill = util.goalToColor(today.local.steps, goals.steps);
+    stepStatsLabel.text = `Steps: ${today.local.steps ? today.local.steps.toLocaleString() : 0} / ${goals.steps.toLocaleString()}`;
+
+    // Multiply by .000621371 to convert from meters to miles
+    distStatsLabel.style.fill = util.goalToColor(today.local.distance, goals.distance);
+    distStatsLabel.text = `Distance: ${today.local.distance ? util.round2(today.local.distance * 0.000621371) : 0 } / ${util.round2(goals.distance*0.000621371)}`;
+
+    // Divide by 10 due to weird error
+    floorsStatsLabel.style.fill = util.goalToColor(today.local.elevationGain, goals.elevationGain/10);
+    floorsStatsLabel.text = `Floors: ${today.local.elevationGain ? today.local.elevationGain : 0} / ${goals.elevationGain/10}`;
+
+    activeStatsLabel.style.fill = util.goalToColor(today.local.activeMinutes, goals.activeMinutes);
+    activeStatsLabel.text = `Active: ${today.local.activeMinutes ? today.local.activeMinutes.toLocaleString() : 0} / ${goals.activeMinutes}`;
+
+    // Divide by 6.8 due to weird error
+    calsStatsLabel.style.fill = util.goalToColor(today.local.calories, goals.calories/6.8);
+    calsStatsLabel.text = `Calories: ${today.local.calories ? today.local.calories.toLocaleString() : 0} / ${parseInt(goals.calories/6.8).toLocaleString()}`;
+  }
 }
 
 // Handle Click
@@ -216,5 +224,3 @@ setInterval(updateStatsData, 3000);
 // Don't start with a blank screen
 updateClock();
 updateClockData();
-updatePeriodData()
-

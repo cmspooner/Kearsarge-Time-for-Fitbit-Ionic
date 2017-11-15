@@ -90,7 +90,7 @@ export function getCurrentPeriod(typeOfDay, time){
   let start = timeToMin(todaySched[0].start);
   
   if (isInSchedule(typeOfDay, time)){
-    for (let i = 0; i < todaySched.length-1; i++){
+    for (let i = 0; i < todaySched.length; i++){
       if (min < timeToMin(todaySched[i].end)){
         return todaySched[i].name;
       }
@@ -106,7 +106,7 @@ export function getTimeLeftInPeriod(typeOfDay, time){
   let start = timeToMin(todaySched[0].start);
   
   if (isInSchedule(typeOfDay, time)){
-    for (let i = 0; i < todaySched.length-1; i++){
+    for (let i = 0; i < todaySched.length; i++){
       if (min < timeToMin(todaySched[i].end)){
         return timeToMin(todaySched[i].end) - min;
       }
