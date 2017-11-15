@@ -87,7 +87,6 @@ export function isInSchedule(typeOfDay, time){
 export function getCurrentPeriod(typeOfDay, time){
   let min = timeToMin(time);
   let todaySched = getDailySchedule(typeOfDay);
-  let start = timeToMin(todaySched[0].start);
   
   if (isInSchedule(typeOfDay, time)){
     for (let i = 0; i < todaySched.length; i++){
@@ -103,7 +102,6 @@ export function getCurrentPeriod(typeOfDay, time){
 export function getTimeLeftInPeriod(typeOfDay, time){
   let min = timeToMin(time);
   let todaySched = getDailySchedule(typeOfDay);
-  let start = timeToMin(todaySched[0].start);
   
   if (isInSchedule(typeOfDay, time)){
     for (let i = 0; i < todaySched.length; i++){

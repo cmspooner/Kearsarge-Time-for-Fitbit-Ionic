@@ -22,7 +22,7 @@ import * as schedUtils from "scheduleUtils.js";
 
 //---Shedule Test Work Here---
 var sched = "Regular";
-let t = "3:00p"
+let t = "3:16p"
 console.log("Is in Schedule: " + schedUtils.isInSchedule(sched,t));
 console.log("Period: " + schedUtils.getCurrentPeriod (sched,t));
 console.log("Time Left: " +schedUtils.getTimeLeftInPeriod(sched,t));
@@ -64,7 +64,6 @@ let didVib = false;
 
 // Heart Rate Monitor
 let hrm = new HeartRateSensor();
-hrm.start();
 
 // Update the <text> element with the current time
 function updateClock() {
@@ -160,6 +159,8 @@ function updatePeriodData() {
         }
         timeRemainingLabel.text = `Remaining: ${remaining} min`;
     }
+    periodLabel.text = ``;
+    timeRemainingLabel.text = ``;
   }
 }
 
@@ -207,11 +208,14 @@ background.onclick = function(evt) {
 
 display.onchange = function() {
   if (!display.on) {
+    hrm.start();
     showClock = true;
     updateClock();
     updateClockData();
     clockView.style.display = "inline";
-    statsView.style.display = "none"; 
+    statsView.style.display = "none";
+  } else {
+    hrm.stop();
   }
 }
 
