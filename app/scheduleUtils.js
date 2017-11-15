@@ -8,7 +8,7 @@ export function timeToMin(time){
   let minutes = parseInt(splitTime[1].substring(0,2));
   let ampm = splitTime[1].substring(2);
   
-  if (ampm == "p"){
+  if (ampm == "p" && hours != 12){
 	  hours += 12;
   } else if (ampm == "a" && hours == 12){
     hours -= 12;
@@ -27,6 +27,8 @@ export function minToTime(min){
   
   if (hours > 12){
   	hours -= 12;
+    ampm = "p";
+  } else if (hours == 12){
     ampm = "p";
   } else if (hours == 0){
   	hours += 12;

@@ -60,6 +60,8 @@ let floorsStatsLabel = document.getElementById("floorsStatsLabel");
 let activeStatsLabel = document.getElementById("activeStatsLabel");
 let calsStatsLabel = document.getElementById("calsStatsLabel");
 
+let didVib = false;
+
 // Heart Rate Monitor
 let hrm = new HeartRateSensor();
 hrm.start();
@@ -77,10 +79,12 @@ function updateClock() {
   
   //console.log(preferences.clockDisplay);
   if (preferences.clockDisplay == "12h"){
-    if (hours> 12){
+    if (hours > 12){
       ampm = " pm";
       hours -= 12;
-    } else if (hours == 0 && ampm == " am"){
+    } else if (hours == 12){
+      ampm = " pm"
+    }else if (hours == 0 && ampm == " am"){
       hours += 12;
     }
   } else {
@@ -89,6 +93,7 @@ function updateClock() {
 
   dateLabel.text = `${util.toDay(day)}, ${util.toMonth(month)} ${date}`;
   clockLabel.text = `${hours}:${mins}${ampm}`;
+  updatePeriodData();
 }
 
 function updateClockData() {
@@ -132,13 +137,21 @@ function updatePeriodData() {
   let time = schedUtils.hourAndMinToTime(today.getHours(), today.getMinutes())
   //let time = "11:08a";
   let remaining = schedUtils.getTimeLeftInPeriod(sched, time);
-  console.log(time);
+  //console.log(time);
   
   if (schedUtils.isInSchedule(sched, time)){
       periodLabel.text = `${schedUtils.getCurrentPeriod(sched, time)}`;
       if (remaining <= 2){
         timeRemainingLabel.style.fill = 'fb-red';
-        vibration.start("nudge-max");   
+        if (!didVib){
+          vibration.start("nudge-max");
+          didVib = true;
+        }
+      } else if (remaining > 2 && didVib){
+        didVib = false;
+        timeRemainingLabel.style.fill = 'silver';
+      } else {
+        timeRemainingLabel.style.fill = 'silver';
       }
       timeRemainingLabel.text = `Remaining: ${remaining} min`;
   }
@@ -198,7 +211,6 @@ display.onchange = function() {
 // Update the clock every tick event
 clock.ontick = () => updateClock();
 setInterval(updateClockData, 3000);
-setInterval(updatePeriodData, 20000);
 setInterval(updateStatsData, 3000);
 
 // Don't start with a blank screen
