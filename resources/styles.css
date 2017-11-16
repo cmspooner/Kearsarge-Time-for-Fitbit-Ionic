@@ -121,4 +121,302 @@
   fill: silver;
 }
 
+#period1StartLabel {
+  font-size: 25;
+  font-family: Colfax-Regular;
+  text-anchor: start;
+  text-length: 32;
+  x: 10%;
+  y: 5%;
+  fill: white;
+}
 
+#period1NameLabel {
+  font-size: 25;
+  font-family: Colfax-Regular;
+  text-anchor: middle;
+  text-length: 32;
+  x: 10%;
+  y: 50%;
+  fill: white;
+}
+
+#period1EndLabel {
+  font-size: 25;
+  font-family: Colfax-Regular;
+  text-anchor: end;
+  text-length: 32;
+  x: 10%;
+  y: 95%;
+  fill: white;
+}
+
+#period2StartLabel {
+  font-size: 25;
+  font-family: Colfax-Regular;
+  text-anchor: start;
+  text-length: 32;
+  x: 20%;
+  y: 5%;
+  fill: white;
+}
+
+#period2NameLabel {
+  font-size: 25;
+  font-family: Colfax-Regular;
+  text-anchor: middle;
+  text-length: 32;
+  x: 20%;
+  y: 50%;
+  fill: white;
+}
+
+#period2EndLabel {
+  font-size: 25;
+  font-family: Colfax-Regular;
+  text-anchor: end;
+  text-length: 32;
+  x: 20%;
+  y: 95%;
+  fill: white;
+}
+
+#period3StartLabel {
+  font-size: 25;
+  font-family: Colfax-Regular;
+  text-anchor: start;
+  text-length: 32;
+  x: 30%;
+  y: 5%;
+  fill: white;
+}
+
+#period3NameLabel {
+  font-size: 25;
+  font-family: Colfax-Regular;
+  text-anchor: middle;
+  text-length: 32;
+  x: 30%;
+  y: 50%;
+  fill: white;
+}
+
+#period3EndLabel {
+  font-size: 25;
+  font-family: Colfax-Regular;
+  text-anchor: end;
+  text-length: 32;
+  x: 30%;
+  y: 95%;
+  fill: white;
+}
+
+#period4StartLabel {
+  font-size: 25;
+  font-family: Colfax-Regular;
+  text-anchor: start;
+  text-length: 32;
+  x: 40%;
+  y: 5%;
+  fill: white;
+}
+
+#period4NameLabel {
+  font-size: 25;
+  font-family: Colfax-Regular;
+  text-anchor: middle;
+  text-length: 32;
+  x: 40%;
+  y: 50%;
+  fill: white;
+}
+
+#period4EndLabel {
+  font-size: 25;
+  font-family: Colfax-Regular;
+  text-anchor: end;
+  text-length: 32;
+  x: 40%;
+  y: 95%;
+  fill: white;
+}
+
+#period51StartLabel {
+  font-size: 25;
+  font-family: Colfax-Regular;
+  text-anchor: start;
+  text-length: 32;
+  x: 50%;
+  y: 5%;
+  fill: white;
+}
+
+#period51NameLabel {
+  font-size: 25;
+  font-family: Colfax-Regular;
+  text-anchor: middle;
+  text-length: 32;
+  x: 50%;
+  y: 50%;
+  fill: white;
+}
+
+#period51EndLabel {
+  font-size: 25;
+  font-family: Colfax-Regular;
+  text-anchor: end;
+  text-length: 32;
+  x: 50%;
+  y: 95%;
+  fill: white;
+}
+
+#period52StartLabel {
+  font-size: 25;
+  font-family: Colfax-Regular;
+  text-anchor: start;
+  text-length: 32;
+  x: 60%;
+  y: 5%;
+  fill: white;
+}
+
+#period52NameLabel {
+  font-size: 25;
+  font-family: Colfax-Regular;
+  text-anchor: middle;
+  text-length: 32;
+  x: 60%;
+  y: 50%;
+  fill: white;
+}
+
+#period52EndLabel {
+  font-size: 25;
+  font-family: Colfax-Regular;
+  text-anchor: end;
+  text-length: 32;
+  x: 60%;
+  y: 95%;
+  fill: white;
+}
+
+#period53StartLabel {
+  font-size: 25;
+  font-family: Colfax-Regular;
+  text-anchor: start;
+  text-length: 32;
+  x: 70%;
+  y: 5%;
+  fill: white;
+}
+
+#period53NameLabel {
+  font-size: 25;
+  font-family: Colfax-Regular;
+  text-anchor: middle;
+  text-length: 32;
+  x: 70%;
+  y: 50%;
+  fill: white;
+}
+
+#period53EndLabel {
+  font-size: 25;
+  font-family: Colfax-Regular;
+  text-anchor: end;
+  text-length: 32;
+  x: 70%;
+  y: 95%;
+  fill: white;
+}
+
+#period6StartLabel {
+  font-size: 25;
+  font-family: Colfax-Regular;
+  text-anchor: start;
+  text-length: 32;
+  x: 80%;
+  y: 5%;
+  fill: white;
+}
+
+#period6NameLabel {
+  font-size: 25;
+  font-family: Colfax-Regular;
+  text-anchor: middle;
+  text-length: 32;
+  x: 80%;
+  y: 50%;
+  fill: white;
+}
+
+#period6EndLabel {
+  font-size: 25;
+  font-family: Colfax-Regular;
+  text-anchor: end;
+  text-length: 32;
+  x: 80%;
+  y: 95%;
+  fill: white;
+}
+
+#period7StartLabel {
+  font-size: 25;
+  font-family: Colfax-Regular;
+  text-anchor: start;
+  text-length: 32;
+  x: 90%;
+  y: 5%;
+  fill: white;
+}
+
+#period7NameLabel {
+  font-size: 25;
+  font-family: Colfax-Regular;
+  text-anchor: middle;
+  text-length: 32;
+  x: 90%;
+  y: 50%;
+  fill: white;
+}
+
+#period7EndLabel {
+  font-size: 25;
+  font-family: Colfax-Regular;
+  text-anchor: end;
+  text-length: 32;
+  x: 90%;
+  y: 95%;
+  fill: white;
+}
+
+#period8StartLabel {
+  font-size: 25;
+  font-family: Colfax-Regular;
+  text-anchor: start;
+  text-length: 32;
+  x: 100%;
+  y: 5%;
+  fill: white;
+}
+
+#period8NameLabel {
+  font-size: 25;
+  font-family: Colfax-Regular;
+  text-anchor: middle;
+  text-length: 32;
+  x: 100%;
+  y: 50%;
+  fill: white;
+}
+
+#period8EndLabel {
+  font-size: 25;
+  font-family: Colfax-Regular;
+  text-anchor: end;
+  text-length: 32;
+  x: 100%;
+  y: 95%;
+  fill: white;
+}

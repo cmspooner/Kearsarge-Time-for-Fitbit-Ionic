@@ -22,15 +22,16 @@ import * as schedUtils from "scheduleUtils.js";
 
 //---Shedule Test Work Here---
 var sched = "Regular";
-let t = "3:16p"
+/*
+let t = "2:10"
 console.log("Is in Schedule: " + schedUtils.isInSchedule(sched,t));
 console.log("Period: " + schedUtils.getCurrentPeriod (sched,t));
 console.log("Time Left: " +schedUtils.getTimeLeftInPeriod(sched,t));
 
-/*
+
 let periods = schedUtils.getPeriodList(sched);
 console.log(periods.length);
-for (let i = 0; periods.length-1; i++){
+for (let i = 0; i< periods.length; i++){
   console.log(periods[i].name);
 }
 */
@@ -45,7 +46,7 @@ let clockView = document.getElementById("clock");
 let statsView = document.getElementById("stats");
 
 // Get a handle on the <text> element
-// Clockview
+// Clock view
 let clockLabel = document.getElementById("clockLabel");
 let dateLabel = document.getElementById("dateLabel");
 let hrLabel = document.getElementById("hrLabel");
@@ -59,6 +60,38 @@ let distStatsLabel = document.getElementById("distStatsLabel");
 let floorsStatsLabel = document.getElementById("floorsStatsLabel");
 let activeStatsLabel = document.getElementById("activeStatsLabel");
 let calsStatsLabel = document.getElementById("calsStatsLabel");
+
+// Schedule view
+let period1StartLabel = document.getElementById("period1StartLabel");
+let period1NameLabel = document.getElementById("period1NameLabel");
+let period1EndLabel = document.getElementById("period1EndLabel");
+let period2StartLabel = document.getElementById("period2StartLabel");
+let period2NameLabel = document.getElementById("period2NameLabel");
+let period2EndLabel = document.getElementById("period2EndLabel");
+let period3StartLabel = document.getElementById("period3StartLabel");
+let period3NameLabel = document.getElementById("period3NameLabel");
+let period3EndLabel = document.getElementById("period3EndLabel");
+let period4StartLabel = document.getElementById("period4StartLabel");
+let period4NameLabel = document.getElementById("period4NameLabel");
+let period4EndLabel = document.getElementById("period4EndLabel");
+let period51StartLabel = document.getElementById("period51StartLabel");
+let period51NameLabel = document.getElementById("period51NameLabel");
+let period51EndLabel = document.getElementById("period51EndLabel");
+let period52StartLabel = document.getElementById("period52StartLabel");
+let period52NameLabel = document.getElementById("period52NameLabel");
+let period52EndLabel = document.getElementById("period52EndLabel");
+let period53StartLabel = document.getElementById("period53StartLabel");
+let period53NameLabel = document.getElementById("period53NameLabel");
+let period53EndLabel = document.getElementById("period53EndLabel");
+let period6StartLabel = document.getElementById("period6StartLabel");
+let period6NameLabel = document.getElementById("period6NameLabel");
+let period6EndLabel = document.getElementById("period6EndLabel");
+let period7StartLabel = document.getElementById("period7StartLabel");
+let period7NameLabel = document.getElementById("period7NameLabel");
+let period7EndLabel = document.getElementById("period7EndLabel");
+let period8StartLabel = document.getElementById("period8StartLabel");
+let period8NameLabel = document.getElementById("period8NameLabel");
+let period8EndLabel = document.getElementById("period8EndLabel");
 
 let didVib = false;
 
@@ -136,29 +169,28 @@ function updateClockData() {
 }
 
 function updatePeriodData() {
-  if (showClock && display.on){
-    let today = new Date();
-    let time = schedUtils.hourAndMinToTime(today.getHours(), today.getMinutes())
-    //let time = "11:08a";
-    let remaining = schedUtils.getTimeLeftInPeriod(sched, time);
-    //console.log(time);
+  let today = new Date();
+  let time = schedUtils.hourAndMinToTime(today.getHours(), today.getMinutes())
+  //let time = "11:08a";
+  let remaining = schedUtils.getTimeLeftInPeriod(sched, time);
+  //console.log(time);
 
-    if (schedUtils.isInSchedule(sched, time)){
-        periodLabel.text = `${schedUtils.getCurrentPeriod(sched, time)}`;
-        if (remaining <= 2){
-          timeRemainingLabel.style.fill = 'fb-red';
-          if (!didVib){
-            vibration.start("nudge-max");
-            didVib = true;
-          }
-        } else if (remaining > 2 && didVib){
-          didVib = false;
-          timeRemainingLabel.style.fill = 'silver';
-        } else {
-          timeRemainingLabel.style.fill = 'silver';
+  if (schedUtils.isInSchedule(sched, time)){
+      periodLabel.text = `${schedUtils.getCurrentPeriod(sched, time)}`;
+      if (remaining <= 2){
+        timeRemainingLabel.style.fill = 'fb-red';
+        if (!didVib){
+          vibration.start("nudge-max");
+          didVib = true;
         }
-        timeRemainingLabel.text = `Remaining: ${remaining} min`;
-    }
+      } else if (remaining > 2 && didVib){
+        didVib = false;
+        timeRemainingLabel.style.fill = 'silver';
+      } else {
+        timeRemainingLabel.style.fill = 'silver';
+      }
+      timeRemainingLabel.text = `Remaining: ${remaining} min`;
+  } else {
     periodLabel.text = ``;
     timeRemainingLabel.text = ``;
   }
@@ -228,3 +260,4 @@ setInterval(updateStatsData, 3000);
 // Don't start with a blank screen
 updateClock();
 updateClockData();
+hrm.start();

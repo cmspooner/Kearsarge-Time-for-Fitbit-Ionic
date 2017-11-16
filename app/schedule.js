@@ -22,7 +22,7 @@ export var schedule = {
            {name: "Period 7", start: "1:06p", end: "1:51p"},
            {name: "Passing Time", start: "1:51p", end: "1:55p"},
            {name: "Period 8", start: "1:55p", end: "2:35p"},
-           {name: "Teacher Time", start: "2:35p", end: "3:15p"},
+           {name: "Teacher Time", start: "2:35p", end: "3:15p"}
           ],
     "Tuesday": [
            {name: "Before School", start: "6:35a", end: "7:35a"},
@@ -44,7 +44,7 @@ export var schedule = {
            {name: "Period 7", start: "1:16p", end: "1:56p"},
            {name: "Passing Time", start: "1:56p", end: "2:00p"},
            {name: "Period 8", start: "2:00p", end: "2:35p"},
-           {name: "Teacher Time", start: "2:35p", end: "3:15p"},
+           {name: "Teacher Time", start: "2:35p", end: "3:15p"}
           ],
     "Wednesday": [
            {name: "Before School", start: "6:35a", end: "7:35a"},
@@ -66,7 +66,7 @@ export var schedule = {
            {name: "Period 7", start: "1:16p", end: "1:56p"},
            {name: "Passing Time", start: "1:56p", end: "2:00p"},
            {name: "Period 8", start: "2:00p", end: "2:35p"},
-           {name: "Teacher Time", start: "2:35p", end: "3:15p"},
+           {name: "Teacher Time", start: "2:35p", end: "3:15p"}
           ],
     "Thursday": [
            {name: "Before School", start: "6:35a", end: "7:35a"},
@@ -88,7 +88,7 @@ export var schedule = {
            {name: "Period 7", start: "12:58p", end: "1:56p"},
            {name: "Passing Time", start: "1:56p", end: "2:00p"},
            {name: "Period 8", start: "2:00p", end: "2:35p"},
-           {name: "Teacher Time", start: "2:35p", end: "3:15p"},
+           {name: "Teacher Time", start: "2:35p", end: "3:15p"}
           ],
     "2 Hour Delay": [
            {name: "Before School", start: "8:35a", end: "9:35a"}, 
@@ -108,7 +108,7 @@ export var schedule = {
            {name: "Period 6", start: "1:24p", end: "1:56p"},
            {name: "Passing Time", start: "1:56p", end: "2:00p"},
            {name: "Period 7", start: "2:00p", end: "2:35p"},
-           {name: "Teacher Time", start: "2:35p", end: "3:15p"},
+           {name: "Teacher Time", start: "2:35p", end: "3:15p"}
           ],
     "PM Activity": [
            {name: "Before School", start: "6:35a", end: "7:35a"}, 
@@ -130,7 +130,7 @@ export var schedule = {
            {name: "Period 7", start: "12:41p", end: "1:21p"},
            {name: "Passing Time", start: "1:21p", end: "1:25p"},
            {name: "PM Activity", start: "1:25p", end: "2:35p"},
-           {name: "Teacher Time", start: "2:35p", end: "3:15p"},
+           {name: "Teacher Time", start: "2:35p", end: "3:15p"}
           ],
     "Assembly": [
            {name: "Before School", start: "6:35a", end: "7:35a"},
@@ -152,7 +152,7 @@ export var schedule = {
            {name: "Period 6", start: "1:01p", end: "1:46p"},
            {name: "Passing Time", start: "1:46p", end: "1:50p"},
            {name: "Period 7", start: "1:50p", end: "2:35p"},
-           {name: "Teacher Time", start: "2:35p", end: "3:15p"},
+           {name: "Teacher Time", start: "2:35p", end: "3:15p"}
           ],
     "7 Period Day": [
            {name: "Before School", start: "6:35a", end: "7:35a"},
@@ -172,7 +172,7 @@ export var schedule = {
            {name: "Period 6", start: "12:48p", end: "1:40p"},
            {name: "Passing Time", start: "1:40p", end: "1:44p"},
            {name: "Period 7", start: "1:44p", end: "2:35p"},
-           {name: "Teacher Time", start: "2:35p", end: "3:15p"},
+           {name: "Teacher Time", start: "2:35p", end: "3:15p"}
           ],
     "Exam": [
            {name: "Before School", start: "6:35a", end: "7:30a"},
@@ -182,7 +182,7 @@ export var schedule = {
            {name: "Exam Period 2", start: "10:00a", end: "11:30a"}, 
            {name: "Lunch", start: "11:30a", end: "12:45p"},
            {name: "Make-Up Period", start: "12:45p", end: "2:15p"},
-           {name: "Teacher Time", start: "2:15p", end: "3:15p"},
+           {name: "Teacher Time", start: "2:15p", end: "3:15p"}
           ]
 };
 

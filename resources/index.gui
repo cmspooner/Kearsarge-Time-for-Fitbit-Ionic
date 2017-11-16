@@ -17,5 +17,37 @@
     <text id="activeStatsLabel" />
     <text id="calsStatsLabel" />
   </svg>
+  <svg id="schedule" display="none">
+    <text id="period1StartLabel" />
+    <text id="period1NameLabel" />
+    <text id="period1EndLabel" />
+    <text id="period2StartLabel" />
+    <text id="period2NameLabel" />
+    <text id="period2EndLabel" />
+    <text id="period3StartLabel" />
+    <text id="period3NameLabel" />
+    <text id="period3EndLabel" />
+    <text id="period4StartLabel" />
+    <text id="period4NameLabel" />
+    <text id="period4EndLabel" />
+    <text id="period51StartLabel" />
+    <text id="period51NameLabel" />
+    <text id="period51EndLabel" />
+    <text id="period52StartLabel" />
+    <text id="period52NameLabel" />
+    <text id="period52EndLabel" />
+    <text id="period53StartLabel" />
+    <text id="period53NameLabel" />
+    <text id="period53EndLabel" />
+    <text id="period6StartLabel" />
+    <text id="period6NameLabel" />
+    <text id="period6EndLabel" />
+    <text id="period7StartLabel" />
+    <text id="period7NameLabel" />
+    <text id="period7EndLabel" />
+    <text id="period8StartLabel" />
+    <text id="period8NameLabel" />
+    <text id="period8EndLabel" />
+  </svg>
   <rect id="clickbg" pointer-events="visible"/>
 </svg>
