@@ -13,12 +13,9 @@ import { display } from "display";
 import { preferences } from "user-settings";
 import { vibration } from "haptics"
 
-
 import * as util from "../common/utils";
 //import * as schedule from "schedule.js";
 import * as schedUtils from "scheduleUtils.js";
-
-
 
 //---Shedule Test Work Here---
 var sched = "Regular";
@@ -299,7 +296,7 @@ display.onchange = function() {
 // Update the clock every tick event
 clock.ontick = () => updateClock();
 setInterval(updateClockData, 3000);
-setInterval(updateStatsData, 3000);
+setInterval(updatePeriodData, 15000);
 
 // Don't start with a blank screen
 updateClock();
