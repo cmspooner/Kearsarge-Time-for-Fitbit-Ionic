@@ -127,7 +127,7 @@ function updateClock() {
 }
 
 function updateClockData() {
-  if (showClock && display.on){
+  if (show == "clock" && display.on){
     let data = {
       heart: {
         theHeartRate: hrm.heartRate ? hrm.heartRate : 0
@@ -193,7 +193,7 @@ function updatePeriodData() {
 }
 
 function updateStatsData(){
-  if (!showClock && display.on){
+  if (show == "stats" && display.on){
     stepStatsLabel.style.fill = util.goalToColor(today.local.steps, goals.steps);
     stepStatsLabel.text = `Steps: ${today.local.steps ? today.local.steps.toLocaleString() : 0} / ${goals.steps.toLocaleString()}`;
 
@@ -215,9 +215,28 @@ function updateStatsData(){
 }
   
 function updateScheduleData(){
-  if (!showClock && display.on){
+  if (show == "schedule" && display.on){
+    let today = new Date();
+    let time = schedUtils.hourAndMinToTime(today.getHours(), today.getMinutes());
+    let per = schedUtils.getCurrentPeriod(sched, time);
     let periods = schedUtils.getPeriodList(sched);
+    
     for (let i = 0; i < periods.length; i++){
+      if (periods[i].name == per){
+        periodLabels[i].start.style.fontFamily = 'Colfax-Medium';
+        periodLabels[i].start.style.fill = 'fb-cyan';
+        periodLabels[i].name.style.fontFamily = 'Colfax-Medium';
+        periodLabels[i].name.style.fill = 'fb-cyan';
+        periodLabels[i].end.style.fontFamily = 'Colfax-Medium';
+        periodLabels[i].end.style.fill = 'fb-cyan';
+      } else {
+        periodLabels[i].start.style.fontFamily = 'Colfax-Regular';
+        periodLabels[i].start.style.fill = 'white';
+        periodLabels[i].name.style.fontFamily = 'Colfax-Regular';
+        periodLabels[i].name.style.fill = 'white';
+        periodLabels[i].end.style.fontFamily = 'Colfax-Regular';
+        periodLabels[i].end.style.fill = 'white';
+      }
       periodLabels[i].start.text = `${periods[i].start}`;
       periodLabels[i].name.text = `${periods[i].name}`;
       periodLabels[i].end.text = `${periods[i].end}`;
@@ -226,24 +245,41 @@ function updateScheduleData(){
 }
 
 // Handle Click
-let showClock = true;
+let show = "clock";
 background.onclick = function(evt) {
   //console.log("Click");
-  if (showClock){           // In Clock -> Switching to Stats
-    showClock = false;
+  if (show == "clock"){           // In Clock -> Switching to Stats
+    show = "stats";
     updateStatsData()
-    updateScheduleData();
     clockView.style.display = "none";
     statsView.style.display = "inline";
     scheduleView.style.display = "none";
     display.poke()
-  } else{                   // In Stats -> Switching to Clock
-    showClock = true;
+  } else if (show == "stats"){                   // In Stats -> Switching to Clock or schedule
+    let today = new Date();
+    let time = schedUtils.hourAndMinToTime(today.getHours(), today.getMinutes())
+    
+    if (schedUtils.isInSchedule(sched, time)){  
+      show = "schedule";
+      updateScheduleData();
+      clockView.style.display = "none";
+      statsView.style.display = "none";
+      scheduleView.style.display = "inline";
+    } else {
+      show = "clock";
+      updateClock();
+      updateClockData();
+      clockView.style.display = "inline";
+      statsView.style.display = "none";
+      scheduleView.style.display = "none";
+    } 
+  } else {                                  // In Schedule -> Switching to Clock
+    show = "clock";
     updateClock();
     updateClockData();
     clockView.style.display = "inline";
     statsView.style.display = "none";
-    scheduleView.style.display = "none"; 
+    scheduleView.style.display = "none";
   }
   //console.log("ShowClock is " + showClock);
 }
@@ -251,7 +287,7 @@ background.onclick = function(evt) {
 display.onchange = function() {
   if (!display.on) {
     hrm.start();
-    showClock = true;
+    show = "clock";
     updateClock();
     updateClockData();
     clockView.style.display = "inline";
