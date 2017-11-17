@@ -50,6 +50,27 @@
   fill: white;
 }
 
+/* Period and Remaining Time */
+#periodLabel {
+  font-size: 30;
+  font-family: Colfax-Bold;
+  text-length: 50;
+  text-anchor: start;
+  x: 30;
+  y: 82%;
+  fill: silver;
+}
+
+#timeRemainingLabel {
+  font-size: 30;
+  font-family: Colfax-Regular;
+  text-length: 50;
+  text-anchor: start;
+  x: 30;
+  y: 94%;
+  fill: silver;
+}
+
 /* Stats View Labels */
 #stepStatsLabel {
   font-size: 30;
@@ -101,33 +122,44 @@
   fill: white;
 }
 
-#periodLabel {
-  font-size: 30;
-  font-family: Colfax-Bold;
-  text-length: 50;
+/* Schedule Labels */
+#period0StartLabel {
+  font-size: 25;
+  font-family: Colfax-Regular;
   text-anchor: start;
-  x: 30;
-  y: 82%;
-  fill: silver;
+  text-length: 8;
+  x: 5%;
+  y: 8%;
+  fill: white;
 }
 
-#timeRemainingLabel {
-  font-size: 30;
+#period0NameLabel {
+  font-size: 25;
   font-family: Colfax-Regular;
-  text-length: 50;
-  text-anchor: start;
-  x: 30;
-  y: 94%;
-  fill: silver;
+  text-anchor: middle;
+  text-length: 8;
+  x: 50%;
+  y: 8%;
+  fill: white;
+}
+
+#period0EndLabel {
+  font-size: 25;
+  font-family: Colfax-Regular;
+  text-anchor: end;
+  text-length: 8;
+  x: 95%;
+  y: 8%;
+  fill: white;
 }
 
 #period1StartLabel {
   font-size: 25;
   font-family: Colfax-Regular;
   text-anchor: start;
-  text-length: 32;
-  x: 10%;
-  y: 5%;
+  text-length: 8;
+  x: 5%;
+  y: 18%;
   fill: white;
 }
 
@@ -135,9 +167,9 @@
   font-size: 25;
   font-family: Colfax-Regular;
   text-anchor: middle;
-  text-length: 32;
-  x: 10%;
-  y: 50%;
+  text-length: 8;
+  x: 50%;
+  y: 18%;
   fill: white;
 }
 
@@ -145,9 +177,9 @@
   font-size: 25;
   font-family: Colfax-Regular;
   text-anchor: end;
-  text-length: 32;
-  x: 10%;
-  y: 95%;
+  text-length: 8;
+  x: 95%;
+  y: 18%;
   fill: white;
 }
 
@@ -155,9 +187,9 @@
   font-size: 25;
   font-family: Colfax-Regular;
   text-anchor: start;
-  text-length: 32;
-  x: 20%;
-  y: 5%;
+  text-length: 8;
+  x: 5%;
+  y: 28%;
   fill: white;
 }
 
@@ -165,9 +197,9 @@
   font-size: 25;
   font-family: Colfax-Regular;
   text-anchor: middle;
-  text-length: 32;
-  x: 20%;
-  y: 50%;
+  text-length: 8;
+  x: 50%;
+  y: 28%;
   fill: white;
 }
 
@@ -175,9 +207,9 @@
   font-size: 25;
   font-family: Colfax-Regular;
   text-anchor: end;
-  text-length: 32;
-  x: 20%;
-  y: 95%;
+  text-length: 8;
+  x: 95%;
+  y: 28%;
   fill: white;
 }
 
@@ -185,9 +217,9 @@
   font-size: 25;
   font-family: Colfax-Regular;
   text-anchor: start;
-  text-length: 32;
-  x: 30%;
-  y: 5%;
+  text-length: 8;
+  x: 5%;
+  y: 38%;
   fill: white;
 }
 
@@ -195,9 +227,9 @@
   font-size: 25;
   font-family: Colfax-Regular;
   text-anchor: middle;
-  text-length: 32;
-  x: 30%;
-  y: 50%;
+  text-length: 8;
+  x: 50%;
+  y: 38%;
   fill: white;
 }
 
@@ -205,9 +237,9 @@
   font-size: 25;
   font-family: Colfax-Regular;
   text-anchor: end;
-  text-length: 32;
-  x: 30%;
-  y: 95%;
+  text-length: 8;
+  x: 95%;
+  y: 38%;
   fill: white;
 }
 
@@ -215,9 +247,9 @@
   font-size: 25;
   font-family: Colfax-Regular;
   text-anchor: start;
-  text-length: 32;
-  x: 40%;
-  y: 5%;
+  text-length: 8;
+  x: 5%;
+  y: 48%;
   fill: white;
 }
 
@@ -225,9 +257,9 @@
   font-size: 25;
   font-family: Colfax-Regular;
   text-anchor: middle;
-  text-length: 32;
-  x: 40%;
-  y: 50%;
+  text-length: 8;
+  x: 50%;
+  y: 48%;
   fill: white;
 }
 
@@ -235,99 +267,39 @@
   font-size: 25;
   font-family: Colfax-Regular;
   text-anchor: end;
-  text-length: 32;
-  x: 40%;
-  y: 95%;
+  text-length: 8;
+  x: 95%;
+  y: 48%;
   fill: white;
 }
 
-#period51StartLabel {
+#period5StartLabel {
   font-size: 25;
   font-family: Colfax-Regular;
   text-anchor: start;
-  text-length: 32;
-  x: 50%;
-  y: 5%;
+  text-length: 8;
+  x: 5%;
+  y: 58%;
   fill: white;
 }
 
-#period51NameLabel {
+#period5NameLabel {
   font-size: 25;
   font-family: Colfax-Regular;
   text-anchor: middle;
-  text-length: 32;
+  text-length: 8;
   x: 50%;
-  y: 50%;
+  y: 58%;
   fill: white;
 }
 
-#period51EndLabel {
+#period5EndLabel {
   font-size: 25;
   font-family: Colfax-Regular;
   text-anchor: end;
-  text-length: 32;
-  x: 50%;
-  y: 95%;
-  fill: white;
-}
-
-#period52StartLabel {
-  font-size: 25;
-  font-family: Colfax-Regular;
-  text-anchor: start;
-  text-length: 32;
-  x: 60%;
-  y: 5%;
-  fill: white;
-}
-
-#period52NameLabel {
-  font-size: 25;
-  font-family: Colfax-Regular;
-  text-anchor: middle;
-  text-length: 32;
-  x: 60%;
-  y: 50%;
-  fill: white;
-}
-
-#period52EndLabel {
-  font-size: 25;
-  font-family: Colfax-Regular;
-  text-anchor: end;
-  text-length: 32;
-  x: 60%;
-  y: 95%;
-  fill: white;
-}
-
-#period53StartLabel {
-  font-size: 25;
-  font-family: Colfax-Regular;
-  text-anchor: start;
-  text-length: 32;
-  x: 70%;
-  y: 5%;
-  fill: white;
-}
-
-#period53NameLabel {
-  font-size: 25;
-  font-family: Colfax-Regular;
-  text-anchor: middle;
-  text-length: 32;
-  x: 70%;
-  y: 50%;
-  fill: white;
-}
-
-#period53EndLabel {
-  font-size: 25;
-  font-family: Colfax-Regular;
-  text-anchor: end;
-  text-length: 32;
-  x: 70%;
-  y: 95%;
+  text-length: 8;
+  x: 95%;
+  y: 58%;
   fill: white;
 }
 
@@ -335,9 +307,9 @@
   font-size: 25;
   font-family: Colfax-Regular;
   text-anchor: start;
-  text-length: 32;
-  x: 80%;
-  y: 5%;
+  text-length: 8;
+  x: 5%;
+  y: 68%;
   fill: white;
 }
 
@@ -345,9 +317,9 @@
   font-size: 25;
   font-family: Colfax-Regular;
   text-anchor: middle;
-  text-length: 32;
-  x: 80%;
-  y: 50%;
+  text-length: 8;
+  x: 50%;
+  y: 68%;
   fill: white;
 }
 
@@ -355,9 +327,9 @@
   font-size: 25;
   font-family: Colfax-Regular;
   text-anchor: end;
-  text-length: 32;
-  x: 80%;
-  y: 95%;
+  text-length: 8;
+  x: 95%;
+  y: 68%;
   fill: white;
 }
 
@@ -365,9 +337,9 @@
   font-size: 25;
   font-family: Colfax-Regular;
   text-anchor: start;
-  text-length: 32;
-  x: 90%;
-  y: 5%;
+  text-length: 8;
+  x: 5%;
+  y: 78%;
   fill: white;
 }
 
@@ -375,9 +347,9 @@
   font-size: 25;
   font-family: Colfax-Regular;
   text-anchor: middle;
-  text-length: 32;
-  x: 90%;
-  y: 50%;
+  text-length: 8;
+  x: 50%;
+  y: 78%;
   fill: white;
 }
 
@@ -385,9 +357,9 @@
   font-size: 25;
   font-family: Colfax-Regular;
   text-anchor: end;
-  text-length: 32;
-  x: 90%;
-  y: 95%;
+  text-length: 8;
+  x: 95%;
+  y: 78%;
   fill: white;
 }
 
@@ -395,9 +367,9 @@
   font-size: 25;
   font-family: Colfax-Regular;
   text-anchor: start;
-  text-length: 32;
-  x: 100%;
-  y: 5%;
+  text-length: 8;
+  x: 5%;
+  y: 88%;
   fill: white;
 }
 
@@ -405,9 +377,9 @@
   font-size: 25;
   font-family: Colfax-Regular;
   text-anchor: middle;
-  text-length: 32;
-  x: 100%;
-  y: 50%;
+  text-length: 8;
+  x: 50%;
+  y: 88%;
   fill: white;
 }
 
@@ -415,8 +387,38 @@
   font-size: 25;
   font-family: Colfax-Regular;
   text-anchor: end;
-  text-length: 32;
-  x: 100%;
-  y: 95%;
+  text-length: 8;
+  x: 95%;
+  y: 88%;
+  fill: white;
+}
+
+#period9StartLabel {
+  font-size: 25;
+  font-family: Colfax-Regular;
+  text-anchor: start;
+  text-length: 8;
+  x: 5%;
+  y: 98%;
+  fill: white;
+}
+
+#period9NameLabel {
+  font-size: 25;
+  font-family: Colfax-Regular;
+  text-anchor: middle;
+  text-length: 8;
+  x: 50%;
+  y: 98%;
+  fill: white;
+}
+
+#period9EndLabel {
+  font-size: 25;
+  font-family: Colfax-Regular;
+  text-anchor: end;
+  text-length: 8;
+  x: 95%;
+  y: 98%;
   fill: white;
 }

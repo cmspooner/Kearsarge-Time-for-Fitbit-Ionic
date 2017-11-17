@@ -22,19 +22,6 @@ import * as schedUtils from "scheduleUtils.js";
 
 //---Shedule Test Work Here---
 var sched = "Regular";
-/*
-let t = "2:10"
-console.log("Is in Schedule: " + schedUtils.isInSchedule(sched,t));
-console.log("Period: " + schedUtils.getCurrentPeriod (sched,t));
-console.log("Time Left: " +schedUtils.getTimeLeftInPeriod(sched,t));
-
-
-let periods = schedUtils.getPeriodList(sched);
-console.log(periods.length);
-for (let i = 0; i< periods.length; i++){
-  console.log(periods[i].name);
-}
-*/
 
 // Update the clock every minute
 clock.granularity = "minutes";
@@ -44,6 +31,7 @@ let background = document.getElementById("clickbg");
 // Views
 let clockView = document.getElementById("clock");
 let statsView = document.getElementById("stats");
+let scheduleView = document.getElementById("schedule");
 
 // Get a handle on the <text> element
 // Clock view
@@ -62,37 +50,47 @@ let activeStatsLabel = document.getElementById("activeStatsLabel");
 let calsStatsLabel = document.getElementById("calsStatsLabel");
 
 // Schedule view
-let period1StartLabel = document.getElementById("period1StartLabel");
-let period1NameLabel = document.getElementById("period1NameLabel");
-let period1EndLabel = document.getElementById("period1EndLabel");
-let period2StartLabel = document.getElementById("period2StartLabel");
-let period2NameLabel = document.getElementById("period2NameLabel");
-let period2EndLabel = document.getElementById("period2EndLabel");
-let period3StartLabel = document.getElementById("period3StartLabel");
-let period3NameLabel = document.getElementById("period3NameLabel");
-let period3EndLabel = document.getElementById("period3EndLabel");
-let period4StartLabel = document.getElementById("period4StartLabel");
-let period4NameLabel = document.getElementById("period4NameLabel");
-let period4EndLabel = document.getElementById("period4EndLabel");
-let period51StartLabel = document.getElementById("period51StartLabel");
-let period51NameLabel = document.getElementById("period51NameLabel");
-let period51EndLabel = document.getElementById("period51EndLabel");
-let period52StartLabel = document.getElementById("period52StartLabel");
-let period52NameLabel = document.getElementById("period52NameLabel");
-let period52EndLabel = document.getElementById("period52EndLabel");
-let period53StartLabel = document.getElementById("period53StartLabel");
-let period53NameLabel = document.getElementById("period53NameLabel");
-let period53EndLabel = document.getElementById("period53EndLabel");
-let period6StartLabel = document.getElementById("period6StartLabel");
-let period6NameLabel = document.getElementById("period6NameLabel");
-let period6EndLabel = document.getElementById("period6EndLabel");
-let period7StartLabel = document.getElementById("period7StartLabel");
-let period7NameLabel = document.getElementById("period7NameLabel");
-let period7EndLabel = document.getElementById("period7EndLabel");
-let period8StartLabel = document.getElementById("period8StartLabel");
-let period8NameLabel = document.getElementById("period8NameLabel");
-let period8EndLabel = document.getElementById("period8EndLabel");
+let periodLabels = [
+  {start: document.getElementById("period0StartLabel"), 
+    name: document.getElementById("period0NameLabel"), 
+    end: document.getElementById("period0EndLabel")},
+  {start: document.getElementById("period1StartLabel"), 
+    name: document.getElementById("period1NameLabel"), 
+    end: document.getElementById("period1EndLabel")},
+  {start: document.getElementById("period2StartLabel"), 
+    name: document.getElementById("period2NameLabel"), 
+    end: document.getElementById("period2EndLabel")},
+  {start: document.getElementById("period3StartLabel"), 
+    name: document.getElementById("period3NameLabel"), 
+    end: document.getElementById("period3EndLabel")},
+  {start: document.getElementById("period4StartLabel"), 
+    name: document.getElementById("period4NameLabel"), 
+    end: document.getElementById("period4EndLabel")},
+  {start: document.getElementById("period5StartLabel"), 
+    name: document.getElementById("period5NameLabel"), 
+    end: document.getElementById("period5EndLabel")},
+  {start: document.getElementById("period6StartLabel"), 
+    name: document.getElementById("period6NameLabel"), 
+    end: document.getElementById("period6EndLabel")},
+  {start: document.getElementById("period7StartLabel"), 
+    name: document.getElementById("period7NameLabel"), 
+    end: document.getElementById("period7EndLabel")},
+  {start: document.getElementById("period8StartLabel"), 
+    name: document.getElementById("period8NameLabel"), 
+    end: document.getElementById("period8EndLabel")},
+  {start: document.getElementById("period9StartLabel"), 
+    name: document.getElementById("period9NameLabel"), 
+    end: document.getElementById("period9EndLabel")}
+  ]
 
+/*
+let periods = schedUtils.getPeriodList(sched);
+console.log(periodLabels.length);
+for (let i = 0; i< periods.length; i++){
+  console.log(periods[i].start + " " + periods[i].name + " " + periods[i].end);
+  console.log(periodLabels[i].start.y + " " + periodLabels[i].name.y + " " + periodLabels[i].end.y);
+}
+*/
 let didVib = false;
 
 // Heart Rate Monitor
@@ -125,9 +123,7 @@ function updateClock() {
 
   dateLabel.text = `${util.toDay(day)}, ${util.toMonth(month)} ${date}`;
   clockLabel.text = `${hours}:${mins}${ampm}`;
-  if (showClock && display.on){
-    updatePeriodData();
-  }
+  updatePeriodData();
 }
 
 function updateClockData() {
@@ -217,6 +213,17 @@ function updateStatsData(){
     calsStatsLabel.text = `Calories: ${today.local.calories ? today.local.calories.toLocaleString() : 0} / ${parseInt(goals.calories/6.8).toLocaleString()}`;
   }
 }
+  
+function updateScheduleData(){
+  if (!showClock && display.on){
+    let periods = schedUtils.getPeriodList(sched);
+    for (let i = 0; i < periods.length; i++){
+      periodLabels[i].start.text = `${periods[i].start}`;
+      periodLabels[i].name.text = `${periods[i].name}`;
+      periodLabels[i].end.text = `${periods[i].end}`;
+    }
+  }
+}
 
 // Handle Click
 let showClock = true;
@@ -225,15 +232,18 @@ background.onclick = function(evt) {
   if (showClock){           // In Clock -> Switching to Stats
     showClock = false;
     updateStatsData()
+    updateScheduleData();
     clockView.style.display = "none";
     statsView.style.display = "inline";
+    scheduleView.style.display = "none";
     display.poke()
   } else{                   // In Stats -> Switching to Clock
     showClock = true;
     updateClock();
     updateClockData();
     clockView.style.display = "inline";
-    statsView.style.display = "none"; 
+    statsView.style.display = "none";
+    scheduleView.style.display = "none"; 
   }
   //console.log("ShowClock is " + showClock);
 }
@@ -246,6 +256,7 @@ display.onchange = function() {
     updateClockData();
     clockView.style.display = "inline";
     statsView.style.display = "none";
+    scheduleView.style.display = "none";
   } else {
     hrm.stop();
   }
