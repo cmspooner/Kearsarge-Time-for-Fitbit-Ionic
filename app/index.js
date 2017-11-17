@@ -83,18 +83,13 @@ let periodLabels = [
     end: document.getElementById("period9EndLabel")}
   ]
 
-/*
-let periods = schedUtils.getPeriodList(sched);
-console.log(periodLabels.length);
-for (let i = 0; i< periods.length; i++){
-  console.log(periods[i].start + " " + periods[i].name + " " + periods[i].end);
-  console.log(periodLabels[i].start.y + " " + periodLabels[i].name.y + " " + periodLabels[i].end.y);
-}
-*/
 let didVib = false;
+let show = "clock";
 
 // Heart Rate Monitor
 let hrm = new HeartRateSensor();
+
+//-------------------------------Update Functions-----------------
 
 // Update the <text> element with the current time
 function updateClock() {
@@ -244,8 +239,8 @@ function updateScheduleData(){
   }
 }
 
-// Handle Click
-let show = "clock";
+//------------------Event Handleing--------------------
+
 background.onclick = function(evt) {
   //console.log("Click");
   if (show == "clock"){           // In Clock -> Switching to Stats
@@ -298,6 +293,8 @@ display.onchange = function() {
   }
 }
 
+
+//-----------------Startup------------------------
 
 // Update the clock every tick event
 clock.ontick = () => updateClock();
