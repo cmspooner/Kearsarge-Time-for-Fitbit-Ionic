@@ -19,6 +19,7 @@ import * as schedUtils from "scheduleUtils.js";
 
 //---Shedule Test Work Here---
 var sched = "Regular";
+//sched = "Exam"
 
 // Update the clock every minute
 clock.granularity = "minutes";
@@ -112,8 +113,8 @@ function updateClock() {
   } else {
     ampm = ""
   }
-
-  dateLabel.text = `${util.toDay(day)}, ${util.toMonth(month)} ${date}`;
+  
+  dateLabel.text = `${util.toDay(day, "long")}, ${util.toMonth(month)} ${date}`;
   clockLabel.text = `${hours}:${mins}${ampm}`;
   updatePeriodData();
 }
@@ -210,6 +211,7 @@ function updateScheduleData(){
   if (show == "schedule" && display.on){
     let today = new Date();
     let time = schedUtils.hourAndMinToTime(today.getHours(), today.getMinutes());
+    //let time = "11:08a";
     let per = schedUtils.getCurrentPeriod(sched, time);
     let periods = schedUtils.getPeriodList(sched);
     
@@ -232,6 +234,10 @@ function updateScheduleData(){
       periodLabels[i].start.text = `${periods[i].start}`;
       periodLabels[i].name.text = `${periods[i].name}`;
       periodLabels[i].end.text = `${periods[i].end}`;
+    } for (let j = i; j < periodLabels.length; j++){
+      periodLabels[j].start.text = ``;
+      periodLabels[j].name.text = ``;
+      periodLabels[j].end.text = ``;
     }
   }
 }
@@ -250,6 +256,7 @@ background.onclick = function(evt) {
   } else if (show == "stats"){                   // In Stats -> Switching to Clock or schedule
     let today = new Date();
     let time = schedUtils.hourAndMinToTime(today.getHours(), today.getMinutes())
+    //let time = "11:08a";
     
     if (schedUtils.isInSchedule(sched, time)){  
       show = "schedule";
@@ -289,7 +296,6 @@ display.onchange = function() {
     hrm.stop();
   }
 }
-
 
 //-----------------Startup------------------------
 

@@ -1,3 +1,21 @@
+export var dayToSchedule = {                
+      "Sunday": "No School",
+      "Monday": "MF",
+      "Tuesday": "Tuesday",
+      "Wednesday": "Wednesday",
+      "Thursday": "Thursday",
+      "Friday": "MF",
+      "Saturday": "No School"
+    }
+
+export var ignoredPeriods = [
+                      "No School",
+                      "Before School",
+                      "Warning Bell",
+                      "Passing Time",
+                      "Teacher Time"
+                     ];
+
 export var schedule = {
     "No School" : [
           {name: "No School", start: "12:00a", end: "12:00a"}

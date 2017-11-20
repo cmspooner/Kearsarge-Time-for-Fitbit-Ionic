@@ -1,27 +1,48 @@
-let months = { 
-  0: "Jan.", 
-  1: "Feb.", 
-  2: "Mar.", 
-  3: "Apr.", 
-  4: "May", 
-  5: "June", 
-  6: "July", 
-  7: "Aug.", 
-  8: "Sept.", 
-  9: "Oct.",
-  10: "Nov.",
-  11: "Dec."
-}
+let months = [
+  "Jan.", 
+  "Feb.", 
+  "Mar.", 
+  "Apr.", 
+  "May", 
+  "June", 
+  "July", 
+  "Aug.", 
+  "Sept.", 
+  "Oct.",
+  "Nov.",
+  "Dec.",
+  
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December"
+]
 
-let days = { 
-  0: "Sun", 
-  1: "Mon", 
-  2: "Tues", 
-  3: "Wed", 
-  4: "Thurs", 
-  5: "Fri", 
-  6: "Sat",
-}
+let days = [ 
+  "Sun", 
+  "Mon", 
+  "Tues", 
+  "Wed", 
+  "Thurs", 
+  "Fri", 
+  "Sat",
+  
+  "Sunday",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday"
+]
 
 
 // Add zero in front of numbers < 10
@@ -32,30 +53,39 @@ export function zeroPad(i) {
   return i;
 }
 
-export function toMonth(month) {
+export function toMonth(month, len = "short") {
+  if (len == "long"){
+    month += 12;
+  }
   return months[month];
 }
 
-export function toDay(day) {
+export function toDay(day, len = "short") {
+  if (len == "long"){
+    day += 7;
+  }
   return days[day];
 }
 
-export function goalToColor(value, total){
+export function goalToColor(value, total, low = 'fb-red', 
+                                          medium = 'fb-peach', 
+                                          high = 'fb-cyan', 
+                                          complete = 'fb-mint', ){
   if (!value || !total){
-    color = '#F83C40'; //fb-red
+    color = low;
     return color;
   }
   
   let percent = value/total*100;
   let color = 'white'; // #FFFFFF
   if (percent < 33.33){
-    color = 'fb-red'; // #F83C40
+    color = low; // #F83C40
   } else if (percent < 66.66){
-    color = 'fb-peach'; // #FFCC33
+    color = medium; // #FFCC33
   } else if (percent < 100){
-    color = 'fb-cyan';  // #14D3F5
+    color = high;  // #14D3F5
   } else {
-    color = 'fb-mint'; // #5BE37D
+    color = complete; // #5BE37D
   }
   return color
 }
@@ -68,5 +98,5 @@ export function round2(number){
 }
 
 export function isInRange(value, low, high){
-  return value >= low && value <= high;
+  return value >= low && value < high;
 }

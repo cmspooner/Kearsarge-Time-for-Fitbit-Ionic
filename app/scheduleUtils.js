@@ -61,16 +61,7 @@ export function getDailySchedule(typeOfDay){
   if (typeOfDay == "Regular"){
     let today = new Date();
     let day = today.getDay();
-    let days = {
-      0: "No School",
-      1: "MF",
-      2: "Tuesday",
-      3: "Wednesday",
-      4: "Thursday",
-      5: "MF",
-      6: "No School"
-    }
-    typeOfDay = days[day];
+    typeOfDay = sched.dayToSchedule[util.toDay(day, "long")];
   }
   return sched.schedule[typeOfDay];
 }
@@ -115,14 +106,8 @@ export function getTimeLeftInPeriod(typeOfDay, time){
 }
 
 export function getPeriodList(typeOfDay){
-  let ignoredPeriods = ["No School",
-                      "Before School",
-                      "Warning Bell",
-                      "Passing Time",
-                      "Teacher Time"
-                     ];
   let todaySched = getDailySchedule(typeOfDay);
-  let periods = todaySched.filter(x => ignoredPeriods.indexOf(x.name) === -1);
+  let periods = todaySched.filter(x => sched.ignoredPeriods.indexOf(x.name) === -1);
   
   return periods
 }
