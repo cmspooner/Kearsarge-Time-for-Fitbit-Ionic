@@ -16,6 +16,14 @@ export var ignoredPeriods = [
                       "Teacher Time"
                      ];
 
+export var splitPeriods = {
+      "Period 5": [
+              "Period 5, 1st Wave",
+              "Period 5, 2nd Wave",
+              "Period 5, 3rd Wave"
+       ]
+    }
+
 export var schedule = {
     "No School" : [
           {name: "No School", start: "12:00a", end: "12:00a"}

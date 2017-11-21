@@ -39,9 +39,9 @@
 #hrLabel {
   font-size: 25;
   font-family: Colfax-Regular;
-  text-anchor: middle;
+  text-anchor: start;
   text-length: 32;
-  x: 50%;
+  x: 37%;
   y: 54%;
   fill: white;
 }
@@ -49,9 +49,9 @@
 #stepsLabel {
   font-size: 25;
   font-family: Colfax-Regular;
-  text-anchor: middle;
+  text-anchor: start;
   text-length: 32;
-  x: 50%;
+  x: 37%;
   y: 66%;
   fill: white;
 }
@@ -83,7 +83,7 @@
   font-family: Colfax-Bold;
   text-anchor: start;
   text-length: 32;
-  x: 10;
+  x: 25;
   y: 12%;
   fill: white;
 }
@@ -93,7 +93,7 @@
   font-family: Colfax-Bold;
   text-anchor: start;
   text-length: 32;
-  x: 10;
+  x: 25;
   y: 32%;
   fill: white;
 }
@@ -103,7 +103,7 @@
   font-family: Colfax-Bold;
   text-anchor: start;
   text-length: 32;
-  x: 10;
+  x: 25;
   y: 52%;
   fill: white;
 }
@@ -113,7 +113,7 @@
   font-family: Colfax-Bold;
   text-anchor: start;
   text-length: 32;
-  x: 10;
+  x: 25;
   y: 72%;
   fill: white;
 }
@@ -123,7 +123,7 @@
   font-family: Colfax-Bold;
   text-anchor: start;
   text-length: 32;
-  x: 10;
+  x: 25;
   y: 92%;
   fill: white;
 }
