@@ -6,12 +6,12 @@ function mySettings(props) {
         <ColorSelect
           settingsKey="color"
           colors={[
-            {color: "red"},
-            {color: "#FFA500"}, //orange
+            {color: "crimson"},
+            {color: "darkorange"}, 
             {color: "gold"},
-            {color: "steelblue"},
+            {color: "deepskyblue"},
             {color: "olivedrab"},
-            {color: "#FF00FF"}, //magenta
+            {color: "deeppink"},
             {color: "purple"}
           ]}
         />
@@ -25,7 +25,7 @@ function mySettings(props) {
           {name:"Monday Friday"},
           {name:"Tuesday"},
           {name:"Wednesday"},
-          {name:"Thurdsay"},
+          {name:"Thursday"},
           {name:"2 Hour Delay"},
           {name:"PM Activity"},
           {name:"Assembly"},

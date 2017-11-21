@@ -53,11 +53,6 @@ export function zeroPad(i) {
   return i;
 }
 
-// Remove all quotation marks from a string
-export function stripQuotes(str) {
-  return str ? str.replace(/"/g, "") : "";
-}
-
 export function toMonth(month, len = "short") {
   if (len == "long"){
     month += 12;

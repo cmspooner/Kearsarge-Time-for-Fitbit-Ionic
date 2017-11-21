@@ -19,9 +19,9 @@ import { vibration } from "haptics"
 import * as util from "../common/utils";
 import * as schedUtils from "scheduleUtils.js";
 
-//---Shedule Test Work Here---
 var sched = "Regular";
-//sched = "Exam"
+
+var fakeTime = false;
 
 // Update the clock every minute
 clock.granularity = "minutes";
@@ -95,16 +95,12 @@ let hrm = new HeartRateSensor();
 messaging.peerSocket.onmessage = evt => {
   console.log(`App received: ${JSON.stringify(evt)}`);
   if (evt.data.key === "color" && evt.data.newValue) {
-    let color = util.stripQuotes(evt.data.newValue);
+    let color = JSON.parse(evt.data.newValue);
     console.log(`Setting Seperator Bar color: ${color}`);
     seperatorBar.style.fill = color;
   }
   if (evt.data.key === "schedule" && evt.data.newValue) {
-    sched = util.stripQuotes(evt.data.newValue);
-    console.log(`Schedule starts at: ${sched}`);
-    sched = sched.substring(sched.indexOf("name")+5);
-    console.log(`Schedule is now: ${sched}`);
-    sched = sched.substring(0, sched.indexOf("}"));
+    sched = JSON.parse(evt.data.newValue).values[0].name;
     console.log(`Schedule is finally: ${sched}`);
   }
 };
@@ -192,7 +188,7 @@ function updateClockData() {
 function updatePeriodData() {
   let today = new Date();
   let time = schedUtils.hourAndMinToTime(today.getHours(), today.getMinutes())
-  //let time = "11:08a";
+  if (fakeTime) let time = "11:08a";
   let remaining = schedUtils.getTimeLeftInPeriod(sched, time);
   //console.log(time);
 
@@ -243,7 +239,7 @@ function updateScheduleData(){
   if (show == "schedule" && display.on){
     let today = new Date();
     let time = schedUtils.hourAndMinToTime(today.getHours(), today.getMinutes());
-    //let time = "11:08a";
+    if (fakeTime)let time = "11:08a";
     let per = schedUtils.getCurrentPeriod(sched, time);
     let periods = schedUtils.getPeriodList(sched);
     
@@ -288,7 +284,7 @@ background.onclick = function(evt) {
   } else if (show == "stats"){                   // In Stats -> Switching to Clock or schedule
     let today = new Date();
     let time = schedUtils.hourAndMinToTime(today.getHours(), today.getMinutes())
-    //let time = "11:08a";
+    if (fakeTime)let time = "11:08a";
     
     if (schedUtils.isInSchedule(sched, time)){  
       show = "schedule";
