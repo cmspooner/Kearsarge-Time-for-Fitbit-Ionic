@@ -20,6 +20,12 @@
   fill: white;
 }
 
+#seperatorBar {
+  width: 100%;
+  height: 100%;
+  fill: fb-blue;
+}
+
 #clockLabel {
   font-size: 80;
   font-family: Colfax-Medium;

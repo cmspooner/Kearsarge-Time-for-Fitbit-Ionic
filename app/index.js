@@ -5,6 +5,9 @@ console.log("Kearsarge Time Started");
  */
 import clock from "clock";
 import document from "document";
+
+import * as messaging from "messaging";
+
 import { HeartRateSensor } from "heart-rate";
 import { today } from "user-activity";
 import { goals } from "user-activity";
@@ -14,7 +17,6 @@ import { preferences } from "user-settings";
 import { vibration } from "haptics"
 
 import * as util from "../common/utils";
-//import * as schedule from "schedule.js";
 import * as schedUtils from "scheduleUtils.js";
 
 //---Shedule Test Work Here---
@@ -34,6 +36,7 @@ let scheduleView = document.getElementById("schedule");
 // Get a handle on the <text> element
 // Clock view
 let clockLabel = document.getElementById("clockLabel");
+let seperatorBar = document.getElementById("seperatorBar");
 let dateLabel = document.getElementById("dateLabel");
 let hrLabel = document.getElementById("hrLabel");
 let stepsLabel = document.getElementById("stepsLabel");
@@ -86,6 +89,35 @@ let show = "clock";
 
 // Heart Rate Monitor
 let hrm = new HeartRateSensor();
+
+//----------------------------Messaging and Settings--------------
+// Message is received
+messaging.peerSocket.onmessage = evt => {
+  console.log(`App received: ${JSON.stringify(evt)}`);
+  if (evt.data.key === "color" && evt.data.newValue) {
+    let color = util.stripQuotes(evt.data.newValue);
+    console.log(`Setting Seperator Bar color: ${color}`);
+    seperatorBar.style.fill = color;
+  }
+  if (evt.data.key === "schedule" && evt.data.newValue) {
+    sched = util.stripQuotes(evt.data.newValue);
+    console.log(`Schedule starts at: ${sched}`);
+    sched = sched.substring(sched.indexOf("name")+5);
+    console.log(`Schedule is now: ${sched}`);
+    sched = sched.substring(0, sched.indexOf("}"));
+    console.log(`Schedule is finally: ${sched}`);
+  }
+};
+
+// Message socket opens
+messaging.peerSocket.onopen = () => {
+  console.log("App Socket Open");
+};
+
+// Message socket closes
+messaging.peerSocket.close = () => {
+  console.log("App Socket Closed");
+};
 
 //-------------------------------Update Functions-----------------
 
