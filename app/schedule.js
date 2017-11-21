@@ -1,10 +1,10 @@
 export var dayToSchedule = {                
       "Sunday": "No School",
-      "Monday": "MF",
+      "Monday": "Monday Friday",
       "Tuesday": "Tuesday",
       "Wednesday": "Wednesday",
       "Thursday": "Thursday",
-      "Friday": "MF",
+      "Friday": "Monday Friday",
       "Saturday": "No School"
     }
 
@@ -20,7 +20,7 @@ export var schedule = {
     "No School" : [
           {name: "No School", start: "12:00a", end: "12:00a"}
          ], 
-    "MF": [
+    "Monday Friday": [
            {name: "Before School", start: "6:35a", end: "7:35a"},
            {name: "Warning Bell", start: "7:35a", end: "7:40a"},
            {name: "Period 1", start: "7:40a", end: "8:25a"},
@@ -172,7 +172,7 @@ export var schedule = {
            {name: "Period 7", start: "1:50p", end: "2:35p"},
            {name: "Teacher Time", start: "2:35p", end: "3:15p"}
           ],
-    "7 Period Day": [
+    "7 Period": [
            {name: "Before School", start: "6:35a", end: "7:35a"},
            {name: "Warning Bell", start: "7:35a", end: "7:40a"},
            {name: "Period 1", start: "7:40a", end: "8:32a"},

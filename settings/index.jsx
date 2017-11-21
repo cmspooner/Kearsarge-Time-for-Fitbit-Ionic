@@ -11,7 +11,7 @@ function mySettings(props) {
             {color: "gold"},
             {color: "steelblue"},
             {color: "olivedrab"},
-            {color: "#FF00FF"}, //FF00FF
+            {color: "#FF00FF"}, //magenta
             {color: "purple"}
           ]}
         />
@@ -22,14 +22,14 @@ function mySettings(props) {
         options={[
           {name:"Regular"},
           {name:"No School"},
-          {name:"MF"},
+          {name:"Monday Friday"},
           {name:"Tuesday"},
           {name:"Wednesday"},
           {name:"Thurdsay"},
           {name:"2 Hour Delay"},
           {name:"PM Activity"},
           {name:"Assembly"},
-          {name:"7 Period Day"},
+          {name:"7 Period"},
           {name:"Exam"},
         ]}
         />
