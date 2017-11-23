@@ -222,16 +222,14 @@ function updateStatsData(){
     distStatsLabel.style.fill = util.goalToColor(today.local.distance, goals.distance);
     distStatsLabel.text = `Distance: ${today.local.distance ? util.round2(today.local.distance * 0.000621371) : 0 } / ${util.round2(goals.distance*0.000621371)}`;
 
-    // Divide by 10 due to weird error
-    floorsStatsLabel.style.fill = util.goalToColor(today.local.elevationGain, goals.elevationGain/10);
-    floorsStatsLabel.text = `Floors: ${today.local.elevationGain ? today.local.elevationGain : 0} / ${goals.elevationGain/10}`;
+    floorsStatsLabel.style.fill = util.goalToColor(today.local.elevationGain, goals.elevationGain);
+    floorsStatsLabel.text = `Floors: ${today.local.elevationGain ? today.local.elevationGain : 0} / ${goals.elevationGain}`;
 
     activeStatsLabel.style.fill = util.goalToColor(today.local.activeMinutes, goals.activeMinutes);
     activeStatsLabel.text = `Active: ${today.local.activeMinutes ? today.local.activeMinutes.toLocaleString() : 0} / ${goals.activeMinutes}`;
 
-    // Divide by 6.8 due to weird error
-    calsStatsLabel.style.fill = util.goalToColor(today.local.calories, goals.calories/6.8);
-    calsStatsLabel.text = `Calories: ${today.local.calories ? today.local.calories.toLocaleString() : 0} / ${parseInt(goals.calories/6.8).toLocaleString()}`;
+    calsStatsLabel.style.fill = util.goalToColor(today.local.calories, goals.calories);
+    calsStatsLabel.text = `Calories: ${today.local.calories ? today.local.calories.toLocaleString() : 0} / ${parseInt(goals.calories).toLocaleString()}`;
   }
 }
   
