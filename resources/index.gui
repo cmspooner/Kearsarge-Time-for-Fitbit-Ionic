@@ -1,9 +1,8 @@
 <svg class="background">
   <svg id="clock" display="inline">
     <text id="dateLabel" />
-    <section x="5%" y="14%" width="90%" height="5">
-      <rect  id="seperatorBar"/>
-    </section>
+    <line id = "seperatorLineRight" x1="50%" y1="15%" x2="5%" y2="15%"/>
+    <line id = "seperatorLineLeft" x1="50%" y1="15%" x2="95%" y2="15%"/>
     <text id="clockLabel" />
     <image x="30%" y="49%" width="18" height="18" href="icons/18/heart.png" />
     <text id="hrLabel" />

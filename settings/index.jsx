@@ -6,7 +6,7 @@ function mySettings(props) {
         <ColorSelect
           settingsKey="color"
           colors={[
-            {color: "crimson"},
+            {color: "firebrick"},
             {color: "darkorange"}, 
             {color: "gold"},
             {color: "deepskyblue"},

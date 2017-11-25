@@ -36,7 +36,8 @@ let scheduleView = document.getElementById("schedule");
 // Get a handle on the <text> element
 // Clock view
 let clockLabel = document.getElementById("clockLabel");
-let seperatorBar = document.getElementById("seperatorBar");
+let seperatorLineRight = document.getElementById("seperatorLineRight");
+let seperatorLineLeft = document.getElementById("seperatorLineLeft");
 let dateLabel = document.getElementById("dateLabel");
 let hrLabel = document.getElementById("hrLabel");
 let stepsLabel = document.getElementById("stepsLabel");
@@ -97,11 +98,12 @@ messaging.peerSocket.onmessage = evt => {
   if (evt.data.key === "color" && evt.data.newValue) {
     let color = JSON.parse(evt.data.newValue);
     console.log(`Setting Seperator Bar color: ${color}`);
-    seperatorBar.style.fill = color;
+    seperatorLineRight.style.fill = color;
+    seperatorLineLeft.style.fill = color;
   }
   if (evt.data.key === "schedule" && evt.data.newValue) {
     sched = JSON.parse(evt.data.newValue).values[0].name;
-    console.log(`Schedule is finally: ${sched}`);
+    console.log(`Schedule is: ${sched}`);
   }
 };
 
@@ -164,7 +166,7 @@ function updateClockData() {
 
     hrLabel.style.fill = 'white';
     stepsLabel.style.fill = 'white';
-
+    
     if (data.heart.theHeartRate == 0) {
         hrLabel.text = `--`;
     } else {
