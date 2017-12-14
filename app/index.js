@@ -21,6 +21,9 @@ import * as schedUtils from "scheduleUtils.js";
 
 var sched = "Regular";
 
+var sepratorGoal = true;
+var color = "deepskyblue"
+
 var fakeTime = false;
 
 // Update the clock every minute
@@ -97,7 +100,7 @@ let hrm = new HeartRateSensor();
 messaging.peerSocket.onmessage = evt => {
   console.log(`App received: ${JSON.stringify(evt)}`);
   if (evt.data.key === "color" && evt.data.newValue) {
-    let color = JSON.parse(evt.data.newValue);
+    color = JSON.parse(evt.data.newValue);
     console.log(`Setting Seperator Bar color: ${color}`);
     seperatorLineRight.style.fill = color;
     seperatorLineLeft.style.fill = color;
@@ -107,7 +110,7 @@ messaging.peerSocket.onmessage = evt => {
     console.log(`Schedule is: ${sched}`);
   }
   if (evt.data.key === "seperatorToggle" && evt.data.newValue) {
-    let sepratorGoal = JSON.parse(evt.data.newValue);
+    sepratorGoal = JSON.parse(evt.data.newValue);
     let today = new Date();
     let time = schedUtils.hourAndMinToTime(today.getHours(), today.getMinutes())
     console.log(`seperator: ${sepratorGoal}`);
@@ -115,9 +118,9 @@ messaging.peerSocket.onmessage = evt => {
       if (sepratorGoal){
         let scaledNow = schedUtils.timeToMin(time)-schedUtils.timeToMin(schedUtils.getStartofDay(sched))
         let scaledEnd = schedUtils.timeToMin(schedUtils.getEndofDay(sched))-schedUtils.timeToMin(schedUtils.getStartofDay(sched))
-        let color = util.goalToColor(scaledNow, scaledEnd);
-        seperatorLineRight.style.fill = color;
-        seperatorLineLeft.style.fill = color;
+        console.log(`scaledNow: ${scaledNow}, scaledEnd: ${scaledEnd} `)
+        seperatorLineRight.style.fill = util.goalToColor(scaledNow, scaledEnd);
+        seperatorLineLeft.style.fill = util.goalToColor(scaledNow, scaledEnd);
       }
     }
   }
@@ -183,6 +186,7 @@ function updateClockData() {
     hrLabel.style.fill = 'white';
     stepsLabel.style.fill = 'white';
     
+    
     if (data.heart.theHeartRate == 0) {
         hrLabel.text = `--`;
     } else {
@@ -197,9 +201,23 @@ function updateClockData() {
         }
         hrLabel.text = `${data.heart.theHeartRate} bpm`;
     }
-  
+    
     stepsLabel.style.fill = util.goalToColor(data.step.steps, goals.steps);
     stepsLabel.text = `${data.step.steps.toLocaleString()} steps`;
+    
+    
+    let tday = new Date();
+    let time = schedUtils.hourAndMinToTime(tday.getHours(), tday.getMinutes())
+    if (schedUtils.isInSchedule(sched, time) && sepratorGoal){
+      let scaledNow = schedUtils.timeToMin(time)-schedUtils.timeToMin(schedUtils.getStartofDay(sched))
+      let scaledEnd = schedUtils.timeToMin(schedUtils.getEndofDay(sched))-schedUtils.timeToMin(schedUtils.getStartofDay(sched))
+      console.log(`scaledNow: ${scaledNow}, scaledEnd: ${scaledEnd} `)
+      seperatorLineRight.style.fill = util.goalToColor(scaledNow, scaledEnd);
+      seperatorLineLeft.style.fill = util.goalToColor(scaledNow, scaledEnd);
+    } else {
+      seperatorLineRight.style.fill = color;
+      seperatorLineLeft.style.fill = color;
+    }
   }
 }
 
