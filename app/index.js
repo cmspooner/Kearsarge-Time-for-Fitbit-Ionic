@@ -93,6 +93,7 @@ let hrm = new HeartRateSensor();
 
 //----------------------------Messaging and Settings--------------
 // Message is received
+      
 messaging.peerSocket.onmessage = evt => {
   console.log(`App received: ${JSON.stringify(evt)}`);
   if (evt.data.key === "color" && evt.data.newValue) {
@@ -104,6 +105,21 @@ messaging.peerSocket.onmessage = evt => {
   if (evt.data.key === "schedule" && evt.data.newValue) {
     sched = JSON.parse(evt.data.newValue).values[0].name;
     console.log(`Schedule is: ${sched}`);
+  }
+  if (evt.data.key === "seperatorToggle" && evt.data.newValue) {
+    let sepratorGoal = JSON.parse(evt.data.newValue);
+    let today = new Date();
+    let time = schedUtils.hourAndMinToTime(today.getHours(), today.getMinutes())
+    console.log(`seperator: ${sepratorGoal}`);
+    if (schedUtils.isInSchedule(sched, time)){
+      if (sepratorGoal){
+        let scaledNow = schedUtils.timeToMin(time)-schedUtils.timeToMin(schedUtils.getStartofDay(sched))
+        let scaledEnd = schedUtils.timeToMin(schedUtils.getEndofDay(sched))-schedUtils.timeToMin(schedUtils.getStartofDay(sched))
+        let color = util.goalToColor(scaledNow, scaledEnd);
+        seperatorLineRight.style.fill = color;
+        seperatorLineLeft.style.fill = color;
+      }
+    }
   }
 };
 
@@ -191,6 +207,7 @@ function updatePeriodData() {
   let today = new Date();
   let time = schedUtils.hourAndMinToTime(today.getHours(), today.getMinutes())
   if (fakeTime) let time = "11:08a";
+  //console.log(`updatePeriod is: ${sched}`);
   let remaining = schedUtils.getTimeLeftInPeriod(sched, time);
   //console.log(time);
 
@@ -273,18 +290,19 @@ function updateScheduleData(){
 //------------------Event Handleing--------------------
 
 background.onclick = function(evt) {
-  //console.log("Click");
+  console.log("Click");
   if (show == "clock"){           // In Clock -> Switching to Stats
     show = "stats";
     updateStatsData()
     clockView.style.display = "none";
     statsView.style.display = "inline";
     scheduleView.style.display = "none";
+    console.log("stats Loaded");
     display.poke()
   } else if (show == "stats"){                   // In Stats -> Switching to Clock or schedule
     let today = new Date();
     let time = schedUtils.hourAndMinToTime(today.getHours(), today.getMinutes())
-    if (fakeTime)let time = "11:08a";
+    if (fakeTime) let time = "11:08a";
     
     if (schedUtils.isInSchedule(sched, time)){  
       show = "schedule";
@@ -292,6 +310,7 @@ background.onclick = function(evt) {
       clockView.style.display = "none";
       statsView.style.display = "none";
       scheduleView.style.display = "inline";
+      console.log("schedule Loaded");
     } else {
       show = "clock";
       updateClock();
@@ -299,6 +318,8 @@ background.onclick = function(evt) {
       clockView.style.display = "inline";
       statsView.style.display = "none";
       scheduleView.style.display = "none";
+      console.log("Clock Loaded");
+
     } 
   } else {                                  // In Schedule -> Switching to Clock
     show = "clock";
@@ -307,12 +328,14 @@ background.onclick = function(evt) {
     clockView.style.display = "inline";
     statsView.style.display = "none";
     scheduleView.style.display = "none";
+    console.log("Clock Loaded");
+
   }
   //console.log("ShowClock is " + showClock);
 }
 
 display.onchange = function() {
-  if (!display.on) {
+  if (display.on) {
     hrm.start();
     show = "clock";
     updateClock();

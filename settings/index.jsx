@@ -3,6 +3,10 @@ function mySettings(props) {
     <Page>
       <Section
         title={<Text bold align="center">Seperator Bar Color</Text>}>
+        <Toggle
+          settingsKey="seperatorToggle"
+          label="Seperator based on Day Prgress On/Off"
+        />
         <ColorSelect
           settingsKey="color"
           colors={[

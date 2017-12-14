@@ -67,13 +67,26 @@ export function getDailySchedule(typeOfDay){
 }
 
 export function isInSchedule(typeOfDay, time){
+  //console.log(`isInSchedule is: ${typeOfDay}`);
   let min = timeToMin(time);
   let todaySched = getDailySchedule(typeOfDay);
-  let start = timeToMin(todaySched[0].start);
-  let end = timeToMin(todaySched[todaySched.length-1].end);
+  let start = timeToMin(getStartofDay(typeOfDay));
+  let end = timeToMin(getEndofDay(typeOfDay));
   
   return util.isInRange(min, start, end);
 }
+
+export function getStartofDay(typeOfDay){
+  let todaySched = getDailySchedule(typeOfDay);
+  //console.log(todaySched);
+  return todaySched[0].start;
+}
+
+export function getEndofDay(typeOfDay){
+  let todaySched = getDailySchedule(typeOfDay);
+  return todaySched[todaySched.length-1].end;
+}
+
 
 export function getCurrentPeriod(typeOfDay, time){
   let min = timeToMin(time);
@@ -94,6 +107,8 @@ export function getTimeLeftInPeriod(typeOfDay, time){
   let min = timeToMin(time);
   let todaySched = getDailySchedule(typeOfDay);
   
+  //console.log(`getTimeLeftInPeriod is: ${typeOfDay}`);
+
   if (isInSchedule(typeOfDay, time)){
     for (let i = 0; i < todaySched.length; i++){
       if (min < timeToMin(todaySched[i].end)){
