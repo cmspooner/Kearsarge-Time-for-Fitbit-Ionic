@@ -165,7 +165,7 @@ function updateClock() {
   
   dateLabel.text = `${util.toDay(day, "long")}, ${util.toMonth(month)} ${date}`;
   clockLabel.text = `${hours}:${mins}${ampm}`;
-  updatePeriodData();
+  //updatePeriodData();
 }
 
 function updateClockData() {
@@ -204,49 +204,50 @@ function updateClockData() {
     
     stepsLabel.style.fill = util.goalToColor(data.step.steps, goals.steps);
     stepsLabel.text = `${data.step.steps.toLocaleString()} steps`;
-    
-    
-    let tday = new Date();
-    let time = schedUtils.hourAndMinToTime(tday.getHours(), tday.getMinutes())
-    if (schedUtils.isInSchedule(sched, time) && sepratorGoal){
-      let scaledNow = schedUtils.timeToMin(time)-schedUtils.timeToMin(schedUtils.getStartofDay(sched))
-      let scaledEnd = schedUtils.timeToMin(schedUtils.getEndofDay(sched))-schedUtils.timeToMin(schedUtils.getStartofDay(sched))
-      console.log(`scaledNow: ${scaledNow}, scaledEnd: ${scaledEnd} `)
-      seperatorLineRight.style.fill = util.goalToColor(scaledNow, scaledEnd);
-      seperatorLineLeft.style.fill = util.goalToColor(scaledNow, scaledEnd);
-    } else {
-      seperatorLineRight.style.fill = color;
-      seperatorLineLeft.style.fill = color;
-    }
   }
 }
 
 function updatePeriodData() {
-  let today = new Date();
-  let time = schedUtils.hourAndMinToTime(today.getHours(), today.getMinutes())
-  if (fakeTime) let time = "11:08a";
-  //console.log(`updatePeriod is: ${sched}`);
-  let remaining = schedUtils.getTimeLeftInPeriod(sched, time);
-  //console.log(time);
+  if (show == "clock"){
+    let today = new Date();
+    let time = schedUtils.hourAndMinToTime(today.getHours(), today.getMinutes());
+    if (fakeTime) let time = "11:08a";
+    //console.log(`updatePeriod is: ${sched}`);
+    let remaining = schedUtils.getTimeLeftInPeriod(sched, time);
+    //console.log(time);
 
-  if (schedUtils.isInSchedule(sched, time)){
-      periodLabel.text = `${schedUtils.getCurrentPeriod(sched, time)}`;
-      if (remaining <= 2){
-        timeRemainingLabel.style.fill = 'fb-red';
-        if (!didVib){
-          vibration.start("nudge-max");
-          didVib = true;
+    if (schedUtils.isInSchedule(sched, time)){
+        periodLabel.text = `${schedUtils.getCurrentPeriod(sched, time)}`;
+        if (remaining <= 2){
+          timeRemainingLabel.style.fill = 'fb-red';
+          if (!didVib){
+            vibration.start("nudge-max");
+            didVib = true;
+          }
+        } else if (remaining > 2 && didVib){
+          didVib = false;
+          timeRemainingLabel.style.fill = 'silver';
+        } else {
+          timeRemainingLabel.style.fill = 'silver';
         }
-      } else if (remaining > 2 && didVib){
-        didVib = false;
-        timeRemainingLabel.style.fill = 'silver';
+        timeRemainingLabel.text = `Remaining: ${remaining} min`;
+
+      if (sepratorGoal){
+        let scaledNow = schedUtils.timeToMin(time)-schedUtils.timeToMin(schedUtils.getStartofDay(sched))
+        let scaledEnd = schedUtils.timeToMin(schedUtils.getEndofDay(sched))-schedUtils.timeToMin(schedUtils.getStartofDay(sched))
+        console.log(`scaledNow: ${scaledNow}, scaledEnd: ${scaledEnd} `)
+        seperatorLineRight.style.fill = util.goalToColor(scaledNow, scaledEnd);
+        seperatorLineLeft.style.fill = util.goalToColor(scaledNow, scaledEnd);
       } else {
-        timeRemainingLabel.style.fill = 'silver';
+        seperatorLineRight.style.fill = color;
+        seperatorLineLeft.style.fill = color;
       }
-      timeRemainingLabel.text = `Remaining: ${remaining} min`;
-  } else {
-    periodLabel.text = ``;
-    timeRemainingLabel.text = ``;
+    } else {
+      periodLabel.text = ``;
+      timeRemainingLabel.text = ``;
+      seperatorLineRight.style.fill = color;
+      seperatorLineLeft.style.fill = color;
+    }
   }
 }
 
@@ -358,6 +359,7 @@ display.onchange = function() {
     show = "clock";
     updateClock();
     updateClockData();
+    updatePeriodData();
     clockView.style.display = "inline";
     statsView.style.display = "none";
     scheduleView.style.display = "none";
@@ -376,4 +378,5 @@ setInterval(updatePeriodData, 15000);
 // Don't start with a blank screen
 updateClock();
 updateClockData();
+updatePeriodData();
 hrm.start();
