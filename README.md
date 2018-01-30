@@ -10,12 +10,12 @@ A Watchface for Fitbit Ionic that shows the schedule Kearsarge High School
 **Daily Schedule**<br>
 ![Image of Schedule Screen](https://github.com/cmspooner/Kearsarge-Time-for-Fitbit-Ionic/blob/master/screenshots/KearsargeTime-scheduleScreen.png)
 
-Credits:
+# Credits
 School and Activity Icons by Madison Neal
 
-Weather Code by gregoiresage
+Weather Code by gregoiresage<br>
 https://github.com/gregoiresage/fitbit-weather
 
-Weather Icons by kickstandapps
+Weather Icons by kickstandapps<br>
 https://github.com/kickstandapps/WeatherIcons
 
