@@ -1,10 +1,10 @@
-export var dayToSchedule = {                
+ export var dayToSchedule = {                
       "Sunday": "No School",
-      "Monday": "Monday Friday",
-      "Tuesday": "Tuesday",
-      "Wednesday": "Wednesday",
-      "Thursday": "Thursday",
-      "Friday": "Monday Friday",
+      "Monday": "Normal",
+      "Tuesday": "Normal",
+      "Wednesday": "Normal",
+      "Thursday": "Normal",
+      "Friday": "Normal",
       "Saturday": "No School"
     }
 
@@ -28,7 +28,7 @@ export var schedule = {
     "No School" : [
           {name: "No School", start: "12:00a", end: "12:00a"}
          ], 
-    "Monday Friday": [
+    "Normal": [
            {name: "Before School", start: "6:35a", end: "7:35a"},
            {name: "Warning Bell", start: "7:35a", end: "7:40a"},
            {name: "Period 1", start: "7:40a", end: "8:25a"},
@@ -48,72 +48,6 @@ export var schedule = {
            {name: "Period 7", start: "1:06p", end: "1:51p"},
            {name: "Passing Time", start: "1:51p", end: "1:55p"},
            {name: "Period 8", start: "1:55p", end: "2:35p"},
-           {name: "Teacher Time", start: "2:35p", end: "3:15p"}
-          ],
-    "Tuesday": [
-           {name: "Before School", start: "6:35a", end: "7:35a"},
-           {name: "Warning Bell", start: "7:35a", end: "7:40a"},
-           {name: "Period 1", start: "7:40a", end: "8:38a"},
-           {name: "Passing Time", start: "8:38a", end: "8:42a"},
-           {name: "Period 2", start: "8:42a", end: "9:42a"}, 
-           {name: "Passing Time", start: "9:42a", end: "9:46a"},
-           {name: "Period 3", start: "9:46a", end: "10:26a"},
-           {name: "Passing Time", start: "10:26a", end: "10:30a"},
-           {name: "Period 4", start: "10:30a", end: "11:10a"}, 
-           {name: "Passing Time", start: "11:10a", end: "11:14a"},
-           {name: "Period 5, 1st Wave", start: "11:14a", end: "11:36a"},
-           {name: "Period 5, 2nd Wave", start: "11:36a", end: "12:02p"},
-           {name: "Period 5, 3rd Wave", start: "12:02p", end: "12:28p"},
-           {name: "Passing Time", start: "12:28p", end: "12:32p"},
-           {name: "Period 6", start: "12:32p", end: "1:12p"},
-           {name: "Passing Time", start: "1:12p", end: "1:16p"},
-           {name: "Period 7", start: "1:16p", end: "1:56p"},
-           {name: "Passing Time", start: "1:56p", end: "2:00p"},
-           {name: "Period 8", start: "2:00p", end: "2:35p"},
-           {name: "Teacher Time", start: "2:35p", end: "3:15p"}
-          ],
-    "Wednesday": [
-           {name: "Before School", start: "6:35a", end: "7:35a"},
-           {name: "Warning Bell", start: "7:35a", end: "7:40a"},
-           {name: "Period 1", start: "7:40a", end: "8:20a"},
-           {name: "Passing Time", start: "8:20a", end: "8:24a"},
-           {name: "Period 2", start: "8:24", end: "9:06a"}, 
-           {name: "Passing Time", start: "9:06a", end: "9:10a"},
-           {name: "Period 3", start: "9:10", end: "10:08a"},
-           {name: "Passing Time", start: "10:08a", end: "10:12a"},
-           {name: "Period 4", start: "10:12a", end: "11:10a"}, 
-           {name: "Passing Time", start: "11:10a", end: "11:14a"},
-           {name: "Period 5, 1st Wave", start: "11:14a", end: "11:36a"},
-           {name: "Period 5, 2nd Wave", start: "11:36a", end: "12:02p"},
-           {name: "Period 5, 3rd Wave", start: "12:02p", end: "12:28p"},
-           {name: "Passing Time", start: "12:28p", end: "12:32p"},
-           {name: "Period 6", start: "12:32p", end: "1:12p"},
-           {name: "Passing Time", start: "1:12p", end: "1:16p"},
-           {name: "Period 7", start: "1:16p", end: "1:56p"},
-           {name: "Passing Time", start: "1:56p", end: "2:00p"},
-           {name: "Period 8", start: "2:00p", end: "2:35p"},
-           {name: "Teacher Time", start: "2:35p", end: "3:15p"}
-          ],
-    "Thursday": [
-           {name: "Before School", start: "6:35a", end: "7:35a"},
-           {name: "Warning Bell", start: "7:35a", end: "7:40a"},
-           {name: "Period 1", start: "7:40a", end: "8:20a"},
-           {name: "Passing Time", start: "8:20a", end: "8:24a"},
-           {name: "Period 2", start: "8:24a", end: "9:06a"}, 
-           {name: "Passing Time", start: "9:06a", end: "9:10a"},
-           {name: "Period 3", start: "9:10a", end: "9:50a"},
-           {name: "Passing Time", start: "9:50a", end: "9:54a"},
-           {name: "Period 4", start: "9:54a", end: "10:34a"}, 
-           {name: "Passing Time", start: "10:34a", end: "10:38a"},
-           {name: "Period 5, 1st Wave", start: "10:38a", end: "11:00a"},
-           {name: "Period 5, 2nd Wave", start: "11:00a", end: "11:26a"},
-           {name: "Period 5, 3rd Wave", start: "11:26a", end: "11:52a"},
-           {name: "Passing Time", start: "11:52a", end: "11:56a"},
-           {name: "Period 6", start: "11:56a", end: "12:54p"},
-           {name: "Passing Time", start: "12:54p", end: "12:58p"},
-           {name: "Period 7", start: "12:58p", end: "1:56p"},
-           {name: "Passing Time", start: "1:56p", end: "2:00p"},
-           {name: "Period 8", start: "2:00p", end: "2:35p"},
            {name: "Teacher Time", start: "2:35p", end: "3:15p"}
           ],
     "2 Hour Delay": [

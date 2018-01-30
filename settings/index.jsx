@@ -26,10 +26,6 @@ function mySettings(props) {
         options={[
           {name:"Regular"},
           {name:"No School"},
-          {name:"Monday Friday"},
-          {name:"Tuesday"},
-          {name:"Wednesday"},
-          {name:"Thursday"},
           {name:"2 Hour Delay"},
           {name:"PM Activity"},
           {name:"Assembly"},
