@@ -1,6 +1,3 @@
-[submodule "subModules/WeatherIcons"]
-	path = subModules/WeatherIcons
-	url = ../../kickstandapps/WeatherIcons
 [submodule "subModules/fitbit-weather"]
 	path = subModules/fitbit-weather
 	url = ../../gregoiresage/fitbit-weather
