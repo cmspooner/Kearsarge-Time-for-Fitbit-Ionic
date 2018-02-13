@@ -19,6 +19,28 @@ import { vibration } from "haptics"
 import * as util from "../common/utils";
 import * as schedUtils from "scheduleUtils.js";
 
+//----------------Weather Setup------------------------
+import Weather from '../subModules/fitbit-weather/common/weather/device';
+
+let weather = new Weather();
+weather.setProvider("yahoo"); 
+weather.setApiKey("dj0yJmk9TTkyWW5SNG5rT0JOJmQ9WVdrOVRVMURkRmhhTlRBbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmeD00MA--");
+weather.setMaximumAge(25 * 1000); 
+weather.setFeelsLike(false);
+
+weather.onsuccess = (data) => {
+  console.log("Weather is " + JSON.stringify(data));
+}
+
+weather.onerror = (error) => {
+  console.log("Weather error " + JSON.stringify(error));
+}
+
+weather.fetch();
+
+//-----------------End Weather Setup--------------
+
+
 var sched = "Regular";
 
 var sepratorGoal = true;
