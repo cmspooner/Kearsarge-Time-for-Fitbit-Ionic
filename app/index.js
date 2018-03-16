@@ -19,32 +19,11 @@ import { vibration } from "haptics"
 import * as util from "../common/utils";
 import * as schedUtils from "scheduleUtils.js";
 
-//----------------Weather Setup------------------------
-import Weather from '../subModules/fitbit-weather/common/weather/device';
-
-let weather = new Weather();
-weather.setProvider("yahoo"); 
-weather.setApiKey("dj0yJmk9TTkyWW5SNG5rT0JOJmQ9WVdrOVRVMURkRmhhTlRBbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmeD00MA--");
-weather.setMaximumAge(25 * 1000); 
-weather.setFeelsLike(false);
-
-weather.onsuccess = (data) => {
-  console.log("Weather is " + JSON.stringify(data));
-}
-
-weather.onerror = (error) => {
-  console.log("Weather error " + JSON.stringify(error));
-}
-
-weather.fetch();
-
-//-----------------End Weather Setup--------------
-
-
 var sched = "Regular";
 
 var sepratorGoal = true;
-var color = "deepskyblue"
+var color = "deepskyblue";
+var zip = "03301";
 
 var fakeTime = false;
 
@@ -55,6 +34,8 @@ let background = document.getElementById("clickbg");
 
 // Views
 let clockView = document.getElementById("clock");
+let periodView = document.getElementById("period");
+let weatherView = document.getElementById("weather");
 let statsView = document.getElementById("stats");
 let scheduleView = document.getElementById("schedule");
 
@@ -66,8 +47,15 @@ let seperatorLineLeft = document.getElementById("seperatorLineLeft");
 let dateLabel = document.getElementById("dateLabel");
 let hrLabel = document.getElementById("hrLabel");
 let stepsLabel = document.getElementById("stepsLabel");
+
+// Period View
 let periodLabel = document.getElementById("periodLabel");
 let timeRemainingLabel = document.getElementById("timeRemainingLabel");
+
+// Weather View
+let tempAndConditionLabel = document.getElementById("tempAndConditionLabel");
+let weatherLocationLabel = document.getElementById("weatherLocationLabel");
+let weatherImage = document.getElementById("weatherImage");
 
 // Stats View
 let stepStatsLabel = document.getElementById("stepStatsLabel");
@@ -121,6 +109,12 @@ let hrm = new HeartRateSensor();
       
 messaging.peerSocket.onmessage = evt => {
   console.log(`App received: ${JSON.stringify(evt)}`);
+  if (evt.data.key === "zipCode" && evt.data.newValue) {
+    zip = JSON.parse(evt.data.newValue);
+    zip = zip.name
+    console.log(`Location: ${weather}`);
+    console.log(`Zip Code: ${zip}`);
+  }
   if (evt.data.key === "color" && evt.data.newValue) {
     color = JSON.parse(evt.data.newValue);
     console.log(`Setting Seperator Bar color: ${color}`);
@@ -157,6 +151,82 @@ messaging.peerSocket.onopen = () => {
 messaging.peerSocket.close = () => {
   console.log("App Socket Closed");
 };
+
+//----------------Weather Setup------------------------
+import Weather from '../subModules/fitbit-weather/common/weather/device';
+
+let weather = new Weather();
+weather.setProvider("yahoo"); 
+weather.setApiKey("dj0yJmk9TTkyWW5SNG5rT0JOJmQ9WVdrOVRVMURkRmhhTlRBbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmeD00MA--");
+weather.setMaximumAge(25 * 1000); 
+weather.setFeelsLike(false);
+
+weather.onsuccess = (data) => {
+  console.log("Weather is " + JSON.stringify(data));
+  //let weatherText = data.temperatureF + "° - " + data.description;
+  //console.log("Weather text " + weatherText);
+  tempAndConditionLabel.text = `${data.temperatureF}° - ${data.description}`
+  weatherLocationLabel.text = `${data.location}`
+  /*
+  let sunrise = new  Date(data.sunrise)
+  sunrise = schedUtils.hourAndMinToMin(sunrise.getHours(), sunrise.getMinutes());
+  let sunset = new  Date(data.sunset)
+  sunset = schedUtils.hourAndMinToMin(sunset.getHours(), sunset.getMinutes());
+  let now = new Date();
+  now = schedUtils.hourAndMinToMin(now.getHours(), now.getMinutes())
+  let isDay = now > sunrise && now < sunset;
+  */
+  
+  switch(data.conditionCode){
+    case 0:
+      if (data.isDay)
+        weatherImage.href = "../resources/icons/weather/whiteSun.png"
+      else
+        weatherImage.href = "../resources/icons/weather/whiteMoon.png"
+      break;
+    case 1:
+    case 2:
+      if (data.isDay)
+        weatherImage.href = "../resources/icons/weather/whitePartlySunny.png"
+      else
+        weatherImage.href = "../resources/icons/weather/whitePartlyMoon.png"
+      break;
+    case 3:
+      weatherImage.href = "../resources/icons/weather/whiteCloud.png"
+      break;
+    case 4:
+      weatherImage.href = "../resources/icons/weather/whiteRain.png"
+      break;
+    case 5:
+      weatherImage.href = "../resources/icons/weather/whiteStorm.png"
+      break;
+    case 6:
+      weatherImage.href = "../resources/icons/weather/whiteStorm.png"
+      break;
+    case 7:
+      weatherImage.href = "../resources/icons/weather/whiteSnow.png"
+      break;
+    case 8:
+      weatherImage.href = "../resources/icons/weather/whiteHaze .png"
+      break;
+    default:
+      if (data.isDay)
+        weatherImage.href = "../resources/icons/weather/whiteSun.png"
+      else
+        weatherImage.href = "../resources/icons/weather/whiteMoon.png"
+      break;
+  }
+  
+}
+
+weather.onerror = (error) => {
+  console.log("Weather error " + JSON.stringify(error));
+  weatherImage.href = "";
+}
+
+weather.fetch();
+
+//-----------------End Weather Setup--------------
 
 //-------------------------------Update Functions-----------------
 
@@ -332,23 +402,26 @@ function updateScheduleData(){
 
 background.onclick = function(evt) {
   console.log("Click");
+  let today = new Date();
+  let time = schedUtils.hourAndMinToTime(today.getHours(), today.getMinutes())
+  if (fakeTime) let time = "11:08a";
   if (show == "clock"){           // In Clock -> Switching to Stats
     show = "stats";
     updateStatsData()
     clockView.style.display = "none";
+    periodView.style.display = "none";
+    weatherView.style.display = "none";
     statsView.style.display = "inline";
     scheduleView.style.display = "none";
     console.log("stats Loaded");
     display.poke()
-  } else if (show == "stats"){                   // In Stats -> Switching to Clock or schedule
-    let today = new Date();
-    let time = schedUtils.hourAndMinToTime(today.getHours(), today.getMinutes())
-    if (fakeTime) let time = "11:08a";
-    
+  } else if (show == "stats"){                   // In Stats -> Switching to Clock or schedule    
     if (schedUtils.isInSchedule(sched, time)){  
       show = "schedule";
       updateScheduleData();
       clockView.style.display = "none";
+      periodView.style.display = "none";
+      weatherView.style.display = "none";
       statsView.style.display = "none";
       scheduleView.style.display = "inline";
       console.log("schedule Loaded");
@@ -356,7 +429,10 @@ background.onclick = function(evt) {
       show = "clock";
       updateClock();
       updateClockData();
-      clockView.style.display = "inline";
+      weather.fetch();
+      clockView.style.display = "inline";//test
+      periodView.style.display = "none";
+      weatherView.style.display = "inline";//test
       statsView.style.display = "none";
       scheduleView.style.display = "none";
       console.log("Clock Loaded");
@@ -366,7 +442,15 @@ background.onclick = function(evt) {
     show = "clock";
     updateClock();
     updateClockData();
-    clockView.style.display = "inline";
+    clockView.style.display = "inline";//test
+    if (schedUtils.isInSchedule(sched, time)){ 
+      periodView.style.display = "inline";
+      weatherView.style.display = "none";
+    } else {
+      weather.fetch();
+      periodView.style.display = "none";
+      weatherView.style.display = "inline";//test
+    }
     statsView.style.display = "none";
     scheduleView.style.display = "none";
     console.log("Clock Loaded");
@@ -377,12 +461,23 @@ background.onclick = function(evt) {
 
 display.onchange = function() {
   if (display.on) {
+    let today = new Date();
+    let time = schedUtils.hourAndMinToTime(today.getHours(), today.getMinutes());
     hrm.start();
     show = "clock";
     updateClock();
     updateClockData();
     updatePeriodData();
-    clockView.style.display = "inline";
+    clockView.style.display = "inline"; //test
+    console.log("Sced test: " + schedUtils.isInSchedule(sched, time));
+    if (schedUtils.isInSchedule(sched, time)){ 
+      periodView.style.display = "inline";
+      weatherView.style.display = "none";
+    } else {
+      weather.fetch();
+      periodView.style.display = "none";
+      weatherView.style.display = "inline";//test
+    }
     statsView.style.display = "none";
     scheduleView.style.display = "none";
   } else {
