@@ -1,15 +1,21 @@
 function mySettings(props) {
   return (
     <Page>
-      <TextInput
-        label="Zip Code"
-        settingsKey="zipCode"
-       />
+      <Select
+        label={`Update Interval`}
+        settingsKey="updateInterval"
+        options={[
+          {name:"15 minutes"},
+          {name:"30 minutes"},
+          {name:"1 hour"},
+          {name:"2 hours"},
+        ]}
+        />
       <Section
         title={<Text bold align="center">Seperator Bar Color</Text>}>
         <Toggle
           settingsKey="seperatorToggle"
-          label="Seperator based on Day Pr0gress On/Off"
+          label="Seperator based on Day Progress"
         />
         <ColorSelect
           settingsKey="color"

@@ -23,7 +23,9 @@ var sched = "Regular";
 
 var sepratorGoal = true;
 var color = "deepskyblue";
-var zip = "03301";
+var updateInterval = 30;
+var timeStamp = 0;
+var nextUpdate = 0;
 
 var fakeTime = false;
 
@@ -109,11 +111,19 @@ let hrm = new HeartRateSensor();
       
 messaging.peerSocket.onmessage = evt => {
   console.log(`App received: ${JSON.stringify(evt)}`);
-  if (evt.data.key === "zipCode" && evt.data.newValue) {
-    zip = JSON.parse(evt.data.newValue);
-    zip = zip.name
-    console.log(`Location: ${weather}`);
-    console.log(`Zip Code: ${zip}`);
+  if (evt.data.key === "updateInterval" && evt.data.newValue) {
+    updateInterval = JSON.parse(evt.data.newValue).values[0].name
+    console.log(`updateInterval is: ${updateInterval}`);
+    if (updateInterval == "15 minutes")
+      updateInterval = 15;
+    else if (updateInterval == "30 minutes")
+      updateInterval = 30;
+    else if (updateInterval == "1 hour")
+      updateInterval = 60;
+    else if (updateInterval == "2 hours")
+      updateInterval = 120;
+    console.log(`updateInterval is: ${updateInterval}`);
+    weather.fetch();
   }
   if (evt.data.key === "color" && evt.data.newValue) {
     color = JSON.parse(evt.data.newValue);
@@ -163,19 +173,12 @@ weather.setFeelsLike(false);
 
 weather.onsuccess = (data) => {
   console.log("Weather is " + JSON.stringify(data));
-  //let weatherText = data.temperatureF + "° - " + data.description;
-  //console.log("Weather text " + weatherText);
+  var ts = new Date(data.timestamp)
+  timeStamp = schedUtils.hourAndMinToMin(ts.getHours(), ts.getMinutes());
+  nextUpdate = timeStamp + updateInterval;
+  console.log("Next Update: " + schedUtils.minToTime(nextUpdate));
   tempAndConditionLabel.text = `${data.temperatureF}° - ${data.description}`
   weatherLocationLabel.text = `${data.location}`
-  /*
-  let sunrise = new  Date(data.sunrise)
-  sunrise = schedUtils.hourAndMinToMin(sunrise.getHours(), sunrise.getMinutes());
-  let sunset = new  Date(data.sunset)
-  sunset = schedUtils.hourAndMinToMin(sunset.getHours(), sunset.getMinutes());
-  let now = new Date();
-  now = schedUtils.hourAndMinToMin(now.getHours(), now.getMinutes())
-  let isDay = now > sunrise && now < sunset;
-  */
   
   switch(data.conditionCode){
     case 0:
@@ -222,9 +225,10 @@ weather.onsuccess = (data) => {
 weather.onerror = (error) => {
   console.log("Weather error " + JSON.stringify(error));
   weatherImage.href = "";
+  nextUpdate++;
 }
 
-weather.fetch();
+
 
 //-----------------End Weather Setup--------------
 
@@ -429,7 +433,7 @@ background.onclick = function(evt) {
       show = "clock";
       updateClock();
       updateClockData();
-      weather.fetch();
+      if (schedUtils.timeToMin(time) > nextUpdate) weather.fetch();
       clockView.style.display = "inline";//test
       periodView.style.display = "none";
       weatherView.style.display = "inline";//test
@@ -447,7 +451,7 @@ background.onclick = function(evt) {
       periodView.style.display = "inline";
       weatherView.style.display = "none";
     } else {
-      weather.fetch();
+      if (schedUtils.timeToMin(time) > nextUpdate) weather.fetch();
       periodView.style.display = "none";
       weatherView.style.display = "inline";//test
     }
@@ -474,7 +478,7 @@ display.onchange = function() {
       periodView.style.display = "inline";
       weatherView.style.display = "none";
     } else {
-      weather.fetch();
+      if (schedUtils.timeToMin(time) > nextUpdate) weather.fetch();
       periodView.style.display = "none";
       weatherView.style.display = "inline";//test
     }
@@ -496,4 +500,5 @@ setInterval(updatePeriodData, 15000);
 updateClock();
 updateClockData();
 updatePeriodData();
+weather.fetch();
 hrm.start();
