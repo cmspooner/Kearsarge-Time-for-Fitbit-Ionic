@@ -24,8 +24,6 @@ var sched = "Regular";
 var sepratorGoal = true;
 var color = "deepskyblue";
 var updateInterval = 30;
-var timeStamp = 0;
-var nextUpdate = 0;
 
 var fakeTime = false;
 
@@ -168,17 +166,25 @@ import Weather from '../subModules/fitbit-weather/common/weather/device';
 let weather = new Weather();
 weather.setProvider("yahoo"); 
 weather.setApiKey("dj0yJmk9TTkyWW5SNG5rT0JOJmQ9WVdrOVRVMURkRmhhTlRBbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmeD00MA--");
-weather.setMaximumAge(25 * 1000); 
+weather.setMaximumAge(updateInterval * 60 * 1000); 
 weather.setFeelsLike(false);
 
 weather.onsuccess = (data) => {
   console.log("Weather is " + JSON.stringify(data));
-  var ts = new Date(data.timestamp)
-  timeStamp = schedUtils.hourAndMinToMin(ts.getHours(), ts.getMinutes());
-  nextUpdate = timeStamp + updateInterval;
-  console.log("Next Update: " + schedUtils.minToTime(nextUpdate));
-  tempAndConditionLabel.text = `${data.temperatureF}° - ${data.description}`
-  weatherLocationLabel.text = `${data.location}`
+  weather.setMaximumAge(updateInterval * 60 * 1000); 
+  var time = new Date();
+  time = schedUtils.hourAndMinToMin(time.getHours(), time.getMinutes());
+  var timeStamp = new Date(data.timestamp);
+  timeStamp = schedUtils.hourAndMinToMin(timeStamp.getHours(), timeStamp.getMinutes());
+  var dataAge = time - timeStamp;
+  console.log("Time: " + time + ", TimeStamp: " + timeStamp);
+  var unit = "m"
+  if (dataAge > 60){
+    dataAge = parseInt(dataAge/60);
+    unit = "h"
+  }
+  tempAndConditionLabel.text = `${data.temperatureF}° ${data.description}`
+  weatherLocationLabel.text = `${data.location} (${dataAge}${unit})`
   
   switch(data.conditionCode){
     case 0:
@@ -225,7 +231,8 @@ weather.onsuccess = (data) => {
 weather.onerror = (error) => {
   console.log("Weather error " + JSON.stringify(error));
   weatherImage.href = "";
-  nextUpdate++;
+  weather.setMaximumAge(0 * 60 * 1000); 
+
 }
 
 
@@ -261,6 +268,8 @@ function updateClock() {
   
   dateLabel.text = `${util.toDay(day, "long")}, ${util.toMonth(month)} ${date}`;
   clockLabel.text = `${hours}:${mins}${ampm}`;
+  
+  
   //updatePeriodData();
 }
 
@@ -433,7 +442,7 @@ background.onclick = function(evt) {
       show = "clock";
       updateClock();
       updateClockData();
-      if (schedUtils.timeToMin(time) > nextUpdate) weather.fetch();
+      weather.fetch();
       clockView.style.display = "inline";//test
       periodView.style.display = "none";
       weatherView.style.display = "inline";//test
@@ -451,7 +460,7 @@ background.onclick = function(evt) {
       periodView.style.display = "inline";
       weatherView.style.display = "none";
     } else {
-      if (schedUtils.timeToMin(time) > nextUpdate) weather.fetch();
+      weather.fetch();
       periodView.style.display = "none";
       weatherView.style.display = "inline";//test
     }
@@ -478,7 +487,7 @@ display.onchange = function() {
       periodView.style.display = "inline";
       weatherView.style.display = "none";
     } else {
-      if (schedUtils.timeToMin(time) > nextUpdate) weather.fetch();
+      weather.fetch();
       periodView.style.display = "none";
       weatherView.style.display = "inline";//test
     }

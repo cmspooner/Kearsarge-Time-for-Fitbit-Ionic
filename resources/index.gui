@@ -9,12 +9,12 @@
     <image x="30%" y="61%" width="18" height="18" href="icons/18/steps.png" load="sync"/>
     <text id="stepsLabel" />
   </svg>
-  <svg id="period" display="inline">
+  <svg id="period" display="none">
     <text id="periodLabel" />
     <text id="timeRemainingLabel" />
   </svg>
-  <svg id="weather" display="none">
-    <image id="weatherImage" x="10" y="73%" width="60" height="60" href="icons/weather/whiteStorm.png" load="sync"/>
+  <svg id="weather" display="inline">
+    <image id="weatherImage" x="10" y="74%" width="60" height="60" href="" load="sync"/>
     <text id="tempAndConditionLabel" />
     <text id="weatherLocationLabel" />
   </svg>

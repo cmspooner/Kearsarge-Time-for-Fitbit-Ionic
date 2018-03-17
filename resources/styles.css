@@ -81,13 +81,14 @@
   fill: silver;
 }
 
+/* Weather */
 #tempAndConditionLabel {
   font-size: 28;
   font-family: Colfax-Bold;
   text-length: 50;
   text-anchor: start;
   x: 75;
-  y: 85%;
+  y: 83%;
   fill: silver;
 }
 
