@@ -25,6 +25,7 @@ var sepratorGoal = true;
 var color = "deepskyblue";
 var updateInterval = 30;
 var showDataAge = false;
+var degreesF = true;
 
 var fakeTime = false;
 
@@ -154,6 +155,11 @@ messaging.peerSocket.onmessage = evt => {
     console.log(`Data Age: ${showDataAge}`);
     weather.fetch();
   }
+  if (evt.data.key === "unitToggle" && evt.data.newValue) {
+    degreesF = !JSON.parse(evt.data.newValue);
+    console.log(`Fahrenheit: ${degreesF}`);
+    weather.fetch();
+  }
 };
 
 // Message socket opens
@@ -189,7 +195,11 @@ weather.onsuccess = (data) => {
     dataAge = parseInt(dataAge/60);
     unit = "h"
   }
-  tempAndConditionLabel.text = `${data.temperatureF}° ${data.description}`;
+  if (degreesF)
+    tempAndConditionLabel.text = `${data.temperatureF}° ${data.description}`;
+  else 
+    tempAndConditionLabel.text = `${data.temperatureC}° ${data.description}`;
+  
   if (showDataAge)
     weatherLocationLabel.text = `${data.location} (${dataAge}${unit})`;
   else

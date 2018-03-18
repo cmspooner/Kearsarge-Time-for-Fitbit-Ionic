@@ -14,6 +14,10 @@ function mySettings(props) {
           ]}
           />
          <Toggle
+          settingsKey="unitToggle"
+          label="Tempterature in °F or °C"
+         />
+         <Toggle
           settingsKey="dataAgeToggle"
           label="Show age of last weather update"
         />
