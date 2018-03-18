@@ -24,6 +24,7 @@ var sched = "Regular";
 var sepratorGoal = true;
 var color = "deepskyblue";
 var updateInterval = 30;
+var showDataAge = false;
 
 var fakeTime = false;
 
@@ -148,6 +149,11 @@ messaging.peerSocket.onmessage = evt => {
       }
     }
   }
+  if (evt.data.key === "dataAgeToggle" && evt.data.newValue) {
+    showDataAge = JSON.parse(evt.data.newValue);
+    console.log(`Data Age: ${showDataAge}`);
+    weather.fetch();
+  }
 };
 
 // Message socket opens
@@ -183,15 +189,18 @@ weather.onsuccess = (data) => {
     dataAge = parseInt(dataAge/60);
     unit = "h"
   }
-  tempAndConditionLabel.text = `${data.temperatureF}° ${data.description}`
-  weatherLocationLabel.text = `${data.location} (${dataAge}${unit})`
+  tempAndConditionLabel.text = `${data.temperatureF}° ${data.description}`;
+  if (showDataAge)
+    weatherLocationLabel.text = `${data.location} (${dataAge}${unit})`;
+  else
+    weatherLocationLabel.text = `${data.location}`;
   
   switch(data.conditionCode){
     case 0:
       if (data.isDay)
         weatherImage.href = "../resources/icons/weather/whiteSun.png"
       else
-        weatherImage.href = "../resources/icons/weather/whiteMoon.png"
+        weatherImage.href = "../resources/icons/weather/whiteMoon.png" 
       break;
     case 1:
     case 2:
