@@ -134,6 +134,17 @@ messaging.peerSocket.onmessage = evt => {
   if (evt.data.key === "schedule" && evt.data.newValue) {
     sched = JSON.parse(evt.data.newValue).values[0].name;
     console.log(`Schedule is: ${sched}`);
+    let today = new Date();
+    let time = schedUtils.hourAndMinToTime(today.getHours(), today.getMinutes());
+    if (schedUtils.isInSchedule(sched, time)){
+      updatePeriodData();
+      periodView.style.display = "inline";
+      weatherView.style.display = "none";
+    }else{
+      weather.fetch();
+      periodView.style.display = "none";
+      weatherView.style.display = "inline";
+    }
   }
   if (evt.data.key === "seperatorToggle" && evt.data.newValue) {
     sepratorGoal = JSON.parse(evt.data.newValue);
@@ -476,6 +487,7 @@ background.onclick = function(evt) {
     updateClockData();
     clockView.style.display = "inline";//test
     if (schedUtils.isInSchedule(sched, time)){ 
+      updatePeriodData();
       periodView.style.display = "inline";
       weatherView.style.display = "none";
     } else {
@@ -499,10 +511,10 @@ display.onchange = function() {
     show = "clock";
     updateClock();
     updateClockData();
-    updatePeriodData();
     clockView.style.display = "inline"; //test
     console.log("Sced test: " + schedUtils.isInSchedule(sched, time));
     if (schedUtils.isInSchedule(sched, time)){ 
+      updatePeriodData();
       periodView.style.display = "inline";
       weatherView.style.display = "none";
     } else {
