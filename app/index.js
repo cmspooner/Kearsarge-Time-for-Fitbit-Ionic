@@ -298,9 +298,12 @@ function updateClock() {
     ampm = ""
   }
   
-  dateLabel.text = `${util.toDay(day, "long")}, ${util.toMonth(month)} ${date}`;
+  dateLabel.text = `${util.toDay(day, "short")}, ${util.toMonth(month)} ${date}`;
+  //dateLabel.text = `Wednesday, Mar. 21`;
+
   batteryLevelLabel.style.fill = util.goalToColor(battery.chargeLevel, 90)
   batteryLevelLabel.text = `${battery.chargeLevel}%`
+  //batteryLevelLabel.text = `5%`
   clockLabel.text = `${hours}:${mins}${ampm}`;
   
   

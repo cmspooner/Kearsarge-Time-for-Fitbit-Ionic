@@ -1,7 +1,7 @@
 <svg class="background">
   <svg id="clock" display="inline">
     <text id="dateLabel" />
-    <image x="80%" y="3%" width="50" height="20" href="icons/battery/battery.png" load="sync"/>
+    <image x="80%" y="2%" width="50" height="20" href="icons/battery/battery.png" load="sync"/>
     <text id="batteryLevelLabel" />
     <line id = "seperatorLineRight" x1="50%" y1="15%" x2="5%" y2="15%"/>
     <line id = "seperatorLineLeft" x1="50%" y1="15%" x2="95%" y2="15%"/>
