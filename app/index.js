@@ -15,6 +15,7 @@ import { user } from "user-profile";
 import { display } from "display";
 import { preferences } from "user-settings";
 import { vibration } from "haptics"
+import { battery } from "power";
 
 import * as util from "../common/utils";
 import * as schedUtils from "scheduleUtils.js";
@@ -47,6 +48,7 @@ let clockLabel = document.getElementById("clockLabel");
 let seperatorLineRight = document.getElementById("seperatorLineRight");
 let seperatorLineLeft = document.getElementById("seperatorLineLeft");
 let dateLabel = document.getElementById("dateLabel");
+let batteryLevelLabel = document.getElementById("batteryLevelLabel");
 let hrLabel = document.getElementById("hrLabel");
 let stepsLabel = document.getElementById("stepsLabel");
 
@@ -297,6 +299,8 @@ function updateClock() {
   }
   
   dateLabel.text = `${util.toDay(day, "long")}, ${util.toMonth(month)} ${date}`;
+  batteryLevelLabel.style.fill = util.goalToColor(battery.chargeLevel, 90)
+  batteryLevelLabel.text = `${battery.chargeLevel}%`
   clockLabel.text = `${hours}:${mins}${ampm}`;
   
   

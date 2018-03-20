@@ -20,6 +20,16 @@
   fill: white;
 }
 
+#batteryLevelLabel {
+  font-size: 14;
+  font-family: Colfax-Medium;
+  text-length: 4;
+  text-anchor: end;
+  x: 91.75%;
+  y: 9%;
+  fill: white;
+}
+
 #seperatorLineLeft {
   stroke-width: 6;
   fill: deepskyblue;
