@@ -3,8 +3,9 @@
     <text id="dateLabel" />
     <image x="80%" y="2%" width="50" height="20" href="icons/battery/battery.png" load="sync"/>
     <text id="batteryLevelLabel" />
-    <line id = "seperatorLineRight" x1="50%" y1="15%" x2="5%" y2="15%"/>
-    <line id = "seperatorLineLeft" x1="50%" y1="15%" x2="95%" y2="15%"/>
+    <circle id = "seperatorEndLeft"cx="5%" cy="15%" />
+    <line id = "seperatorLine" x1="5%" y1="15%" x2="95%" y2="15%"/>
+    <circle id = "seperatorEndRight"cx="95%" cy="15%" />
     <text id="clockLabel" />
     <image x="30%" y="49%" width="18" height="18" href="icons/18/heart.png" load="sync"/>
     <text id="hrLabel" />

@@ -30,13 +30,17 @@
   fill: white;
 }
 
-#seperatorLineLeft {
+#seperatorLine {
   stroke-width: 6;
   fill: deepskyblue;
 }
 
-#seperatorLineRight {
-  stroke-width: 6;
+#seperatorEndLeft{
+  r:3;
+  fill: deepskyblue;
+}
+#seperatorEndRight{
+  r:3;
   fill: deepskyblue;
 }
 

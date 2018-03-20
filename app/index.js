@@ -45,8 +45,9 @@ let scheduleView = document.getElementById("schedule");
 // Get a handle on the <text> element
 // Clock view
 let clockLabel = document.getElementById("clockLabel");
-let seperatorLineRight = document.getElementById("seperatorLineRight");
-let seperatorLineLeft = document.getElementById("seperatorLineLeft");
+let seperatorEndLeft = document.getElementById("seperatorEndLeft");
+let seperatorLine = document.getElementById("seperatorLine");
+let seperatorEndRight = document.getElementById("seperatorEndRight");
 let dateLabel = document.getElementById("dateLabel");
 let batteryLevelLabel = document.getElementById("batteryLevelLabel");
 let hrLabel = document.getElementById("hrLabel");
@@ -130,8 +131,9 @@ messaging.peerSocket.onmessage = evt => {
   if (evt.data.key === "color" && evt.data.newValue) {
     color = JSON.parse(evt.data.newValue);
     console.log(`Setting Seperator Bar color: ${color}`);
-    seperatorLineRight.style.fill = color;
-    seperatorLineLeft.style.fill = color;
+    seperatorEndLeft.style.fill = color;
+    seperatorLine.style.fill = color;
+    seperatorEndRight.style.fill = color;
   }
   if (evt.data.key === "schedule" && evt.data.newValue) {
     sched = JSON.parse(evt.data.newValue).values[0].name;
@@ -158,8 +160,9 @@ messaging.peerSocket.onmessage = evt => {
         let scaledNow = schedUtils.timeToMin(time)-schedUtils.timeToMin(schedUtils.getStartofDay(sched))
         let scaledEnd = schedUtils.timeToMin(schedUtils.getEndofDay(sched))-schedUtils.timeToMin(schedUtils.getStartofDay(sched))
         console.log(`scaledNow: ${scaledNow}, scaledEnd: ${scaledEnd} `)
-        seperatorLineRight.style.fill = util.goalToColor(scaledNow, scaledEnd);
-        seperatorLineLeft.style.fill = util.goalToColor(scaledNow, scaledEnd);
+        seperatorEndLeft.style.fill = util.goalToColor(scaledNow, scaledEnd);
+        seperatorLine.style.fill = util.goalToColor(scaledNow, scaledEnd);
+        seperatorEndRight.style.fill = util.goalToColor(scaledNow, scaledEnd);
       }
     }
   }
@@ -378,17 +381,20 @@ function updatePeriodData() {
         let scaledNow = schedUtils.timeToMin(time)-schedUtils.timeToMin(schedUtils.getStartofDay(sched))
         let scaledEnd = schedUtils.timeToMin(schedUtils.getEndofDay(sched))-schedUtils.timeToMin(schedUtils.getStartofDay(sched))
         console.log(`scaledNow: ${scaledNow}, scaledEnd: ${scaledEnd} `)
-        seperatorLineRight.style.fill = util.goalToColor(scaledNow, scaledEnd);
-        seperatorLineLeft.style.fill = util.goalToColor(scaledNow, scaledEnd);
+        seperatorEndLeft.style.fill = util.goalToColor(scaledNow, scaledEnd);
+        seperatorLine.style.fill = util.goalToColor(scaledNow, scaledEnd);
+        seperatorEndRight.style.fill = util.goalToColor(scaledNow, scaledEnd);
       } else {
-        seperatorLineRight.style.fill = color;
-        seperatorLineLeft.style.fill = color;
+        seperatorEndLeft.style.fill = color;
+        seperatorLine.style.fill = color;
+        seperatorEndRight.style.fill = colorl;
       }
     } else {
       periodLabel.text = ``;
       timeRemainingLabel.text = ``;
-      seperatorLineRight.style.fill = color;
-      seperatorLineLeft.style.fill = color;
+      seperatorEndLeft.style.fill = color;
+      seperatorLine.style.fill = color;
+      seperatorEndRight.style.fill = color;
     }
   }
 }
