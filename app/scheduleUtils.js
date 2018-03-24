@@ -87,6 +87,11 @@ export function getEndofDay(typeOfDay){
   return todaySched[todaySched.length-1].end;
 }
 
+export function getLastPeriodofDay(typeOfDay){
+  let todaySched = getDailySchedule(typeOfDay);
+  return todaySched[todaySched.length-2].end;
+}
+
 
 export function getCurrentPeriod(typeOfDay, time){
   let min = timeToMin(time);
