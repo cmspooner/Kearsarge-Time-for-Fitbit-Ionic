@@ -27,6 +27,9 @@ var color = "deepskyblue";
 var updateInterval = 30;
 var showDataAge = false;
 var degreesF = true;
+var failCount = 0;
+var showFailCount = false;
+var showError = false;
 
 var fakeTime = false;
 
@@ -176,6 +179,16 @@ messaging.peerSocket.onmessage = evt => {
     console.log(`Fahrenheit: ${degreesF}`);
     weather.fetch();
   }
+  if (evt.data.key === "errorMessageToggle" && evt.data.newValue) {
+    showError = JSON.parse(evt.data.newValue);
+    console.log(`Show Error: ${showError}`);
+    weather.fetch();
+  }
+  if (evt.data.key === "failCountToggle" && evt.data.newValue) {
+    showFailCount = JSON.parse(evt.data.newValue);
+    console.log(`Data Age: ${showFailCount}`);
+    weather.fetch();
+  }
 };
 
 // Message socket opens
@@ -189,7 +202,7 @@ messaging.peerSocket.close = () => {
 };
 
 //----------------Weather Setup------------------------
-import Weather from '../subModules/fitbit-weather/common/weather/device';
+import Weather from '../common/weather/device';
 
 let weather = new Weather();
 weather.setProvider("yahoo"); 
@@ -199,11 +212,14 @@ weather.setFeelsLike(false);
 
 weather.onsuccess = (data) => {
   console.log("Weather is " + JSON.stringify(data));
+  failCount = 0;
   weather.setMaximumAge(updateInterval * 60 * 1000); 
   var time = new Date();
   time = schedUtils.hourAndMinToMin(time.getHours(), time.getMinutes());
   var timeStamp = new Date(data.timestamp);
-  timeStamp = schedUtils.hourAndMinToMin(timeStamp.getHours(), timeStamp.getMinutes());
+  //timeStamp = schedUtils.hourAndMinToMin(timeStamp.getHours(), timeStamp.getMinutes());
+  timeStamp = schedUtils.hourAndMinToTime(timeStamp.getHours(), timeStamp.getMinutes());
+
   var dataAge = time - timeStamp;
   console.log("Time: " + time + ", TimeStamp: " + timeStamp);
   var unit = "m"
@@ -217,43 +233,43 @@ weather.onsuccess = (data) => {
     tempAndConditionLabel.text = `${data.temperatureC}° ${data.description}`;
   
   if (showDataAge)
-    weatherLocationLabel.text = `${data.location} (${dataAge}${unit})`;
+    //weatherLocationLabel.text = `${data.location} (${dataAge}${unit})`;
+        weatherLocationLabel.text = `${data.location} (${timeStamp})`;
+
   else
     weatherLocationLabel.text = `${data.location}`;
   
   switch(data.conditionCode){
-    case 0:
+    case 0: //ClearSky
       if (data.isDay)
         weatherImage.href = "../resources/icons/weather/whiteSun.png"
       else
         weatherImage.href = "../resources/icons/weather/whiteMoon.png" 
       break;
-    case 1:
-    case 2:
+    case 1: //FewClouds
+    case 2: //ScatteredClouds
       if (data.isDay)
         weatherImage.href = "../resources/icons/weather/whitePartlySunny.png"
       else
         weatherImage.href = "../resources/icons/weather/whitePartlyMoon.png"
       break;
-    case 3:
+    case 3: //BrokenClouds
       weatherImage.href = "../resources/icons/weather/whiteCloud.png"
       break;
-    case 4:
+    case 4: //ShowerRain
+    case 5: //Rain
       weatherImage.href = "../resources/icons/weather/whiteRain.png"
       break;
-    case 5:
+    case 6: //Thunderstorm
       weatherImage.href = "../resources/icons/weather/whiteStorm.png"
       break;
-    case 6:
-      weatherImage.href = "../resources/icons/weather/whiteStorm.png"
-      break;
-    case 7:
+    case 7: //Snow
       weatherImage.href = "../resources/icons/weather/whiteSnow.png"
       break;
-    case 8:
+    case 8: //Mist
       weatherImage.href = "../resources/icons/weather/whiteHaze .png"
       break;
-    default:
+    default: //Other
       if (data.isDay)
         weatherImage.href = "../resources/icons/weather/whiteSun.png"
       else
@@ -265,8 +281,17 @@ weather.onsuccess = (data) => {
 
 weather.onerror = (error) => {
   console.log("Weather error " + JSON.stringify(error));
+  if (error == "No connection with the companion")
+       error = "Companion Failure"
   weatherImage.href = "";
-  weather.setMaximumAge(0 * 60 * 1000); 
+  weather.setMaximumAge(15 * 1000); 
+  failCount++;
+  if (showFailCount)
+    tempAndConditionLabel.text = `Updating, try ${failCount}`;
+  else
+    tempAndConditionLabel.text = "Updating...";
+  if (showError)
+    weatherLocationLabel.text = `${error}`;
 
 }
 
@@ -306,7 +331,7 @@ function updateClock() {
 
   batteryLevelLabel.style.fill = util.goalToColor(battery.chargeLevel, 90)
   batteryLevelLabel.text = `${battery.chargeLevel}%`
-  //batteryLevelLabel.text = `5%`
+  //batteryLevelLabel.text = `100%`
   clockLabel.text = `${hours}:${mins}${ampm}`;
   
   
@@ -546,8 +571,9 @@ display.onchange = function() {
 
 // Update the clock every tick event
 clock.ontick = () => updateClock();
-setInterval(updateClockData, 3000);
-setInterval(updatePeriodData, 15000);
+setInterval(updateClockData, 3*1000);
+setInterval(updatePeriodData, 15*1000);
+setInterval(weather.fetch, updateInterval*60*1000);
 
 // Don't start with a blank screen
 updateClock();
