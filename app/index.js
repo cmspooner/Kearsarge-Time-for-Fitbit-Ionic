@@ -227,10 +227,11 @@ weather.onsuccess = (data) => {
     dataAge = parseInt(dataAge/60);
     unit = "h"
   }
+  //data.description = 	"Isolated Thunderstorms";
   if (degreesF)
-    tempAndConditionLabel.text = `${data.temperatureF}° ${data.description}`;
+    tempAndConditionLabel.text = `${data.temperatureF}° ${util.shortenText(data.description)}`;
   else 
-    tempAndConditionLabel.text = `${data.temperatureC}° ${data.description}`;
+    tempAndConditionLabel.text = `${data.temperatureC}° ${util.shortenText(data.description)}`;
   
   if (showDataAge)
     //weatherLocationLabel.text = `${data.location} (${dataAge}${unit})`;

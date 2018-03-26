@@ -100,3 +100,16 @@ export function round2(number){
 export function isInRange(value, low, high){
   return value >= low && value < high;
 }
+
+export function shortenText(text){
+  text = text.replace("and", "&");
+  text = text.replace("Mixed ", "");
+  text = text.replace("Severe", "Bad");
+  text = text.replace("Thunderstorms", "T-Storms");
+  text = text.replace("Thundershowers", "T-Showers");
+  text = text.replace("Showers", "");
+  text = text.replace("Isolated", "Some");
+  text = text.replace("Scattered", "Some");
+  return text;
+  
+}
