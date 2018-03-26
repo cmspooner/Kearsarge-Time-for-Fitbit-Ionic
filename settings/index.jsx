@@ -42,45 +42,45 @@ function mySettings(props) {
         <ColorSelect
           settingsKey="color"
           colors={[
-            {color: "red"},
-            {color: "crimson"},
-            {color: "tomato"},
-            {color: "indianred"},
-            {color: "firebrick"},
-            {color: "maroon"},
-            {color: "darkred"},
+            {color: "#FF0000"},
+            {color: "#FF5555"},
+            {color: "#CC0000"},
+            {color: "#CC8888"},
+            {color: "#FF9999"},
+            {color: "#880000"},
+            {color: "#884400"},
             
-            {color: "darkorange"}, 
-            {color: "orange"},
-            {color: "coral"},
-            {color: "orangered"},
-            {color: "yellow"},
-            {color: "gold"},
-            {color: "goldenrod"},
+            {color: "#FFAA00"}, 
+            {color: "#FF8800"},
+            {color: "#FF4400"},
+            {color: "#FFFF00"},
+            {color: "#FFDD00"},
+            {color: "#DDDD00"},
+            {color: "#CC9922"},
             
-            {color: "greenyellow"},
-            {color: "aquamarine"},
-            {color: "darkseagreen"},
-            {color: "olivedrab"},
-            {color: "seagreen"},
-            {color: "forestgreen"},
-            {color: "darkgreen"},
+            {color: "#00FF00"},
+            {color: "#55FF55"},
+            {color: "#00CC00"},
+            {color: "#88CC88"},
+            {color: "#99FF99"},
+            {color: "#008800"},
+            {color: "#448800"},
             
-            {color: "dodgerblue"},
-            {color: "deepskyblue"},
-            {color: "lightskyblue"},
-            {color: "aqua"},
-            {color: "darkslateblue"},
-            {color: "darkblue"},
-            {color: "navy"},
+            {color: "#0000FF"},
+            {color: "#5555FF"},
+            {color: "#8888CC"},
+            {color: "#9999FF"},
+            {color: "#0000CC"},
+            {color: "#000088"},
+            {color: "#004488"},
             
-            {color: "deeppink"},
-            {color: "hotpink"},
-            {color: "fuchsia"},
-            {color: "magenta"},
-            {color: "lightpink"},
-            {color: "plum"},
-            {color: "purple"}
+            {color: "#FF00AA"},
+            {color: "#FF0088"},
+            {color: "#FF0044"},
+            {color: "#FF00FF"},
+            {color: "#4400FF"},
+            {color: "#8800FF"},
+            {color: "#AA00FF"}
           ]}
         />
       </Section>
@@ -102,6 +102,9 @@ function mySettings(props) {
       </Section>
       <Section
         title={<Text bold align="center">Build Version and Notes</Text>}>
+        <Text>
+          Beta 2.1.11: Changed color coding to be more rainbow-like
+        </Text>
         <Text>
           Beta 2.1.10: Added a huge number of color options
         </Text>
