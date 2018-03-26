@@ -36,15 +36,50 @@ function mySettings(props) {
           settingsKey="seperatorToggle"
           label="Color based on day's progress"
         />
+        <Text align="center">
+          Color when not over-ridden
+        </Text>
         <ColorSelect
           settingsKey="color"
           colors={[
+            {color: "red"},
+            {color: "crimson"},
+            {color: "tomato"},
+            {color: "indianred"},
             {color: "firebrick"},
+            {color: "maroon"},
+            {color: "darkred"},
+            
             {color: "darkorange"}, 
+            {color: "orange"},
+            {color: "coral"},
+            {color: "orangered"},
+            {color: "yellow"},
             {color: "gold"},
-            {color: "deepskyblue"},
+            {color: "goldenrod"},
+            
+            {color: "greenyellow"},
+            {color: "aquamarine"},
+            {color: "darkseagreen"},
             {color: "olivedrab"},
+            {color: "seagreen"},
+            {color: "forestgreen"},
+            {color: "darkgreen"},
+            
+            {color: "dodgerblue"},
+            {color: "deepskyblue"},
+            {color: "lightskyblue"},
+            {color: "aqua"},
+            {color: "darkslateblue"},
+            {color: "darkblue"},
+            {color: "navy"},
+            
             {color: "deeppink"},
+            {color: "hotpink"},
+            {color: "fuchsia"},
+            {color: "magenta"},
+            {color: "lightpink"},
+            {color: "plum"},
             {color: "purple"}
           ]}
         />
@@ -67,6 +102,12 @@ function mySettings(props) {
       </Section>
       <Section
         title={<Text bold align="center">Build Version and Notes</Text>}>
+        <Text>
+          Beta 2.1.10: Added a huge number of color options
+        </Text>
+        <Text>
+          Beta 2.1.9: Shortened long weather descriptions
+        </Text>
         <Text>
           Beta 2.1.8: Weather should update in background, all intervals now in x*1000 notation.
         </Text>
