@@ -42,45 +42,53 @@ function mySettings(props) {
         <ColorSelect
           settingsKey="color"
           colors={[
-            {color: "#FF0000"},
-            {color: "#FF5555"},
             {color: "#CC0000"},
-            {color: "#CC8888"},
-            {color: "#FF9999"},
-            {color: "#880000"},
-            {color: "#884400"},
+            {color: "#FF7F7F"},
+            {color: "#FF4C4C"},
+            {color: "#FF0000"},
+            {color: "#CC0000"},
+            {color: "#990000"},
+            {color: "#660000"},
             
-            {color: "#FFAA00"}, 
-            {color: "#FF8800"},
-            {color: "#FF4400"},
+            {color: "#FF7700"}, 
+            {color: "#FFAB00"},
+            {color: "#FFCC00"},
             {color: "#FFFF00"},
-            {color: "#FFDD00"},
-            {color: "#DDDD00"},
-            {color: "#CC9922"},
+            {color: "#E5E533"},
+            {color: "#CCCC19"},
+            {color: "#999919"},
             
+            {color: "#B2FFB2"},
+            {color: "#66FF66"},
+            {color: "#33FF33"},
             {color: "#00FF00"},
-            {color: "#55FF55"},
-            {color: "#00CC00"},
-            {color: "#88CC88"},
-            {color: "#99FF99"},
-            {color: "#008800"},
-            {color: "#448800"},
+            {color: "#00B200"},
+            {color: "#339933"},
+            {color: "#196619"},
             
-            {color: "#0000FF"},
-            {color: "#5555FF"},
-            {color: "#8888CC"},
+            {color: "#00FF9C"},
+            {color: "#00FFB9"},
+            {color: "#00FFC8"},
+            {color: "#00FFFF"},
+            {color: "#00EEFF"},
+            {color: "#00CDFF"},
+            {color: "#00B6FF"},
+            
+            {color: "#B2B2FF"},
             {color: "#9999FF"},
-            {color: "#0000CC"},
-            {color: "#000088"},
-            {color: "#004488"},
-            
-            {color: "#FF00AA"},
-            {color: "#FF0088"},
-            {color: "#FF0044"},
+            {color: "#4C4CFF"},
+            {color: "#0000FF"},
+            {color: "#0000B2"},
+            {color: "#0000AA"},
+            {color: "#004C99"},
+           
+            {color: "#9600FF"},
+            {color: "#BE00FF"},
+            {color: "#D300FF"},
             {color: "#FF00FF"},
-            {color: "#4400FF"},
-            {color: "#8800FF"},
-            {color: "#AA00FF"}
+            {color: "#FF00CB"},
+            {color: "#FF009E"},
+            {color: "#FF006A"}
           ]}
         />
       </Section>
@@ -102,6 +110,9 @@ function mySettings(props) {
       </Section>
       <Section
         title={<Text bold align="center">Build Version and Notes</Text>}>
+        <Text>
+          Beta 2.1.12: Changed color coding to be more rainbow-like, for reals this time. Used pallet tool at: http://www.perbang.dk/
+        </Text>
         <Text>
           Beta 2.1.11: Changed color coding to be more rainbow-like
         </Text>
