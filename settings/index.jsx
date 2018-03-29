@@ -111,6 +111,9 @@ function mySettings(props) {
       <Section
         title={<Text bold align="center">Build Version and Notes</Text>}>
         <Text>
+          Beta 3.0: Now Versa Compatible!
+        </Text>
+        <Text>
           Beta 2.1.12: Changed color coding to be more rainbow-like, for reals this time. Used pallet tool at: http://www.perbang.dk/
         </Text>
         <Text>

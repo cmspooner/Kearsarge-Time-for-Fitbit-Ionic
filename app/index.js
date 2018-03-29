@@ -20,6 +20,10 @@ import { battery } from "power";
 import * as util from "../common/utils";
 import * as schedUtils from "scheduleUtils.js";
 
+import { me as device } from "device";
+if (!device.screen) device.screen = { width: 348, height: 250 };
+console.log(`Dimensions: $‌{device.screen.width}x$‌{device.screen.height}`);
+
 var sched = "Regular";
 
 var sepratorGoal = true;
@@ -55,6 +59,8 @@ let dateLabel = document.getElementById("dateLabel");
 let batteryLevelLabel = document.getElementById("batteryLevelLabel");
 let hrLabel = document.getElementById("hrLabel");
 let stepsLabel = document.getElementById("stepsLabel");
+if (device.screen.height == 300)
+  let calsLabel = document.getElementById("calsLabel");
 
 // Period View
 let periodLabel = document.getElementById("periodLabel");
@@ -71,6 +77,22 @@ let distStatsLabel = document.getElementById("distStatsLabel");
 let floorsStatsLabel = document.getElementById("floorsStatsLabel");
 let activeStatsLabel = document.getElementById("activeStatsLabel");
 let calsStatsLabel = document.getElementById("calsStatsLabel");
+if (device.screen.height == 300){
+  let stepValueLabel = document.getElementById("stepValueLabel");
+  let stepGoalLabel = document.getElementById("stepGoalLabel");
+  
+  let distValueLabel = document.getElementById("distValueLabel");
+  let distGoalLabel = document.getElementById("distGoalLabel");
+  
+  let floorsValueLabel = document.getElementById("floorsValueLabel");
+  let floorsGoalLabel = document.getElementById("floorsGoalLabel");
+  
+  let activeValueLabel = document.getElementById("activeValueLabel");
+  let activeGoalLabel = document.getElementById("activeGoalLabel");
+  
+  let calsValueLabel = document.getElementById("calsValueLabel");
+  let calsGoalLabel = document.getElementById("calsGoalLabel");
+}
 
 // Schedule view
 let periodLabels = [
@@ -143,6 +165,7 @@ messaging.peerSocket.onmessage = evt => {
     console.log(`Schedule is: ${sched}`);
     let today = new Date();
     let time = schedUtils.hourAndMinToTime(today.getHours(), today.getMinutes());
+    if (fakeTime) time = "11:08a";
     if (schedUtils.isInSchedule(sched, time)){
       updatePeriodData();
       periodView.style.display = "inline";
@@ -157,6 +180,7 @@ messaging.peerSocket.onmessage = evt => {
     sepratorGoal = JSON.parse(evt.data.newValue);
     let today = new Date();
     let time = schedUtils.hourAndMinToTime(today.getHours(), today.getMinutes())
+    if (fakeTime) time = "11:08a";
     console.log(`seperator: ${sepratorGoal}`);
     if (schedUtils.isInSchedule(sched, time)){
       if (sepratorGoal){
@@ -216,6 +240,7 @@ weather.onsuccess = (data) => {
   weather.setMaximumAge(updateInterval * 60 * 1000); 
   var time = new Date();
   time = schedUtils.hourAndMinToMin(time.getHours(), time.getMinutes());
+  if (fakeTime) time = "11:08a";
   var timeStamp = new Date(data.timestamp);
   //timeStamp = schedUtils.hourAndMinToMin(timeStamp.getHours(), timeStamp.getMinutes());
   timeStamp = schedUtils.hourAndMinToTime(timeStamp.getHours(), timeStamp.getMinutes());
@@ -341,14 +366,28 @@ function updateClock() {
 
 function updateClockData() {
   if (show == "clock" && display.on){
-    let data = {
-      heart: {
-        theHeartRate: hrm.heartRate ? hrm.heartRate : 0
-      },
-      step: {
-        steps: today.local.steps ? today.local.steps: 0
-      }
-    };
+    if (device.screen.height == 300) {
+      let data = {
+        heart: {
+          theHeartRate: hrm.heartRate ? hrm.heartRate : 0
+        },
+        step: {
+          steps: today.local.steps ? today.local.steps: 0
+        },
+        cal: {
+          cals: today.local.calories ? today.local.calories: 0
+        }
+      };
+    } else {
+      let data = {
+        heart: {
+          theHeartRate: hrm.heartRate ? hrm.heartRate : 0
+        },
+        step: {
+          steps: today.local.steps ? today.local.steps: 0
+        }
+      };
+    }
 
     //console.log("Data:");
     //console.log(data.heart.theHeartRate);
@@ -356,6 +395,8 @@ function updateClockData() {
 
     hrLabel.style.fill = 'white';
     stepsLabel.style.fill = 'white';
+    if (device.screen.height == 300)
+      calsLabel.style.fill = 'white';
     
     
     if (data.heart.theHeartRate == 0) {
@@ -375,6 +416,10 @@ function updateClockData() {
     
     stepsLabel.style.fill = util.goalToColor(data.step.steps, goals.steps);
     stepsLabel.text = `${data.step.steps.toLocaleString()} steps`;
+    if (device.screen.height == 300) {
+      calsLabel.style.fill = util.goalToColor(data.cal.cals, goals.calories);
+      calsLabel.text = `${data.cal.cals.toLocaleString()} kcal`;
+    }
   }
 }
 
@@ -427,21 +472,60 @@ function updatePeriodData() {
 
 function updateStatsData(){
   if (show == "stats" && display.on){
-    stepStatsLabel.style.fill = util.goalToColor(today.local.steps, goals.steps);
-    stepStatsLabel.text = `Steps: ${today.local.steps ? today.local.steps.toLocaleString() : 0} / ${goals.steps.toLocaleString()}`;
+    if (device.screen.height == 300) {
+      stepStatsLabel.style.fill = util.goalToColor(today.local.steps, goals.steps);
+      stepStatsLabel.text = "Steps:";
+      stepValueLabel.style.fill = util.goalToColor(today.local.steps, goals.steps);
+      stepValueLabel.text = `${today.local.steps ? today.local.steps.toLocaleString() : 0} of `;
+      stepGoalLabel.style.fill = util.goalToColor(today.local.steps, goals.steps);
+      stepGoalLabel.text = `${goals.steps.toLocaleString()}`;
+      
+      distStatsLabel.style.fill = util.goalToColor(today.local.distance, goals.distance);
+      distStatsLabel.text = "Distance:";
+      distValueLabel.style.fill = util.goalToColor(today.local.distance, goals.distance);
+      distValueLabel.text = `${today.local.distance ? util.round2(today.local.distance * 0.000621371) : 0 } of `;
+      distGoalLabel.style.fill = util.goalToColor(today.local.distance, goals.distance);
+      distGoalLabel.text = `${util.round2(goals.distance*0.000621371)}.00`;
+       
+      floorsStatsLabel.style.fill = util.goalToColor(today.local.elevationGain, goals.elevationGain);
+      floorsStatsLabel.text = "Floors:";
+      floorsValueLabel.style.fill = util.goalToColor(today.local.elevationGain, goals.elevationGain);
+      floorsValueLabel.text = `${today.local.elevationGain ? today.local.elevationGain.toLocaleString() : 0} of `;
+      floorsGoalLabel.style.fill = util.goalToColor(today.local.elevationGain, goals.elevationGain);
+      floorsGoalLabel.text = `${goals.elevationGain.toLocaleString()}`;
+      
+      activeStatsLabel.style.fill = util.goalToColor(today.local.activeMinutes, goals.activeMinutes);
+      activeStatsLabel.text = "Active:";
+      activeValueLabel.style.fill = util.goalToColor(today.local.activeMinutes, goals.activeMinutes);
+      activeValueLabel.text = `${today.local.activeMinutes ? today.local.activeMinutes.toLocaleString() : 0} of `;
+      activeGoalLabel.style.fill = util.goalToColor(today.local.activeMinutes, goals.activeMinutes);
+      activeGoalLabel.text = `${goals.activeMinutes.toLocaleString()}`;
+ 
+      calsStatsLabel.style.fill = util.goalToColor(today.local.calories, goals.calories);
+      calsStatsLabel.text = "Calories:";
+      calsValueLabel.style.fill = util.goalToColor(today.local.calories, goals.calories);
+      calsValueLabel.text = `${today.local.calories ? today.local.calories.toLocaleString() : 0} of `;
+      calsGoalLabel.style.fill = util.goalToColor(today.local.calories, goals.calories);
+      calsGoalLabel.text = `${goals.calories.toLocaleString()}`;
+    }
+  } else {
+    if (device.screen.height == 300) {
+      stepStatsLabel.style.fill = util.goalToColor(today.local.steps, goals.steps);
+      stepStatsLabel.text = `Steps: ${today.local.steps ? today.local.steps.toLocaleString() : 0} / ${goals.steps.toLocaleString()}`;
 
-    // Multiply by .000621371 to convert from meters to miles
-    distStatsLabel.style.fill = util.goalToColor(today.local.distance, goals.distance);
-    distStatsLabel.text = `Distance: ${today.local.distance ? util.round2(today.local.distance * 0.000621371) : 0 } / ${util.round2(goals.distance*0.000621371)}`;
+      // Multiply by .000621371 to convert from meters to miles
+      distStatsLabel.style.fill = util.goalToColor(today.local.distance, goals.distance);
+      distStatsLabel.text = `Distance: ${today.local.distance ? util.round2(today.local.distance * 0.000621371) : 0 } / ${util.round2(goals.distance*0.000621371)}`;
 
-    floorsStatsLabel.style.fill = util.goalToColor(today.local.elevationGain, goals.elevationGain);
-    floorsStatsLabel.text = `Floors: ${today.local.elevationGain ? today.local.elevationGain : 0} / ${goals.elevationGain}`;
+      floorsStatsLabel.style.fill = util.goalToColor(today.local.elevationGain, goals.elevationGain);
+      floorsStatsLabel.text = `Floors: ${today.local.elevationGain ? today.local.elevationGain : 0} / ${goals.elevationGain}`;
 
-    activeStatsLabel.style.fill = util.goalToColor(today.local.activeMinutes, goals.activeMinutes);
-    activeStatsLabel.text = `Active: ${today.local.activeMinutes ? today.local.activeMinutes.toLocaleString() : 0} / ${goals.activeMinutes}`;
+      activeStatsLabel.style.fill = util.goalToColor(today.local.activeMinutes, goals.activeMinutes);
+      activeStatsLabel.text = `Active: ${today.local.activeMinutes ? today.local.activeMinutes.toLocaleString() : 0} / ${goals.activeMinutes}`;
 
-    calsStatsLabel.style.fill = util.goalToColor(today.local.calories, goals.calories);
-    calsStatsLabel.text = `Calories: ${today.local.calories ? today.local.calories.toLocaleString() : 0} / ${parseInt(goals.calories).toLocaleString()}`;
+      calsStatsLabel.style.fill = util.goalToColor(today.local.calories, goals.calories);
+      calsStatsLabel.text = `Calories: ${today.local.calories ? today.local.calories.toLocaleString() : 0} / ${parseInt(goals.calories).toLocaleString()}`;
+    }
   }
 }
   
@@ -486,7 +570,7 @@ background.onclick = function(evt) {
   console.log("Click");
   let today = new Date();
   let time = schedUtils.hourAndMinToTime(today.getHours(), today.getMinutes())
-  if (fakeTime) let time = "11:08a";
+  if (fakeTime) time = "11:08a";
   if (show == "clock"){           // In Clock -> Switching to Stats
     show = "stats";
     updateStatsData()
@@ -546,6 +630,7 @@ display.onchange = function() {
   if (display.on) {
     let today = new Date();
     let time = schedUtils.hourAndMinToTime(today.getHours(), today.getMinutes());
+    if (fakeTime) time = "11:08a";
     hrm.start();
     show = "clock";
     updateClock();
