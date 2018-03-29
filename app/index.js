@@ -507,9 +507,7 @@ function updateStatsData(){
       calsValueLabel.text = `${today.local.calories ? today.local.calories.toLocaleString() : 0} of `;
       calsGoalLabel.style.fill = util.goalToColor(today.local.calories, goals.calories);
       calsGoalLabel.text = `${goals.calories.toLocaleString()}`;
-    }
-  } else {
-    if (device.screen.height == 300) {
+    } else {
       stepStatsLabel.style.fill = util.goalToColor(today.local.steps, goals.steps);
       stepStatsLabel.text = `Steps: ${today.local.steps ? today.local.steps.toLocaleString() : 0} / ${goals.steps.toLocaleString()}`;
 

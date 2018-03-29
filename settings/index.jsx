@@ -111,6 +111,9 @@ function mySettings(props) {
       <Section
         title={<Text bold align="center">Build Version and Notes</Text>}>
         <Text>
+          Beta 3.0.0.1: Fixed Ionic Break!
+        </Text>
+        <Text>
           Beta 3.0: Now Versa Compatible!
         </Text>
         <Text>
