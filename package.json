@@ -10,8 +10,7 @@
       "access_user_profile",
       "access_heart_rate",
       "access_internet",
-      "access_location",
-      "run_background"
+      "access_location"
     ],
     "buildTargets": [
       "higgs",
