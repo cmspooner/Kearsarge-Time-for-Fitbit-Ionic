@@ -111,6 +111,12 @@ function mySettings(props) {
       <Section
         title={<Text bold align="center">Build Version and Notes</Text>}>
         <Text>
+          Beta 3.0.2: Changed shortener change showers to rain, removed linking to submodules folder, removed non-build files from fitbit project; will leave in repo though.
+        </Text>
+        <Text>
+          Beta 3.0.1: Changed shortener to fix more "Showers" problems
+        </Text>
+        <Text>
           Beta 3.0.0.1: Fixed Ionic Break!
         </Text>
         <Text>

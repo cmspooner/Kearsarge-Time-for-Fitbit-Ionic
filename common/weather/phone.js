@@ -316,8 +316,9 @@ function prv_queryYahooWeather(latitude, longitude, success, error) {
         if(error) error(data);
         return;
       }
-
+      
       var condition = parseInt(data.query.results.channel.item.condition.code);
+      var rawCondition = condition;
       switch(condition){
         case 31 :
         case 32 :
@@ -375,6 +376,7 @@ function prv_queryYahooWeather(latitude, longitude, success, error) {
         location : data.query.results.channel.location.city,
         description : data.query.results.channel.item.condition.text,
         isDay : current_time >  sunrise_time && current_time < sunset_time,
+        rawCondition : rawCondition,
         conditionCode : condition,
         sunrise : sunrise_time.getTime(),
         sunset : sunset_time.getTime(),

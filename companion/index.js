@@ -1,7 +1,7 @@
 import * as messaging from "messaging";
 import { settingsStorage } from "settings";
 
-import Weather from '../subModules/fitbit-weather/common/weather/phone';
+import Weather from '../common/weather/phone';
 let weather = new Weather();
 
 console.log("Companion Started");
