@@ -102,7 +102,7 @@ export function isInRange(value, low, high){
 }
 
 export function shortenText(text){
-  text = text.replace("and", "&");
+  text = text.replace("And", "&");
   text = text.replace("Mixed ", "");
   text = text.replace("Severe", "Bad");
   text = text.replace("Thunderstorms", "T-Storms");
