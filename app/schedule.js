@@ -1,4 +1,4 @@
- export var dayToSchedule = {                
+export var dayToSchedule = {                
       "Sunday": "No School",
       "Monday": "Normal",
       "Tuesday": "Normal",
