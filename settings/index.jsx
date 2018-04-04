@@ -42,7 +42,7 @@ function mySettings(props) {
         <ColorSelect
           settingsKey="color"
           colors={[
-            {color: "#CC0000"},
+            {color: "#FFCCCC"},
             {color: "#FF7F7F"},
             {color: "#FF4C4C"},
             {color: "#FF0000"},
@@ -110,6 +110,12 @@ function mySettings(props) {
       </Section>
       <Section
         title={<Text bold align="center">Build Version and Notes</Text>}>
+        <Text>
+          Beta 3.0.4: fixed shortener and now works... I hope
+        </Text>
+        <Text>
+          Beta 3.0.3: Fixed duplicate red in settings, cleaned up spacing in versa stats screen
+        </Text>
         <Text>
           Beta 3.0.2: Changed shortener change showers to rain, removed linking to submodules folder, removed non-build files from fitbit project; will leave in repo though.
         </Text>
