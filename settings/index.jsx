@@ -111,13 +111,76 @@ function mySettings(props) {
       <Section
         title={<Text bold align="center">Build Version and Notes</Text>}>
         <Text>
-           3.0: Completely Versa Compatible. Includes Weather, debugging options, and tons of color choices.
+          Beta 3.1: back to beta! Manually fixing thunderstorm icons when showers.
         </Text>
         <Text>
-           2.0 (Beta  Only): Added Weather.
+          Beta 3.0.4: fixed shortener and now works... I hope
         </Text>
         <Text>
-           1.3: Changed daily schedule and main bar now changes color throughout the day.
+          Beta 3.0.3: Fixed duplicate red in settings, cleaned up spacing in versa stats screen
+        </Text>
+        <Text>
+          Beta 3.0.2: Changed shortener change showers to rain, removed linking to submodules folder, removed non-build files from fitbit project; will leave in repo though.
+        </Text>
+        <Text>
+          Beta 3.0.1: Changed shortener to fix more "Showers" problems
+        </Text>
+        <Text>
+          Beta 3.0.0.1: Fixed Ionic Break!
+        </Text>
+        <Text>
+          Beta 3.0: Now Versa Compatible!
+        </Text>
+        <Text>
+          Beta 2.1.12: Changed color coding to be more rainbow-like, for reals this time. Used pallet tool at: http://www.perbang.dk/
+        </Text>
+        <Text>
+          Beta 2.1.11: Changed color coding to be more rainbow-like
+        </Text>
+        <Text>
+          Beta 2.1.10: Added a huge number of color options
+        </Text>
+        <Text>
+          Beta 2.1.9: Shortened long weather descriptions
+        </Text>
+        <Text>
+          Beta 2.1.8: Weather should update in background, all intervals now in x*1000 notation.
+        </Text>
+        <Text>
+          Beta 2.1.7: Made changes to weather error handling.
+        </Text>
+        <Text>
+          Beta 2.1.6: Fixed Rain showing as thunderstorm and added comments to weather icon switch statement
+        </Text>
+        <Text>
+          Beta 2.1.5: Added this section
+        </Text>
+        <Text>
+          Beta 2.1.4.2: Added Error Message to Weather
+        </Text>
+        <Text>
+          Beta 2.1.4.1: Fixed updating message
+        </Text>
+        <Text>
+          Beta 2.1.4: Updating Message Added
+        </Text>
+        <Text>
+          Beta 2.1.2.1: Reverted Battery Change
+        </Text>
+        <Text>
+          Beta 2.1.3: Chaged Battery
+        </Text>
+        <Text>
+          Beta 2.1.2: Clean Up Battery
+        </Text>
+        <Text>
+          Beta 2.1.1: Added Battery Percentage Color based on level
+        </Text>
+        <Text>
+          Beta 2.1: Added Battery Percentage.
+        </Text>
+        <Text>
+          Beta 2.0: Added Weather.
         </Text>
       </Section>
     </Page>
