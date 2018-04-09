@@ -112,6 +112,16 @@ export function shortenText(text){
   else if (text != "Showers")
     text = text.replace("Showers", "");
   
-  return text;
-  
+  return text;  
+}
+
+export function wordStartsWith(letter, text){
+  text = text.toLowerCase();
+  letter = letter.toLowerCase();
+  text = text.split(' ');
+  for (var i = 0; i < text.length; i++){
+    if (text[i][0] == letter)
+      return true;
+  }
+    return false;
 }

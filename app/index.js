@@ -287,7 +287,10 @@ weather.onsuccess = (data) => {
       weatherImage.href = "../resources/icons/weather/whiteRain.png"
       break;
     case 6: //Thunderstorm
-      weatherImage.href = "../resources/icons/weather/whiteStorm.png"
+      if (util.wordStartsWith("T", data.description))
+        weatherImage.href = "../resources/icons/weather/whiteStorm.png"
+      else
+        weatherImage.href = "../resources/icons/weather/whiteRain.png"
       break;
     case 7: //Snow
       weatherImage.href = "../resources/icons/weather/whiteSnow.png"
