@@ -304,9 +304,10 @@ function prv_queryDarkskyWeather(apiKey, feelsLike, latitude, longitude, success
 };
 
 function prv_queryYahooWeather(latitude, longitude, success, error) {
-  var url = 'https://query.yahooapis.com/v1/public/yql?q=select astronomy, location.city, item.condition from weather.forecast where woeid in '+
-          '(select woeid from geo.places(1) where text=\'(' + latitude+','+longitude+')\') and u=\'c\'&format=json';
-
+  var url = 'https://query.yahooapis.com/v1/public/yql?q=select astronomy, location.city, item.condition from weather.forecast where woeid in '+ '(select woeid from geo.places(1) where text=\'(' + latitude+','+longitude+')\') and u=\'c\'&format=json';
+  //var url = 'https://qury.yahooapis.com/v1/public/yql?q=select astronomy, location.city, item.condition from weather.forecast where woeid in ' + '(select woeid from geo.places(1) where text=\'(' + latitude+','+longitude+')\') and u=\'c\'&format=json';
+  
+  console.log(url);
   fetch(encodeURI(url))
   .then((response) => {
     response.json()

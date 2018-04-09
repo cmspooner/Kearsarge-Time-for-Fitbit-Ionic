@@ -111,6 +111,9 @@ function mySettings(props) {
       <Section
         title={<Text bold align="center">Build Version and Notes</Text>}>
         <Text>
+          Beta 3.2: Storing weather and showing last weather loaded and moving update message to location.
+        </Text>
+        <Text>
           Beta 3.1: back to beta! Manually fixing thunderstorm icons when showers.
         </Text>
         <Text>

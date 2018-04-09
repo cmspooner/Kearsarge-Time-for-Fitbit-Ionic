@@ -34,6 +34,7 @@ var degreesF = true;
 var failCount = 0;
 var showFailCount = false;
 var showError = false;
+var weatherData;
 
 var fakeTime = false;
 
@@ -235,6 +236,7 @@ weather.setMaximumAge(updateInterval * 60 * 1000);
 weather.setFeelsLike(false);
 
 weather.onsuccess = (data) => {
+  weatherData = data;
   console.log("Weather is " + JSON.stringify(data));
   failCount = 0;
   weather.setMaximumAge(updateInterval * 60 * 1000); 
@@ -265,62 +267,44 @@ weather.onsuccess = (data) => {
   else
     weatherLocationLabel.text = `${data.location}`;
   
-  switch(data.conditionCode){
-    case 0: //ClearSky
-      if (data.isDay)
-        weatherImage.href = "../resources/icons/weather/whiteSun.png"
-      else
-        weatherImage.href = "../resources/icons/weather/whiteMoon.png" 
-      break;
-    case 1: //FewClouds
-    case 2: //ScatteredClouds
-      if (data.isDay)
-        weatherImage.href = "../resources/icons/weather/whitePartlySunny.png"
-      else
-        weatherImage.href = "../resources/icons/weather/whitePartlyMoon.png"
-      break;
-    case 3: //BrokenClouds
-      weatherImage.href = "../resources/icons/weather/whiteCloud.png"
-      break;
-    case 4: //ShowerRain
-    case 5: //Rain
-      weatherImage.href = "../resources/icons/weather/whiteRain.png"
-      break;
-    case 6: //Thunderstorm
-      if (util.wordStartsWith("T", data.description))
-        weatherImage.href = "../resources/icons/weather/whiteStorm.png"
-      else
-        weatherImage.href = "../resources/icons/weather/whiteRain.png"
-      break;
-    case 7: //Snow
-      weatherImage.href = "../resources/icons/weather/whiteSnow.png"
-      break;
-    case 8: //Mist
-      weatherImage.href = "../resources/icons/weather/whiteHaze .png"
-      break;
-    default: //Other
-      if (data.isDay)
-        weatherImage.href = "../resources/icons/weather/whiteSun.png"
-      else
-        weatherImage.href = "../resources/icons/weather/whiteMoon.png"
-      break;
-  }
-  
+  weatherImage.href = util.getWeatherIcon(data);  
 }
 
 weather.onerror = (error) => {
   console.log("Weather error " + JSON.stringify(error));
   if (error == "No connection with the companion")
        error = "Companion Failure"
-  weatherImage.href = "";
-  weather.setMaximumAge(15 * 1000); 
-  failCount++;
-  if (showFailCount)
-    tempAndConditionLabel.text = `Updating, try ${failCount}`;
-  else
-    tempAndConditionLabel.text = "Updating...";
-  if (showError)
-    weatherLocationLabel.text = `${error}`;
+  if (JSON.stringify(error) == "{}")
+       error = "Unknown"
+  if (!weatherData){
+    weatherImage.href = "";
+    weather.setMaximumAge(15 * 1000); 
+    failCount++;
+    if (showFailCount)
+      tempAndConditionLabel.text = `Updating, try ${failCount}`;
+    else
+      tempAndConditionLabel.text = "Updating...";
+    if (showError)
+      weatherLocationLabel.text = `${error}`;
+    else
+      weatherLocationLabel.text = ``;
+  } else {
+      if (degreesF)
+        tempAndConditionLabel.text = `${weatherData.temperatureF}° ${util.shortenText(weatherData.description)}`;
+      else 
+        tempAndConditionLabel.text = `${weatherData.temperatureC}° ${util.shortenText(weatherData.description)}`;
+  
+      if (showDataAge)
+        //weatherLocationLabel.text = `${data.location} (${dataAge}${unit})`;
+        if (showError)
+          weatherLocationLabel.text = `${error}, (${timeStamp})`;
+        else
+          weatherLocationLabel.text = `Updating, (${timeStamp})`;
+      else
+        weatherLocationLabel.text = `Updating...`;
+  
+    weatherImage.href = util.getWeatherIcon(weatherData);  
+  }
 
 }
 

@@ -2,7 +2,6 @@ import { peerSocket } from "messaging";
 import { WEATHER_MESSAGE_KEY } from './common.js';
 
 export default class Weather {
-  
   constructor() {
     this._apiKey = '';
     this._provider = 'yahoo';
