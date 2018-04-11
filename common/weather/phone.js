@@ -361,7 +361,7 @@ function prv_queryYahooWeather(latitude, longitude, success, error) {
         day3HighF : parseInt(parseInt(data.query.results.channel.item.forecast[2].high) * 9/5 + 32),
         day3LowC : parseInt(data.query.results.channel.item.forecast[2].low),
         day3LowF : parseInt(parseInt(data.query.results.channel.item.forecast[2].low) * 9/5 + 32),
-        day3Condition : getSimpleCondition(data.query.results.channel.item.forecast[2].code),
+        day3Condition : getSimpleCondition(parseInt(data.query.results.channel.item.forecast[2].code)),
         day3Description : data.query.results.channel.item.forecast[2].text      
       };
       // Send the weather data to the device

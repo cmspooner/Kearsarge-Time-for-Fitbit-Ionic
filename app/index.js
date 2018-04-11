@@ -34,7 +34,7 @@ var degreesF = true;
 var failCount = 0;
 var showFailCount = false;
 var showError = false;
-var weatherData;
+var weatherData = null;
 
 var fakeTime = false;
 
@@ -584,8 +584,9 @@ function updateForecastData(){
     let day = today.getDay()
     
     todayDateLabel.text  = "Today";
-    todayWeatherImage.href = util.getForecastIcon(weatherData.todayCondition);
     console.log("Today Code: " + weatherData.todayCondition)
+    todayWeatherImage.href = util.getForecastIcon(weatherData.todayCondition, 
+                                                  weatherData.tomorrowDescription);
     todayDescriptionLabel.text = weatherData.todayDescription;
     todayHighLabel.text = "High:"
     if (degreesF)
@@ -599,8 +600,9 @@ function updateForecastData(){
       todayLowValLabel.text = weatherData.todayLowC + "°"
     
     tomorrowDateLabel.text = util.toDay(day+1, "long");
-    tomorrowWeatherImage.href = util.getForecastIcon(weatherData.tomorrowCondition);
     console.log("Tomorrow Code: " + weatherData.tomorrowCondition)
+    tomorrowWeatherImage.href = util.getForecastIcon(weatherData.tomorrowCondition, 
+                                                     weatherData.tomorrowDescription);
     tomorrowDescriptionLabel.text = weatherData.tomorrowDescription;
     tomorrowHighLabel.text = "High:"
     if (degreesF)
@@ -614,8 +616,8 @@ function updateForecastData(){
       tomorrowLowValLabel.text = weatherData.tomorrowLowC + "°"
     
     day3DateLabel.text = util.toDay(day+2, "long");
-    day3WeatherImage.href = util.getForecastIcon(weatherData.day3Condition);
     console.log("day3 Code: " + weatherData.day3Condition)
+    day3WeatherImage.href = util.getForecastIcon(weatherData.day3Condition);
     day3DescriptionLabel.text = weatherData.day3Description;
     day3HighLabel.text = "High:"
     if (degreesF)
@@ -659,7 +661,7 @@ background.onclick = function(evt) {
       scheduleView.style.display = "inline";
       forecastView.style.display = "none";
       console.log("schedule Loaded");
-    } else {
+    } else if(weatherData != null) {
       show = "forecast";
       updateClock();
       updateClockData();
@@ -672,7 +674,24 @@ background.onclick = function(evt) {
       scheduleView.style.display = "none";
       forecastView.style.display = "inline";//test
       console.log("forecast Loaded");
-
+    } else {
+      show = "clock";
+      updateClock();
+      updateClockData();
+      clockView.style.display = "inline";//test
+      if (schedUtils.isInSchedule(sched, time)){ 
+        updatePeriodData();
+        periodView.style.display = "inline";
+        weatherView.style.display = "none";
+      } else {
+        weather.fetch();
+        periodView.style.display = "none";
+        weatherView.style.display = "inline";//test
+      }
+      statsView.style.display = "none";
+      scheduleView.style.display = "none";
+      forecastView.style.display = "none";
+      console.log("Clock Loaded");
     } 
   } else {                                  // In Schedule -> Switching to Clock
     show = "clock";

@@ -111,6 +111,9 @@ function mySettings(props) {
       <Section
         title={<Text bold align="center">Build Version and Notes</Text>}>
         <Text>
+          Beta 4.1: Fixes to forcast screen.
+        </Text>
+        <Text>
           Beta 4.0: Weather forcast screen.
         </Text>
         <Text>
