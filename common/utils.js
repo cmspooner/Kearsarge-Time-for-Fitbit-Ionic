@@ -61,10 +61,15 @@ export function toMonth(month, len = "short") {
 }
 
 export function toDay(day, len = "short") {
+  day = day%7;
   if (len == "long"){
     day += 7;
   }
   return days[day];
+}
+
+export function expandDay(day){
+  return days[days.indexOf(day)+7];
 }
 
 export function goalToColor(value, total, low = 'fb-red', 
@@ -106,6 +111,7 @@ export function shortenText(text){
   text = text.replace("Mixed ", "");
   text = text.replace("Severe", "Bad");
   text = text.replace("Thunderstorms", "T-Storms");
+  text = text.replace("Partly Cloudy", "Some Clouds");
   text = text.replace("Thundershowers", "T-Showers");
   if (text == "Isolated Showers" || text == "Scattered Showers")
     text = "Some Rain"
@@ -158,7 +164,7 @@ export function getWeatherIcon(data){
       return "../resources/icons/weather/whiteSnow.png"
       break;
     case 8: //Mist
-      weatherImage.href = "../resources/icons/weather/whiteHaze .png"
+      return "../resources/icons/weather/whiteHaze .png"
       break;
     default: //Other
       if (data.isDay)
@@ -166,5 +172,38 @@ export function getWeatherIcon(data){
       else
         return "../resources/icons/weather/whiteMoon.png"
       break;
+  }
+}
+export function getForecastIcon(code, description){
+switch(code){
+  case 0: //ClearSky
+    return "../resources/icons/weather/whiteSun.png"
+    break;
+  case 1: //FewClouds
+  case 2: //ScatteredClouds
+    return "../resources/icons/weather/whitePartlySunny.png"
+    break;
+  case 3: //BrokenClouds
+    return "../resources/icons/weather/whiteCloud.png"
+    break;
+  case 4: //ShowerRain
+  case 5: //Rain
+   return "../resources/icons/weather/whiteRain.png"
+    break;
+  case 6: //Thunderstorm
+    if (wordStartsWith("T", description))
+      return "../resources/icons/weather/whiteStorm.png"
+    else
+      return "../resources/icons/weather/whiteRain.png"
+    break;
+  case 7: //Snow
+    return "../resources/icons/weather/whiteSnow.png"
+    break;
+  case 8: //Mist
+    return "../resources/icons/weather/whiteHaze .png"
+    break;
+  default: //Other
+    return "../resources/icons/weather/whiteSun.png"
+    break;
   }
 }

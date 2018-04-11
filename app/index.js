@@ -149,6 +149,15 @@ let tomorrowHighValLabel = document.getElementById("tomorrowHighValLabel");
 let tomorrowLowLabel = document.getElementById("tomorrowLowLabel");
 let tomorrowLowValLabel = document.getElementById("tomorrowLowValLabel");
 
+let day3DateLabel = document.getElementById("day3DateLabel");
+let day3WeatherImage = document.getElementById("day3WeatherImage");
+let day3Image = document.getElementById("day3Image");
+let day3DescriptionLabel = document.getElementById("day3DescriptionLabel");
+let day3HighLabel = document.getElementById("day3HighLabel");
+let day3HighValLabel = document.getElementById("day3HighValLabel");
+let day3LowLabel = document.getElementById("day3LowLabel");
+let day3LowValLabel = document.getElementById("day3LowValLabel");
+
 let didVib = false;
 let show = "clock";
 
@@ -571,8 +580,12 @@ function updateScheduleData(){
 
 function updateForecastData(){
   if (show == "forecast" && display.on){
-    todayDateLabel.text  = weatherData.todayDate;
-    todayWeatherImage.href = util.getWeatherIcon(weatherData.todayCondition);
+    let today = new Date();
+    let day = today.getDay()
+    
+    todayDateLabel.text  = "Today";
+    todayWeatherImage.href = util.getForecastIcon(weatherData.todayCondition);
+    console.log("Today Code: " + weatherData.todayCondition)
     todayDescriptionLabel.text = weatherData.todayDescription;
     todayHighLabel.text = "High:"
     if (degreesF)
@@ -585,8 +598,9 @@ function updateForecastData(){
     else
       todayLowValLabel.text = weatherData.todayLowC + "°"
     
-    tomorrowDateLabel.text  = weatherData.tomorrowDate;
-    tomorrowWeatherImage.href = util.getWeatherIcon(weatherData.tomorrowCondition);
+    tomorrowDateLabel.text = util.toDay(day+1, "long");
+    tomorrowWeatherImage.href = util.getForecastIcon(weatherData.tomorrowCondition);
+    console.log("Tomorrow Code: " + weatherData.tomorrowCondition)
     tomorrowDescriptionLabel.text = weatherData.tomorrowDescription;
     tomorrowHighLabel.text = "High:"
     if (degreesF)
@@ -598,6 +612,21 @@ function updateForecastData(){
       tomorrowLowValLabel.text = weatherData.tomorrowLowF + "°"
     else
       tomorrowLowValLabel.text = weatherData.tomorrowLowC + "°"
+    
+    day3DateLabel.text = util.toDay(day+2, "long");
+    day3WeatherImage.href = util.getForecastIcon(weatherData.day3Condition);
+    console.log("day3 Code: " + weatherData.day3Condition)
+    day3DescriptionLabel.text = weatherData.day3Description;
+    day3HighLabel.text = "High:"
+    if (degreesF)
+      day3HighValLabel.text = weatherData.day3HighF + "°"
+    else
+      day3HighValLabel.text = weatherData.day3HighC + "°"
+    day3LowLabel.text = "Low:"
+    if (degreesF)
+      day3LowValLabel.text = weatherData.day3LowF + "°"
+    else
+      day3LowValLabel.text = weatherData.day3LowC + "°"
   }
 }
 
