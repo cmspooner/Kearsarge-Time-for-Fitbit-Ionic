@@ -30,7 +30,6 @@
   fill: white;
 }
 
-
 #seperatorLine {
   stroke-width: 6;
   fill: deepskyblue;
@@ -468,4 +467,121 @@
   x: 95%;
   y: 98%;
   fill: white;
+}
+
+/* Forcast Labels */
+#todayDateLabel {
+  font-size: 28;
+  font-family: Colfax-Bold;
+  text-length: 50;
+  text-anchor: start;
+  x: 1%;
+  y: 8%;
+  fill: white;
+}
+
+#todayDescriptionLabel {
+  font-size: 26;
+  font-family: Colfax-Medium;
+  text-length: 50;
+  text-anchor: start;
+  x: 75;
+  y: 21%;
+  fill: white;
+}
+
+#todayHighLabel {
+  font-size: 24;
+  font-family: Colfax-Regular;
+  text-length: 50;
+  text-anchor: start;
+  x: 75;
+  y: 31%;
+  fill: white;
+}
+#todayHighValLabel {
+  font-size: 24;
+  font-family: Colfax-Regular;
+  text-length: 50;
+  text-anchor: start;
+  x: 135;
+  y: 31%;
+  fill: red;
+}
+
+#todayLowLabel {
+  font-size: 28;
+  font-family: Colfax-Regular;
+  text-length: 50;
+  text-anchor: start;
+  x: 200;
+  y: 31%;
+  fill: white;
+}
+#todayLowValLabel {
+  font-size: 28;
+  font-family: Colfax-Regular;
+  text-length: 50;
+  text-anchor: start;
+  x: 263;
+  y: 31%;
+  fill: cornflowerblue;
+}
+
+#tomorrowDateLabel {
+  font-size: 28;
+  font-family: Colfax-Bold;
+  text-length: 50;
+  text-anchor: start;
+  x: 1%;
+  y: 41%;
+  fill: white;
+}
+
+#tomorrowDescriptionLabel {
+  font-size: 26;
+  font-family: Colfax-Medium;
+  text-length: 50;
+  text-anchor: start;
+  x: 75;
+  y: 51%;
+  fill: white;
+}
+
+#tomorrowHighLabel {
+  font-size: 24;
+  font-family: Colfax-Regular;
+  text-length: 50;
+  text-anchor: start;
+  x: 75;
+  y: 61%;
+  fill: white;
+}
+#tomorrowHighValLabel {
+  font-size: 24;
+  font-family: Colfax-Regular;
+  text-length: 50;
+  text-anchor: start;
+  x: 135;
+  y: 61%;
+  fill: red;
+}
+
+#tomorrowLowLabel {
+  font-size: 28;
+  font-family: Colfax-Regular;
+  text-length: 50;
+  text-anchor: start;
+  x: 200;
+  y: 61%;
+  fill: white;
+}
+#tomorrowLowValLabel {
+  font-size: 28;
+  font-family: Colfax-Regular;
+  text-length: 50;
+  text-anchor: start;
+  x: 263;
+  y: 61%;
+  fill: cornflowerblue;
 }

@@ -65,5 +65,22 @@
     <text id="period9NameLabel" />
     <text id="period9EndLabel" />
   </svg>
+  <svg id="forecast" display="none">
+    <text id="todayDateLabel" />
+    <image id="todayWeatherImage" x="10" y="6%" width="60" height="60" href="" load="sync"/>
+    <text id="todayDescriptionLabel" />
+    <text id="todayHighLabel" />
+    <text id="todayHighValLabel" />
+    <text id="todayLowLabel" />
+    <text id="todayLowValLabel" />
+    
+    <text id="tomorrowDateLabel" />
+    <image id="tomorrowWeatherImage" x="10" y="39%" width="60" height="60" href="" load="sync"/>
+    <text id="tomorrowDescriptionLabel" />
+    <text id="tomorrowHighLabel" />
+    <text id="tomorrowHighValLabel" />
+    <text id="tomorrowLowLabel" />
+    <text id="tomorrowLowValLabel" />
+  </svg>
   <rect id="clickbg" pointer-events="visible"/>
 </svg>

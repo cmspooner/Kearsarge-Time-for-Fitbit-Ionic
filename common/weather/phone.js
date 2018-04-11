@@ -304,8 +304,8 @@ function prv_queryDarkskyWeather(apiKey, feelsLike, latitude, longitude, success
 };
 
 function prv_queryYahooWeather(latitude, longitude, success, error) {
-  var url = 'https://query.yahooapis.com/v1/public/yql?q=select astronomy, location.city, item.condition from weather.forecast where woeid in '+ '(select woeid from geo.places(1) where text=\'(' + latitude+','+longitude+')\') and u=\'c\'&format=json';
-  //var url = 'https://qury.yahooapis.com/v1/public/yql?q=select astronomy, location.city, item.condition from weather.forecast where woeid in ' + '(select woeid from geo.places(1) where text=\'(' + latitude+','+longitude+')\') and u=\'c\'&format=json';
+  //var url = 'https://query.yahooapis.com/v1/public/yql?q=select astronomy, location.city, item.condition from weather.forecast where woeid in '+ '(select woeid from geo.places(1) where text=\'(' + latitude+','+longitude+')\') and u=\'c\'&format=json';
+  var url = 'https://query.yahooapis.com/v1/public/yql?q=select astronomy, location.city, item from weather.forecast where woeid in ' + '(select woeid from geo.places(1) where text=\'(' + latitude+','+longitude+')\') and u=\'c\'&format=json';
   
   console.log(url);
   fetch(encodeURI(url))
@@ -318,54 +318,10 @@ function prv_queryYahooWeather(latitude, longitude, success, error) {
         return;
       }
       
+      //console.log(JSON.stringify(data));
+      
       var condition = parseInt(data.query.results.channel.item.condition.code);
       var rawCondition = condition;
-      switch(condition){
-        case 31 :
-        case 32 :
-        case 33 :
-        case 34 :
-          condition = Conditions.ClearSky;  break;
-        case 29 :
-        case 30 :
-        case 44 :
-          condition = Conditions.FewClouds;  break;
-        case 8 :
-        case 9 :
-          condition = Conditions.ShowerRain;  break;
-        case 6 :
-        case 10 :
-        case 11 :
-        case 12 :
-        case 35 :
-        case 40 :
-          condition = Conditions.Rain; break;
-        case 1 :
-        case 3 :
-        case 4 :
-        case 37 :
-        case 38 :
-        case 39 :
-        case 47 :
-          condition = Conditions.Thunderstorm; break;
-        case 5 :
-        case 7 :
-        case 13 :
-        case 14 :
-        case 15 :
-        case 16 :  
-        case 41 :
-        case 42 :
-        case 43 :
-          condition = Conditions.Snow; break;
-        case 20 :
-          condition = Conditions.Mist; break;
-        case 26 :
-        case 27 :
-        case 28 :
-          condition = Conditions.BrokenClouds; break;
-        default : condition = Conditions.Unknown; break;
-      }
 
       var current_time = new Date();
       var sunrise_time = prv_timeParse(data.query.results.channel.astronomy.sunrise);
@@ -378,10 +334,50 @@ function prv_queryYahooWeather(latitude, longitude, success, error) {
         description : data.query.results.channel.item.condition.text,
         isDay : current_time >  sunrise_time && current_time < sunset_time,
         rawCondition : rawCondition,
-        conditionCode : condition,
+        conditionCode : getSimpleCondition(condition),
         sunrise : sunrise_time.getTime(),
         sunset : sunset_time.getTime(),
-        timestamp : current_time.getTime()
+        timestamp : current_time.getTime(),
+        
+        todayDate : "Today",
+        todayHighC : parseInt(data.query.results.channel.item.forecast[0].high),
+        todayHighF : parseInt(data.query.results.channel.item.forecast[0].high) * 9/5 + 32,
+        todayLowC : parseInt(data.query.results.channel.item.forecast[0].low),
+        todayLowF : parseInt(data.query.results.channel.item.forecast[0].low) * 9/5 + 32,
+        todayCondition : getSimpleCondition(data.query.results.channel.item.forecast[0].code),
+        todayDescription : data.query.results.channel.item.forecast[0].text,
+        
+        tomorrowDate : "Tomorrow",
+        tomorrowHighC : parseInt(data.query.results.channel.item.forecast[1].high),
+        tomorrowHighF : parseInt(data.query.results.channel.item.forecast[1].high) * 9/5 + 32,
+        tomorrowLowC : parseInt(data.query.results.channel.item.forecast[1].low),
+        tomorrowLowF : parseInt(data.query.results.channel.item.forecast[1].low) * 9/5 + 32,
+        tomorrowCondition : getSimpleCondition(data.query.results.channel.item.forecast[1].code),
+        tomorrowDescription : data.query.results.channel.item.forecast[1].text,
+        
+        day3Date : Date((data.query.results.channel.item.forecast[2].date)),
+        day3HighC : parseInt(data.query.results.channel.item.forecast[2].high),
+        day3HighF : parseInt(data.query.results.channel.item.forecast[2].high) * 9/5 + 32,
+        day3LowC : parseInt(data.query.results.channel.item.forecast[2].low),
+        day3LowF : parseInt(data.query.results.channel.item.forecast[2].low) * 9/5 + 32,
+        day3Condition : getSimpleCondition(data.query.results.channel.item.forecast[2].code),
+        day3Description : data.query.results.channel.item.forecast[2].text,
+        
+        day4Date : Date((data.query.results.channel.item.forecast[3].date)),
+        day4HighC : parseInt(data.query.results.channel.item.forecast[3].high),
+        day4HighF : parseInt(data.query.results.channel.item.forecast[3].high) * 9/5 + 32,
+        day4LowC : parseInt(data.query.results.channel.item.forecast[3].low),
+        day4LowF : parseInt(data.query.results.channel.item.forecast[3].low) * 9/5 + 32,
+        day4Condition : getSimpleCondition(data.query.results.channel.item.forecast[3].code),
+        day4Description : data.query.results.channel.item.forecast[3].text,
+        
+        day5Date : Date((data.query.results.channel.item.forecast[4].date)),
+        day5HighC : parseInt(data.query.results.channel.item.forecast[4].high),
+        day5HighF : parseInt(data.query.results.channel.item.forecast[4].high) * 9/5 + 32,
+        day5LowC : parseInt(data.query.results.channel.item.forecast[4].low),
+        day5LowF : parseInt(data.query.results.channel.item.forecast[4].low) * 9/5 + 32,
+        day5Condition : getSimpleCondition(data.query.results.channel.item.forecast[4].code),
+        day5Description : data.query.results.channel.item.forecast[4].text
       };
       // Send the weather data to the device
       if(success) success(weather);
@@ -391,6 +387,55 @@ function prv_queryYahooWeather(latitude, longitude, success, error) {
     if(error) error(err);
   });
 };
+
+function getSimpleCondition(condition){
+  switch(condition){
+        case 31 :
+        case 32 :
+        case 33 :
+        case 34 :
+          return Conditions.ClearSky;  break;
+        case 29 :
+        case 30 :
+        case 44 :
+          return Conditions.FewClouds;  break;
+        case 8 :
+        case 9 :
+          return Conditions.ShowerRain;  break;
+        case 6 :
+        case 10 :
+        case 11 :
+        case 12 :
+        case 35 :
+        case 40 :
+          return Conditions.Rain; break;
+        case 1 :
+        case 3 :
+        case 4 :
+        case 37 :
+        case 38 :
+        case 39 :
+        case 47 :
+          return Conditions.Thunderstorm; break;
+        case 5 :
+        case 7 :
+        case 13 :
+        case 14 :
+        case 15 :
+        case 16 :  
+        case 41 :
+        case 42 :
+        case 43 :
+          return Conditions.Snow; break;
+        case 20 :
+          return Conditions.Mist; break;
+        case 26 :
+        case 27 :
+        case 28 :
+          return Conditions.BrokenClouds; break;
+        default : return Conditions.Unknown; break;
+      }
+}
 
 function prv_timeParse(str) {
   var buff = str.split(" ");

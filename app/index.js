@@ -49,6 +49,7 @@ let periodView = document.getElementById("period");
 let weatherView = document.getElementById("weather");
 let statsView = document.getElementById("stats");
 let scheduleView = document.getElementById("schedule");
+let forecastView = document.getElementById("forecast");
 
 // Get a handle on the <text> element
 // Clock view
@@ -128,6 +129,25 @@ let periodLabels = [
     name: document.getElementById("period9NameLabel"), 
     end: document.getElementById("period9EndLabel")}
   ]
+
+// Forecast View
+let todayDateLabel = document.getElementById("todayDateLabel");
+let todayWeatherImage = document.getElementById("todayWeatherImage");
+let weatherImage = document.getElementById("weatherImage");
+let todayDescriptionLabel = document.getElementById("todayDescriptionLabel");
+let todayHighLabel = document.getElementById("todayHighLabel");
+let todayHighValLabel = document.getElementById("todayHighValLabel");
+let todayLowLabel = document.getElementById("todayLowLabel");
+let todayLowValLabel = document.getElementById("todayLowValLabel");
+
+let tomorrowDateLabel = document.getElementById("tomorrowDateLabel");
+let tomorrowWeatherImage = document.getElementById("tomorrowWeatherImage");
+let weatherImage = document.getElementById("weatherImage");
+let tomorrowDescriptionLabel = document.getElementById("tomorrowDescriptionLabel");
+let tomorrowHighLabel = document.getElementById("tomorrowHighLabel");
+let tomorrowHighValLabel = document.getElementById("tomorrowHighValLabel");
+let tomorrowLowLabel = document.getElementById("tomorrowLowLabel");
+let tomorrowLowValLabel = document.getElementById("tomorrowLowValLabel");
 
 let didVib = false;
 let show = "clock";
@@ -549,6 +569,38 @@ function updateScheduleData(){
   }
 }
 
+function updateForecastData(){
+  if (show == "forecast" && display.on){
+    todayDateLabel.text  = weatherData.todayDate;
+    todayWeatherImage.href = util.getWeatherIcon(weatherData.todayCondition);
+    todayDescriptionLabel.text = weatherData.todayDescription;
+    todayHighLabel.text = "High:"
+    if (degreesF)
+      todayHighValLabel.text = weatherData.todayHighF + "°"
+    else
+      todayHighValLabel.text = weatherData.todayHighC + "°"
+    todayLowLabel.text = "Low:"
+    if (degreesF)
+      todayLowValLabel.text = weatherData.todayLowF + "°"
+    else
+      todayLowValLabel.text = weatherData.todayLowC + "°"
+    
+    tomorrowDateLabel.text  = weatherData.tomorrowDate;
+    tomorrowWeatherImage.href = util.getWeatherIcon(weatherData.tomorrowCondition);
+    tomorrowDescriptionLabel.text = weatherData.tomorrowDescription;
+    tomorrowHighLabel.text = "High:"
+    if (degreesF)
+      tomorrowHighValLabel.text = weatherData.tomorrowHighF + "°"
+    else
+      tomorrowHighValLabel.text = weatherData.tomorrowHighC + "°"
+    tomorrowLowLabel.text = "Low:"
+    if (degreesF)
+      tomorrowLowValLabel.text = weatherData.tomorrowLowF + "°"
+    else
+      tomorrowLowValLabel.text = weatherData.tomorrowLowC + "°"
+  }
+}
+
 //------------------Event Handleing--------------------
 
 background.onclick = function(evt) {
@@ -564,9 +616,10 @@ background.onclick = function(evt) {
     weatherView.style.display = "none";
     statsView.style.display = "inline";
     scheduleView.style.display = "none";
+    forecastView.style.display = "none";
     console.log("stats Loaded");
     display.poke()
-  } else if (show == "stats"){                   // In Stats -> Switching to Clock or schedule    
+  } else if (show == "stats"){                   // In Stats -> Switching to forcast or schedule    
     if (schedUtils.isInSchedule(sched, time)){  
       show = "schedule";
       updateScheduleData();
@@ -575,18 +628,21 @@ background.onclick = function(evt) {
       weatherView.style.display = "none";
       statsView.style.display = "none";
       scheduleView.style.display = "inline";
+      forecastView.style.display = "none";
       console.log("schedule Loaded");
     } else {
-      show = "clock";
+      show = "forecast";
       updateClock();
       updateClockData();
       weather.fetch();
-      clockView.style.display = "inline";//test
+      updateForecastData();
+      clockView.style.display = "none";//test
       periodView.style.display = "none";
-      weatherView.style.display = "inline";//test
+      weatherView.style.display = "none";//test
       statsView.style.display = "none";
       scheduleView.style.display = "none";
-      console.log("Clock Loaded");
+      forecastView.style.display = "inline";//test
+      console.log("forecast Loaded");
 
     } 
   } else {                                  // In Schedule -> Switching to Clock
@@ -605,6 +661,7 @@ background.onclick = function(evt) {
     }
     statsView.style.display = "none";
     scheduleView.style.display = "none";
+    forecastView.style.display = "none";
     console.log("Clock Loaded");
 
   }
@@ -633,6 +690,7 @@ display.onchange = function() {
     }
     statsView.style.display = "none";
     scheduleView.style.display = "none";
+    forecastView.style.display = "none";
   } else {
     hrm.stop();
   }
