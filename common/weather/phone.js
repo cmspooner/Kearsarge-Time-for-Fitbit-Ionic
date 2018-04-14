@@ -11,6 +11,7 @@ export default class Weather {
     this._feelsLike = true;
     this._weather = undefined;
     this._maximumAge = 0;
+    this._unit = 'c'
 
     this.onerror = undefined;
     this.onsuccess = undefined;
@@ -19,13 +20,20 @@ export default class Weather {
       // We are receiving a request from the app
       if (evt.data !== undefined && evt.data[WEATHER_MESSAGE_KEY] !== undefined) {
         let message = evt.data[WEATHER_MESSAGE_KEY];
-        prv_fetchRemote(message.provider, message.apiKey, message.feelsLike);
+        prv_fetchRemote(message.provider, message.apiKey, message.unit, message.feelsLike);
       }
     });
   }
   
   setApiKey(apiKey) {
     this._apiKey = apiKey;
+  }
+  
+  setUnit(unit){
+    if (unit == "f")
+      this._unit = 'f';
+    else
+      this._unit = 'c'
   }
   
   setProvider(provider) {
@@ -51,7 +59,7 @@ export default class Weather {
     geolocation.getCurrentPosition(
       (position) => {
         console.log("Latitude: " + position.coords.latitude + " Longitude: " + position.coords.longitude);
-        prv_fetch(this._provider, this._apiKey, this._feelsLike, position.coords.latitude, position.coords.longitude, 
+        prv_fetch(this._provider, this._apiKey, this._unit, this._feelsLike, position.coords.latitude, position.coords.longitude, 
               (data) => {
                 this._weather = data;
                 if(this.onsuccess) this.onsuccess(data);
@@ -69,10 +77,10 @@ export default class Weather {
 /*********** PRIVATE FUNCTIONS  ************/
 /*******************************************/
 
-function prv_fetchRemote(provider, apiKey, feelsLike) {
+function prv_fetchRemote(provider, apiKey,  unit, feelsLike) {
   geolocation.getCurrentPosition(
     (position) => {
-      prv_fetch(provider, apiKey, feelsLike, position.coords.latitude, position.coords.longitude,
+      prv_fetch(provider, apiKey, unit, feelsLike, position.coords.latitude, position.coords.longitude,
           (data) => {
             if (peerSocket.readyState === peerSocket.OPEN) {
               let answer = {};
@@ -107,7 +115,7 @@ function prv_fetchRemote(provider, apiKey, feelsLike) {
     {"enableHighAccuracy" : false, "maximumAge" : 1000 * 1800});
 }
 
-function prv_fetch(provider, apiKey, feelsLike, latitude, longitude, success, error) {
+function prv_fetch(provider, apiKey, unit, feelsLike, latitude, longitude, success, error) {
   // console.log("Latitude: " + latitude + " Longitude: " + longitude);
   if( provider === "owm" ) {
     prv_queryOWMWeather(apiKey, latitude, longitude, success, error);
@@ -120,7 +128,7 @@ function prv_fetch(provider, apiKey, feelsLike, latitude, longitude, success, er
   }
   else 
   {
-    prv_queryYahooWeather(latitude, longitude, success, error);
+    prv_queryYahooWeather(latitude, longitude, unit, success, error);
   }
 }
 
@@ -303,9 +311,9 @@ function prv_queryDarkskyWeather(apiKey, feelsLike, latitude, longitude, success
   .catch((err) => { if(error) error(err); });
 };
 
-function prv_queryYahooWeather(latitude, longitude, success, error) {
+function prv_queryYahooWeather(latitude, longitude, unit, success, error) {
   //var url = 'https://query.yahooapis.com/v1/public/yql?q=select astronomy, location.city, item.condition from weather.forecast where woeid in '+ '(select woeid from geo.places(1) where text=\'(' + latitude+','+longitude+')\') and u=\'c\'&format=json';
-  var url = 'https://query.yahooapis.com/v1/public/yql?q=select astronomy, location.city, item from weather.forecast where woeid in ' + '(select woeid from geo.places(1) where text=\'(' + latitude+','+longitude+')\') and u=\'c\'&format=json';
+  var url = 'https://query.yahooapis.com/v1/public/yql?q=select astronomy, location.city, item from weather.forecast where woeid in ' + '(select woeid from geo.places(1) where text=\'(' + latitude+','+longitude+')\') and u=\''+ unit +'\'&format=json';
   
   console.log(url);
   fetch(encodeURI(url))
@@ -328,8 +336,7 @@ function prv_queryYahooWeather(latitude, longitude, success, error) {
       var sunset_time  = prv_timeParse(data.query.results.channel.astronomy.sunset);
       let weather = {
         //temperatureK : (parseInt(data.query.results.channel.item.condition.temp) + 273.15),
-        temperatureC : parseInt(data.query.results.channel.item.condition.temp),
-        temperatureF : (parseInt(data.query.results.channel.item.condition.temp) * 9/5 + 32),
+        temperature : parseInt(data.query.results.channel.item.condition.temp),
         location : data.query.results.channel.location.city,
         description : data.query.results.channel.item.condition.text,
         isDay : current_time >  sunrise_time && current_time < sunset_time,
@@ -340,27 +347,21 @@ function prv_queryYahooWeather(latitude, longitude, success, error) {
         timestamp : current_time.getTime(),
         
         //todayDate : "Today",
-        todayHighC : parseInt(data.query.results.channel.item.forecast[0].high),
-        todayHighF : parseInt(parseInt(data.query.results.channel.item.forecast[0].high) * 9/5 + 32),
-        todayLowC : parseInt(data.query.results.channel.item.forecast[0].low),
-        todayLowF : parseInt(parseInt(data.query.results.channel.item.forecast[0].low) * 9/5 + 32),
+        todayHigh : parseInt(data.query.results.channel.item.forecast[0].high),
+        todayLow : parseInt(data.query.results.channel.item.forecast[0].low),
         todayCondition : getSimpleCondition(parseInt(data.query.results.channel.item.forecast[0].code)),
         todayDescription : data.query.results.channel.item.forecast[0].text,
         
         
         //tomorrowDate : Date(data.query.results.channel.item.forecast[2].date),
-        tomorrowHighC : parseInt(data.query.results.channel.item.forecast[1].high),
-        tomorrowHighF : parseInt(parseInt(data.query.results.channel.item.forecast[1].high) * 9/5 + 32),
-        tomorrowLowC : parseInt(data.query.results.channel.item.forecast[1].low),
-        tomorrowLowF : parseInt(parseInt(data.query.results.channel.item.forecast[1].low) * 9/5 + 32),
+        tomorrowHigh : parseInt(data.query.results.channel.item.forecast[1].high),
+        tomorrowLow : parseInt(data.query.results.channel.item.forecast[1].low),
         tomorrowCondition : getSimpleCondition(parseInt(data.query.results.channel.item.forecast[1].code)),
         tomorrowDescription : data.query.results.channel.item.forecast[1].text,
         
         //day3Date : Date((data.query.results.channel.item.forecast[2].date)),
-        day3HighC : parseInt(data.query.results.channel.item.forecast[2].high),
-        day3HighF : parseInt(parseInt(data.query.results.channel.item.forecast[2].high) * 9/5 + 32),
-        day3LowC : parseInt(data.query.results.channel.item.forecast[2].low),
-        day3LowF : parseInt(parseInt(data.query.results.channel.item.forecast[2].low) * 9/5 + 32),
+        day3High : parseInt(data.query.results.channel.item.forecast[2].high),
+        day3Low : parseInt(data.query.results.channel.item.forecast[2].low),
         day3Condition : getSimpleCondition(parseInt(data.query.results.channel.item.forecast[2].code)),
         day3Description : data.query.results.channel.item.forecast[2].text      
       };

@@ -8,6 +8,7 @@ export default class Weather {
     this._feelsLike = true;
     this._weather = undefined;
     this._maximumAge = 0;
+    this._unit = 'c'
 
     this.onerror = undefined;
     this.onsuccess = undefined;
@@ -30,6 +31,14 @@ export default class Weather {
     this._apiKey = apiKey;
   }
   
+  setUnit(unit){
+    console.log(unit);
+    if (unit == "f")
+      this._unit = 'f';
+    else
+      this._unit = 'c'
+  }
+  
   setProvider(provider) {
     this._provider = provider;
   }
@@ -43,6 +52,7 @@ export default class Weather {
   }
   
   fetch() {
+    console.log("I'm a fetch'n some weather!")
     let now = new Date().getTime();
     if(this._weather !== undefined && this._weather.timestamp !== undefined && (now - this._weather.timestamp < this._maximumAge)) {
       // return previous weather if the maximu age is not reached
@@ -57,6 +67,7 @@ export default class Weather {
       message[WEATHER_MESSAGE_KEY].apiKey    = this._apiKey;
       message[WEATHER_MESSAGE_KEY].provider  = this._provider;
       message[WEATHER_MESSAGE_KEY].feelsLike = this._feelsLike;
+      message[WEATHER_MESSAGE_KEY].unit = this._unit;
       peerSocket.send(message);
     }
     else {

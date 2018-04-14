@@ -29,8 +29,8 @@ var sched = "Regular";
 var sepratorGoal = true;
 var color = "deepskyblue";
 var updateInterval = 30;
+var units = 'f';
 var showDataAge = false;
-var degreesF = true;
 var failCount = 0;
 var showFailCount = false;
 var showError = false;
@@ -181,6 +181,7 @@ messaging.peerSocket.onmessage = evt => {
     else if (updateInterval == "2 hours")
       updateInterval = 120;
     console.log(`updateInterval is: ${updateInterval}`);
+    weather.setMaximumAge(updateInterval * 60 * 1000); 
     weather.fetch();
   }
   if (evt.data.key === "color" && evt.data.newValue) {
@@ -229,9 +230,19 @@ messaging.peerSocket.onmessage = evt => {
     weather.fetch();
   }
   if (evt.data.key === "unitToggle" && evt.data.newValue) {
-    degreesF = !JSON.parse(evt.data.newValue);
+    let degreesF = !JSON.parse(evt.data.newValue);
     console.log(`Fahrenheit: ${degreesF}`);
+    if (degreesF)
+      units = 'f';
+    else
+      units = 'c';
+    let tempUI = updateInterval;
+    updateInterval = 0;
+    weather.setUnit(units);
+    weather.setMaximumAge(updateInterval * 60 * 1000); 
     weather.fetch();
+    updateInterval = tempUI;
+    weather.setMaximumAge(updateInterval * 60 * 1000); 
   }
   if (evt.data.key === "errorMessageToggle" && evt.data.newValue) {
     showError = JSON.parse(evt.data.newValue);
@@ -263,6 +274,7 @@ weather.setProvider("yahoo");
 weather.setApiKey("dj0yJmk9TTkyWW5SNG5rT0JOJmQ9WVdrOVRVMURkRmhhTlRBbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmeD00MA--");
 weather.setMaximumAge(updateInterval * 60 * 1000); 
 weather.setFeelsLike(false);
+weather.setUnit(units);
 
 weather.onsuccess = (data) => {
   weatherData = data;
@@ -284,10 +296,7 @@ weather.onsuccess = (data) => {
     unit = "h"
   }
   //data.description = 	"Isolated Thunderstorms";
-  if (degreesF)
-    tempAndConditionLabel.text = `${data.temperatureF}° ${util.shortenText(data.description)}`;
-  else 
-    tempAndConditionLabel.text = `${data.temperatureC}° ${util.shortenText(data.description)}`;
+  tempAndConditionLabel.text = `${data.temperature}° ${util.shortenText(data.description)}`;
   
   if (showDataAge)
     //weatherLocationLabel.text = `${data.location} (${dataAge}${unit})`;
@@ -318,10 +327,7 @@ weather.onerror = (error) => {
     else
       weatherLocationLabel.text = ``;
   } else {
-      if (degreesF)
-        tempAndConditionLabel.text = `${weatherData.temperatureF}° ${util.shortenText(weatherData.description)}`;
-      else 
-        tempAndConditionLabel.text = `${weatherData.temperatureC}° ${util.shortenText(weatherData.description)}`;
+      tempAndConditionLabel.text = `${weatherData.temperature}° ${util.shortenText(weatherData.description)}`;
   
       if (showDataAge)
         //weatherLocationLabel.text = `${data.location} (${dataAge}${unit})`;
@@ -589,15 +595,9 @@ function updateForecastData(){
                                                   weatherData.tomorrowDescription);
     todayDescriptionLabel.text = weatherData.todayDescription;
     todayHighLabel.text = "High:"
-    if (degreesF)
-      todayHighValLabel.text = weatherData.todayHighF + "°"
-    else
-      todayHighValLabel.text = weatherData.todayHighC + "°"
+    todayHighValLabel.text = weatherData.todayHigh + "°"
     todayLowLabel.text = "Low:"
-    if (degreesF)
-      todayLowValLabel.text = weatherData.todayLowF + "°"
-    else
-      todayLowValLabel.text = weatherData.todayLowC + "°"
+    todayLowValLabel.text = weatherData.todayLow + "°"
     
     tomorrowDateLabel.text = util.toDay(day+1, "long");
     console.log("Tomorrow Code: " + weatherData.tomorrowCondition)
@@ -605,30 +605,18 @@ function updateForecastData(){
                                                      weatherData.tomorrowDescription);
     tomorrowDescriptionLabel.text = weatherData.tomorrowDescription;
     tomorrowHighLabel.text = "High:"
-    if (degreesF)
-      tomorrowHighValLabel.text = weatherData.tomorrowHighF + "°"
-    else
-      tomorrowHighValLabel.text = weatherData.tomorrowHighC + "°"
+    tomorrowHighValLabel.text = weatherData.tomorrowHigh + "°"
     tomorrowLowLabel.text = "Low:"
-    if (degreesF)
-      tomorrowLowValLabel.text = weatherData.tomorrowLowF + "°"
-    else
-      tomorrowLowValLabel.text = weatherData.tomorrowLowC + "°"
+    tomorrowLowValLabel.text = weatherData.tomorrowLow + "°"
     
     day3DateLabel.text = util.toDay(day+2, "long");
     console.log("day3 Code: " + weatherData.day3Condition)
     day3WeatherImage.href = util.getForecastIcon(weatherData.day3Condition);
     day3DescriptionLabel.text = weatherData.day3Description;
     day3HighLabel.text = "High:"
-    if (degreesF)
-      day3HighValLabel.text = weatherData.day3HighF + "°"
-    else
-      day3HighValLabel.text = weatherData.day3HighC + "°"
+    day3HighValLabel.text = weatherData.day3High + "°"
     day3LowLabel.text = "Low:"
-    if (degreesF)
-      day3LowValLabel.text = weatherData.day3LowF + "°"
-    else
-      day3LowValLabel.text = weatherData.day3LowC + "°"
+    day3LowValLabel.text = weatherData.day3Low + "°"
   }
 }
 
