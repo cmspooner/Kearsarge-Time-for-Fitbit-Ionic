@@ -33,7 +33,7 @@ export default class Weather {
     if (unit == "f")
       this._unit = 'f';
     else
-      this._unit = 'c'
+      this._unit = 'c';
   }
   
   setProvider(provider) {
@@ -351,7 +351,6 @@ function prv_queryYahooWeather(latitude, longitude, unit, success, error) {
         todayLow : parseInt(data.query.results.channel.item.forecast[0].low),
         todayCondition : getSimpleCondition(parseInt(data.query.results.channel.item.forecast[0].code)),
         todayDescription : data.query.results.channel.item.forecast[0].text,
-        
         
         //tomorrowDate : Date(data.query.results.channel.item.forecast[2].date),
         tomorrowHigh : parseInt(data.query.results.channel.item.forecast[1].high),

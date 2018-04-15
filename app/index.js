@@ -14,6 +14,7 @@ import { goals } from "user-activity";
 import { user } from "user-profile";
 import { display } from "display";
 import { preferences } from "user-settings";
+import { units } from "user-settings";
 import { vibration } from "haptics"
 import { battery } from "power";
 
@@ -22,14 +23,15 @@ import * as schedUtils from "scheduleUtils.js";
 
 import { me as device } from "device";
 if (!device.screen) device.screen = { width: 348, height: 250 };
-console.log(`Dimensions: $‌{device.screen.width}x$‌{device.screen.height}`);
+console.log(`Dimensions: ${device.screen.width}x${device.screen.height}`);
 
 var sched = "Regular";
 
 var sepratorGoal = true;
 var color = "deepskyblue";
 var updateInterval = 30;
-var units = 'f';
+console.log("Pref Units: " + units.temperature);
+var userUnits =  units.temperature.toLowerCase();
 var showDataAge = false;
 var failCount = 0;
 var showFailCount = false;
@@ -233,15 +235,14 @@ messaging.peerSocket.onmessage = evt => {
     let degreesF = !JSON.parse(evt.data.newValue);
     console.log(`Fahrenheit: ${degreesF}`);
     if (degreesF)
-      units = 'f';
+      userUnits = 'f';
     else
-      units = 'c';
-    let tempUI = updateInterval;
-    updateInterval = 0;
-    weather.setUnit(units);
-    weather.setMaximumAge(updateInterval * 60 * 1000); 
+      userUnits = 'c';
+
+    weather.setUnit(userUnits);
+    weather.setMaximumAge(100); 
+    console.log(weather._unit)
     weather.fetch();
-    updateInterval = tempUI;
     weather.setMaximumAge(updateInterval * 60 * 1000); 
   }
   if (evt.data.key === "errorMessageToggle" && evt.data.newValue) {
@@ -274,11 +275,12 @@ weather.setProvider("yahoo");
 weather.setApiKey("dj0yJmk9TTkyWW5SNG5rT0JOJmQ9WVdrOVRVMURkRmhhTlRBbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmeD00MA--");
 weather.setMaximumAge(updateInterval * 60 * 1000); 
 weather.setFeelsLike(false);
-weather.setUnit(units);
+console.log("Unit: "+userUnits)
+weather.setUnit(userUnits);
 
 weather.onsuccess = (data) => {
   weatherData = data;
-  console.log("Weather is " + JSON.stringify(data));
+  console.log("Weather is " + JSON.stringify(data.temperature));
   failCount = 0;
   weather.setMaximumAge(updateInterval * 60 * 1000); 
   var time = new Date();
@@ -611,7 +613,8 @@ function updateForecastData(){
     
     day3DateLabel.text = util.toDay(day+2, "long");
     console.log("day3 Code: " + weatherData.day3Condition)
-    day3WeatherImage.href = util.getForecastIcon(weatherData.day3Condition);
+    day3WeatherImage.href = util.getForecastIcon(weatherData.day3Condition, 
+                                                     weatherData.day3Description);
     day3DescriptionLabel.text = weatherData.day3Description;
     day3HighLabel.text = "High:"
     day3HighValLabel.text = weatherData.day3High + "°"
@@ -744,5 +747,5 @@ setInterval(weather.fetch, updateInterval*60*1000);
 updateClock();
 updateClockData();
 updatePeriodData();
-weather.fetch();
+//weather.fetch();
 hrm.start();

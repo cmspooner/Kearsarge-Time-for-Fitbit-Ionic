@@ -36,7 +36,7 @@ export default class Weather {
     if (unit == "f")
       this._unit = 'f';
     else
-      this._unit = 'c'
+      this._unit = 'c';
   }
   
   setProvider(provider) {

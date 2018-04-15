@@ -111,7 +111,13 @@ function mySettings(props) {
       <Section
         title={<Text bold align="center">Build Version and Notes</Text>}>
         <Text>
-          Beta 4.2: Now using proper deg F via yahoo api, rather derived from deg C.
+          Beta 4.3.1: Updating to make sure that I'm in sync.
+        </Text>
+        <Text>
+          Beta 4.3: Now using proper deg F via yahoo api, rather derived from deg C.
+        </Text>
+        <Text>
+          Beta 4.2: Fixed shortening bug.
         </Text>
         <Text>
           Beta 4.1: Fixes to forcast screen.
