@@ -4,7 +4,9 @@ console.log("Kearsarge Time Started");
  * Entry point for the watch app
  */
 import clock from "clock";
+import { me } from "appbit";
 import document from "document";
+import * as fs from "fs";
 
 import * as messaging from "messaging";
 
@@ -24,6 +26,9 @@ import * as schedUtils from "scheduleUtils.js";
 import { me as device } from "device";
 if (!device.screen) device.screen = { width: 348, height: 250 };
 console.log(`Dimensions: ${device.screen.width}x${device.screen.height}`);
+
+const SETTINGS_TYPE = "cbor";
+const SETTINGS_FILE = "settings.cbor";
 
 var sched = "Regular";
 
@@ -72,6 +77,7 @@ let timeRemainingLabel = document.getElementById("timeRemainingLabel");
 
 // Weather View
 let tempAndConditionLabel = document.getElementById("tempAndConditionLabel");
+tempAndConditionLabel.text = "Updating...";
 let weatherLocationLabel = document.getElementById("weatherLocationLabel");
 let weatherImage = document.getElementById("weatherImage");
 
@@ -168,92 +174,41 @@ let hrm = new HeartRateSensor();
 
 //----------------------------Messaging and Settings--------------
 // Message is received
+
+let settings = loadSettings();
+//fs.unlinkSync(SETTINGS_FILE);
+console.log("Settings: " + settings.color);
       
 messaging.peerSocket.onmessage = evt => {
   console.log(`App received: ${JSON.stringify(evt)}`);
   if (evt.data.key === "updateInterval" && evt.data.newValue) {
-    updateInterval = JSON.parse(evt.data.newValue).values[0].name
-    console.log(`updateInterval is: ${updateInterval}`);
-    if (updateInterval == "15 minutes")
-      updateInterval = 15;
-    else if (updateInterval == "30 minutes")
-      updateInterval = 30;
-    else if (updateInterval == "1 hour")
-      updateInterval = 60;
-    else if (updateInterval == "2 hours")
-      updateInterval = 120;
-    console.log(`updateInterval is: ${updateInterval}`);
-    weather.setMaximumAge(updateInterval * 60 * 1000); 
-    weather.fetch();
+    settings.updateInterval = JSON.parse(evt.data.newValue).values[0].name
   }
   if (evt.data.key === "color" && evt.data.newValue) {
-    color = JSON.parse(evt.data.newValue);
-    console.log(`Setting Seperator Bar color: ${color}`);
-    seperatorEndLeft.style.fill = color;
-    seperatorLine.style.fill = color;
-    seperatorEndRight.style.fill = color;
+    settings.color = JSON.parse(evt.data.newValue);
   }
   if (evt.data.key === "schedule" && evt.data.newValue) {
-    sched = JSON.parse(evt.data.newValue).values[0].name;
-    console.log(`Schedule is: ${sched}`);
-    let today = new Date();
-    let time = schedUtils.hourAndMinToTime(today.getHours(), today.getMinutes());
-    if (fakeTime) time = "11:08a";
-    if (schedUtils.isInSchedule(sched, time)){
-      updatePeriodData();
-      periodView.style.display = "inline";
-      weatherView.style.display = "none";
-    }else{
-      weather.fetch();
-      periodView.style.display = "none";
-      weatherView.style.display = "inline";
-    }
+    settings.schedule = JSON.parse(evt.data.newValue).values[0].name;
   }
   if (evt.data.key === "seperatorToggle" && evt.data.newValue) {
-    sepratorGoal = JSON.parse(evt.data.newValue);
-    let today = new Date();
-    let time = schedUtils.hourAndMinToTime(today.getHours(), today.getMinutes())
-    if (fakeTime) time = "11:08a";
-    console.log(`seperator: ${sepratorGoal}`);
-    if (schedUtils.isInSchedule(sched, time)){
-      if (sepratorGoal){
-        let scaledNow = schedUtils.timeToMin(time)-schedUtils.timeToMin(schedUtils.getStartofDay(sched))
-        let scaledEnd = schedUtils.timeToMin(schedUtils.getEndofDay(sched))-schedUtils.timeToMin(schedUtils.getStartofDay(sched))
-        console.log(`scaledNow: ${scaledNow}, scaledEnd: ${scaledEnd} `)
-        seperatorEndLeft.style.fill = util.goalToColor(scaledNow, scaledEnd);
-        seperatorLine.style.fill = util.goalToColor(scaledNow, scaledEnd);
-        seperatorEndRight.style.fill = util.goalToColor(scaledNow, scaledEnd);
-      }
-    }
+    settings.seperatorToggle = JSON.parse(evt.data.newValue);
   }
   if (evt.data.key === "dataAgeToggle" && evt.data.newValue) {
-    showDataAge = JSON.parse(evt.data.newValue);
-    console.log(`Data Age: ${showDataAge}`);
-    weather.fetch();
+    settings.dataAgeToggle = JSON.parse(evt.data.newValue);
   }
   if (evt.data.key === "unitToggle" && evt.data.newValue) {
-    let degreesF = !JSON.parse(evt.data.newValue);
-    console.log(`Fahrenheit: ${degreesF}`);
-    if (degreesF)
-      userUnits = 'f';
-    else
-      userUnits = 'c';
-
-    weather.setUnit(userUnits);
-    weather.setMaximumAge(100); 
-    console.log(weather._unit)
-    weather.fetch();
-    weather.setMaximumAge(updateInterval * 60 * 1000); 
+    settings.unitToggle = JSON.parse(evt.data.newValue) 
   }
   if (evt.data.key === "errorMessageToggle" && evt.data.newValue) {
-    showError = JSON.parse(evt.data.newValue);
-    console.log(`Show Error: ${showError}`);
-    weather.fetch();
+    settings.errorMessageToggle = JSON.parse(evt.data.newValue);
   }
   if (evt.data.key === "failCountToggle" && evt.data.newValue) {
-    showFailCount = JSON.parse(evt.data.newValue);
-    console.log(`Data Age: ${showFailCount}`);
-    weather.fetch();
+    settings.failCountToggle = JSON.parse(evt.data.newValue);
+  }
+  
+  if (evt.data.key != null){
+    console.log("Applying Settings")
+    applySettings(settings);
   }
 };
 
@@ -277,6 +232,8 @@ weather.setMaximumAge(updateInterval * 60 * 1000);
 weather.setFeelsLike(false);
 console.log("Unit: "+userUnits)
 weather.setUnit(userUnits);
+
+applySettings(settings);
 
 weather.onsuccess = (data) => {
   weatherData = data;
@@ -733,6 +690,100 @@ display.onchange = function() {
   } else {
     hrm.stop();
   }
+}
+
+//------------------Settings and FS--------------------
+
+
+function applySettings(settings){
+  console.log(`updateInterval is: ${updateInterval}`);
+  if (settings.updateInterval == "15 minutes")
+    updateInterval = 15;
+  else if (settings.updateInterval == "30 minutes")
+    updateInterval = 30;
+  else if (settings.updateInterval == "1 hour")
+    updateInterval = 60;
+  else if (settings.updateInterval == "2 hours")
+    updateInterval = 120;
+  weather.setMaximumAge(updateInterval * 60 * 1000); 
+  
+  console.log(`Setting Seperator Bar color: ${settings.color}`);
+  color = settings.color;
+  seperatorEndLeft.style.fill = color;
+  seperatorLine.style.fill = color;
+  seperatorEndRight.style.fill = color;
+  
+  console.log(`Schedule is: ${settings.schedule}`);
+  sched = settings.schedule;
+  let today = new Date();
+  let time = schedUtils.hourAndMinToTime(today.getHours(), today.getMinutes());
+  if (fakeTime) time = "11:08a";
+  if (schedUtils.isInSchedule(sched, time)){
+    periodView.style.display = "inline";
+    weatherView.style.display = "none";
+  }else{
+    periodView.style.display = "none";
+    weatherView.style.display = "inline";
+  }
+  
+  console.log(`seperator: ${settings.seperatorToggle}`);
+  sepratorGoal = settings.seperatorToggle;
+  if (schedUtils.isInSchedule(sched, time)){
+    if (sepratorGoal){
+      let scaledNow = schedUtils.timeToMin(time)-schedUtils.timeToMin(schedUtils.getStartofDay(sched))
+      let scaledEnd = schedUtils.timeToMin(schedUtils.getEndofDay(sched))-schedUtils.timeToMin(schedUtils.getStartofDay(sched))
+      console.log(`scaledNow: ${scaledNow}, scaledEnd: ${scaledEnd} `)
+      seperatorEndLeft.style.fill = util.goalToColor(scaledNow, scaledEnd);
+      seperatorLine.style.fill = util.goalToColor(scaledNow, scaledEnd);
+      seperatorEndRight.style.fill = util.goalToColor(scaledNow, scaledEnd);
+    }
+  }
+  
+  console.log(`Data Age: ${settings.dataAgeToggle}`);
+  showDataAge = settings.dataAgeToggle;
+  
+  console.log(`Celsius: ${settings.unitToggle}`);
+  if (settings.unitToggle)
+    userUnits = 'c';
+  else
+    userUnits = 'f';
+  weather.setUnit(userUnits);
+  
+  console.log(`Show Error: ${settings.errorMessageToggle}`);
+  showError = settings.errorMessageToggle;
+  
+  console.log(`Fail Count: ${settings.failCountToggle}`);
+  showFailCount = settings.failCountToggle;
+  
+  weather.setUnit(userUnits);
+  weather.setMaximumAge(100); 
+  weather.fetch();
+  updatePeriodData();
+  weather.setMaximumAge(updateInterval * 60 * 1000); 
+}
+
+me.onunload = saveSettings;
+
+function loadSettings() {
+  try {
+    return fs.readFileSync(SETTINGS_FILE, SETTINGS_TYPE);
+  } catch (ex) {
+    // Defaults
+    return {
+      updateInterval : "30 minutes",
+      unitToggle : false,
+      dataAgeToggle : true,
+      errorMessageToggle: false,
+      failCountToggle : true,
+      seperatorToggle : true,
+      color : "#004C99",
+      schedule : "Regular"
+    }
+  }
+}
+
+function saveSettings() {
+  fs.writeFileSync(SETTINGS_FILE, settings, SETTINGS_TYPE);
 }
 
 //-----------------Startup------------------------

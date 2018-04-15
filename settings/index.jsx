@@ -111,6 +111,9 @@ function mySettings(props) {
       <Section
         title={<Text bold align="center">Build Version and Notes</Text>}>
         <Text>
+          Beta 4.4: Settings now stored properly.
+        </Text>
+        <Text>
           Beta 4.3.1: Updating to make sure that I'm in sync.
         </Text>
         <Text>
