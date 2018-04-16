@@ -138,6 +138,9 @@ function mySettings(props) {
       <Section
         title={<Text bold align="center">Build Version and Notes</Text>}>
         <Text>
+          Beta 4.5.1: Fixed overdraw error when changing schedule.
+        </Text>
+        <Text>
           Beta 4.5: Contact links in settings.
         </Text>
         <Text>

@@ -439,7 +439,7 @@ function updatePeriodData() {
       } else {
         seperatorEndLeft.style.fill = color;
         seperatorLine.style.fill = color;
-        seperatorEndRight.style.fill = colorl;
+        seperatorEndRight.style.fill = color;
       }
     } else {
       periodLabel.text = ``;
@@ -623,7 +623,7 @@ background.onclick = function(evt) {
       forecastView.style.display = "inline";//test
       console.log("forecast Loaded");
     } else {
-      show = "clock";
+      1;
       updateClock();
       updateClockData();
       clockView.style.display = "inline";//test
@@ -718,10 +718,10 @@ function applySettings(settings){
   let today = new Date();
   let time = schedUtils.hourAndMinToTime(today.getHours(), today.getMinutes());
   if (fakeTime) time = "11:08a";
-  if (schedUtils.isInSchedule(sched, time)){
+  if (schedUtils.isInSchedule(sched, time) && show == "clock"){
     periodView.style.display = "inline";
     weatherView.style.display = "none";
-  }else{
+  }else if (!schedUtils.isInSchedule(sched, time) && show == "clock"){
     periodView.style.display = "none";
     weatherView.style.display = "inline";
   }
