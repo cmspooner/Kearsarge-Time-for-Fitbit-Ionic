@@ -109,7 +109,37 @@ function mySettings(props) {
           />
       </Section>
       <Section
+        title={<Text bold align="center">Contact Me</Text>}>
+        <Text>
+          Please don't hesitiate to contact me with questions or suggestions. This and all my other apps will always be free and Open Source. If you really like my app please considder buying me a coffee (or more likely electonic components that end up in my classroom). Thanks!
+        </Text>
+        <Link source="https://rawgit.com/cmspooner/Kearsarge-Time-for-Fitbit-Ionic/master/settings/email.html">
+          <TextImageRow
+            label="Email"
+            sublabel="cmspooner@gmail.com"
+            icon="https://github.com/cmspooner/Kearsarge-Time-for-Fitbit-Ionic/blob/master/resources/icons/settings/Email.png?raw=true"
+          />
+        </Link>
+        <Link source="https://github.com/cmspooner">
+          <TextImageRow
+            label="Github"
+            sublabel="https://github.com/cmspooner"
+            icon="https://github.com/cmspooner/Kearsarge-Time-for-Fitbit-Ionic/blob/master/resources/icons/settings/Github.png?raw=true"
+          />
+        </Link>
+        <Link source="https://paypal.me/CMSpooner">
+          <TextImageRow
+            label="PayPal"
+            sublabel="cmspooner@gmail.com"
+            icon="https://github.com/cmspooner/Kearsarge-Time-for-Fitbit-Ionic/blob/master/resources/icons/settings/Paypal.png?raw=true"
+          />
+        </Link>
+      </Section>
+      <Section
         title={<Text bold align="center">Build Version and Notes</Text>}>
+        <Text>
+          Beta 4.5: Contact links in settings.
+        </Text>
         <Text>
           Beta 4.4: Settings now stored properly.
         </Text>
