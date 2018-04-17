@@ -138,6 +138,9 @@ function mySettings(props) {
       <Section
         title={<Text bold align="center">Build Version and Notes</Text>}>
         <Text>
+          Beta 4.6: Now running on most recent weather API
+        </Text>
+        <Text>
           Beta 4.5.2: Changed draw/hide order.
         </Text>
         <Text>
