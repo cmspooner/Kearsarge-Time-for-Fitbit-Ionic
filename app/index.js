@@ -589,75 +589,74 @@ background.onclick = function(evt) {
   if (fakeTime) time = "11:08a";
   if (show == "clock"){           // In Clock -> Switching to Stats
     show = "stats";
-    updateStatsData()
     clockView.style.display = "none";
     periodView.style.display = "none";
     weatherView.style.display = "none";
-    statsView.style.display = "inline";
     scheduleView.style.display = "none";
     forecastView.style.display = "none";
+    updateStatsData()
+    statsView.style.display = "inline";
     console.log("stats Loaded");
     display.poke()
   } else if (show == "stats"){                   // In Stats -> Switching to forcast or schedule    
     if (schedUtils.isInSchedule(sched, time)){  
       show = "schedule";
-      updateScheduleData();
       clockView.style.display = "none";
       periodView.style.display = "none";
       weatherView.style.display = "none";
       statsView.style.display = "none";
-      scheduleView.style.display = "inline";
       forecastView.style.display = "none";
+      updateScheduleData();
+      scheduleView.style.display = "inline";
       console.log("schedule Loaded");
     } else if(weatherData != null) {
       show = "forecast";
-      updateClock();
-      updateClockData();
-      weather.fetch();
-      updateForecastData();
       clockView.style.display = "none";//test
       periodView.style.display = "none";
       weatherView.style.display = "none";//test
       statsView.style.display = "none";
       scheduleView.style.display = "none";
+      updateClock();
+      updateClockData();
+      weather.fetch();
+      updateForecastData();
       forecastView.style.display = "inline";//test
       console.log("forecast Loaded");
     } else {
-      1;
+      statsView.style.display = "none";
+      scheduleView.style.display = "none";
+      forecastView.style.display = "none";
       updateClock();
       updateClockData();
       clockView.style.display = "inline";//test
       if (schedUtils.isInSchedule(sched, time)){ 
         updatePeriodData();
-        periodView.style.display = "inline";
         weatherView.style.display = "none";
+        periodView.style.display = "inline";
       } else {
         weather.fetch();
         periodView.style.display = "none";
         weatherView.style.display = "inline";//test
       }
-      statsView.style.display = "none";
-      scheduleView.style.display = "none";
-      forecastView.style.display = "none";
       console.log("Clock Loaded");
     } 
   } else {                                  // In Schedule -> Switching to Clock
     show = "clock";
+    statsView.style.display = "none";
+    scheduleView.style.display = "none";
+    forecastView.style.display = "none";
     updateClock();
     updateClockData();
     clockView.style.display = "inline";//test
     if (schedUtils.isInSchedule(sched, time)){ 
+      weatherView.style.display = "none";
       updatePeriodData();
       periodView.style.display = "inline";
-      weatherView.style.display = "none";
     } else {
-      weather.fetch();
       periodView.style.display = "none";
+      weather.fetch();
       weatherView.style.display = "inline";//test
     }
-    statsView.style.display = "none";
-    scheduleView.style.display = "none";
-    forecastView.style.display = "none";
     console.log("Clock Loaded");
 
   }
@@ -666,27 +665,27 @@ background.onclick = function(evt) {
 
 display.onchange = function() {
   if (display.on) {
+    show = "clock";
+    statsView.style.display = "none";
+    scheduleView.style.display = "none";
+    forecastView.style.display = "none";
     let today = new Date();
     let time = schedUtils.hourAndMinToTime(today.getHours(), today.getMinutes());
     if (fakeTime) time = "11:08a";
     hrm.start();
-    show = "clock";
     updateClock();
     updateClockData();
     clockView.style.display = "inline"; //test
     console.log("Sced test: " + schedUtils.isInSchedule(sched, time));
     if (schedUtils.isInSchedule(sched, time)){ 
+      weatherView.style.display = "none";
       updatePeriodData();
       periodView.style.display = "inline";
-      weatherView.style.display = "none";
     } else {
-      weather.fetch();
       periodView.style.display = "none";
+      weather.fetch();
       weatherView.style.display = "inline";//test
     }
-    statsView.style.display = "none";
-    scheduleView.style.display = "none";
-    forecastView.style.display = "none";
   } else {
     hrm.stop();
   }
