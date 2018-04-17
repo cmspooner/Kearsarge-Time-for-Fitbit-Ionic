@@ -13,7 +13,7 @@ A Watchface for Fitbit Ionic and Versa that shows the schedule Kearsarge High Sc
 
 **Stats Screen**<br>
 ![Image of Stats Screen](https://github.com/cmspooner/Kearsarge-Time-for-Fitbit-Ionic/blob/master/screenshots/KearsargeTime-StatsScreen.png)
-![Image of Stats Screen-Versa](https://github.com/cmspooner/Kearsarge-Time-for-Fitbit-Ionic/blob/master/screenshots/KearsargeTime-statsScreen-Versa.png)
+![Image of Stats Screen-Versa](https://github.com/cmspooner/Kearsarge-Time-for-Fitbit-Ionic/blob/master/screenshots/KearsargeTime-StatsScreen-Versa.png)
 <br>
 
 **Daily Schedule**<br>
