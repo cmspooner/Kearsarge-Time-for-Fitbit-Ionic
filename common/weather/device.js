@@ -109,6 +109,8 @@ export default class Weather {
       // return previous weather if the maximum age is not reached
       if(this.onsuccess) this.onsuccess(this._weather);
       return this._weather;
+    } else {
+      console.log("Nevermind...I already have it");
     }
     
     if (peerSocket.readyState === peerSocket.OPEN) {

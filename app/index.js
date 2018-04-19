@@ -178,7 +178,8 @@ let hrm = new HeartRateSensor();
 let settings = loadSettings();
 //fs.unlinkSync(SETTINGS_FILE);
 console.log("Settings: " + settings.color);
-      
+
+
 messaging.peerSocket.onmessage = evt => {
   console.log(`App received: ${JSON.stringify(evt)}`);
   if (evt.data.key === "updateInterval" && evt.data.newValue) {
@@ -209,12 +210,15 @@ messaging.peerSocket.onmessage = evt => {
   if (evt.data.key != null){
     console.log("Applying Settings")
     applySettings(settings);
+    
   }
+  
 };
 
 // Message socket opens
 messaging.peerSocket.onopen = () => {
   console.log("App Socket Open");
+  weather.fetch();
 };
 
 // Message socket closes
@@ -237,7 +241,7 @@ applySettings(settings);
 
 weather.onsuccess = (data) => {
   weatherData = data;
-  console.log("Weather is " + JSON.stringify(data.temperature));
+  console.log("  " + JSON.stringify(data.temperature));
   failCount = 0;
   weather.setMaximumAge(updateInterval * 60 * 1000); 
   var time = new Date();
@@ -618,7 +622,7 @@ background.onclick = function(evt) {
       scheduleView.style.display = "none";
       updateClock();
       updateClockData();
-      weather.fetch();
+      //weather.fetch();
       updateForecastData();
       forecastView.style.display = "inline";//test
       console.log("forecast Loaded");
@@ -634,7 +638,7 @@ background.onclick = function(evt) {
         weatherView.style.display = "none";
         periodView.style.display = "inline";
       } else {
-        weather.fetch();
+        //weather.fetch();
         periodView.style.display = "none";
         weatherView.style.display = "inline";//test
       }
@@ -654,7 +658,7 @@ background.onclick = function(evt) {
       periodView.style.display = "inline";
     } else {
       periodView.style.display = "none";
-      weather.fetch();
+      //weather.fetch();
       weatherView.style.display = "inline";//test
     }
     console.log("Clock Loaded");
@@ -683,7 +687,7 @@ display.onchange = function() {
       periodView.style.display = "inline";
     } else {
       periodView.style.display = "none";
-      weather.fetch();
+      //weather.fetch();
       weatherView.style.display = "inline";//test
     }
   } else {
@@ -742,10 +746,18 @@ function applySettings(settings){
   showDataAge = settings.dataAgeToggle;
   
   console.log(`Celsius: ${settings.unitToggle}`);
+  var oldUnits = userUnits;
   if (settings.unitToggle)
     userUnits = 'c';
   else
     userUnits = 'f';
+  if (oldUnits != userUnits){
+    weather.setMaximumAge(0 * 60 * 1000); 
+    console.log("Forcing Update");
+    weather.setUnit(userUnits);
+    weather.fetch();
+    weather.setMaximumAge(updateInterval * 60 * 1000); 
+  }
   weather.setUnit(userUnits);
   
   console.log(`Show Error: ${settings.errorMessageToggle}`);
@@ -754,11 +766,7 @@ function applySettings(settings){
   console.log(`Fail Count: ${settings.failCountToggle}`);
   showFailCount = settings.failCountToggle;
   
-  weather.setUnit(userUnits);
-  weather.setMaximumAge(100); 
-  weather.fetch();
   updatePeriodData();
-  weather.setMaximumAge(updateInterval * 60 * 1000); 
 }
 
 me.onunload = saveSettings;
@@ -791,7 +799,7 @@ function saveSettings() {
 clock.ontick = () => updateClock();
 setInterval(updateClockData, 3*1000);
 setInterval(updatePeriodData, 15*1000);
-setInterval(weather.fetch, updateInterval*60*1000);
+//setInterval(weather.fetch, updateInterval*60*1000);
 
 // Don't start with a blank screen
 updateClock();
