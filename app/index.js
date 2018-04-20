@@ -168,6 +168,7 @@ let day3LowValLabel = document.getElementById("day3LowValLabel");
 let didVib = false;
 let show = "clock";
 let weatherInterval = 0;
+let openedWeatherRequest = false;
 
 // Heart Rate Monitor
 let hrm = new HeartRateSensor();
@@ -220,7 +221,10 @@ messaging.peerSocket.onmessage = evt => {
 // Message socket opens
 messaging.peerSocket.onopen = () => {
   console.log("App Socket Open");
-  weather.fetch();
+  if (!openedWeatherRequest){
+    openedWeatherRequest = true;
+    weather.fetch();
+  }
 };
 
 // Message socket closes
@@ -236,30 +240,23 @@ weather.setProvider("yahoo");
 weather.setApiKey("dj0yJmk9TTkyWW5SNG5rT0JOJmQ9WVdrOVRVMURkRmhhTlRBbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmeD00MA--");
 weather.setMaximumAge(updateInterval * 60 * 1000); 
 weather.setFeelsLike(false);
-console.log("Unit: "+userUnits)
 weather.setUnit(userUnits);
 
 applySettings();
 
 weather.onsuccess = (data) => {
   weatherData = data;
-  console.log("  " + JSON.stringify(data.temperature));
   failCount = 0;
+  openedWeatherRequest = false;
   weather.setMaximumAge(updateInterval * 60 * 1000); 
   var time = new Date();
-  time = schedUtils.hourAndMinToMin(time.getHours(), time.getMinutes());
+  time = schedUtils.hourAndMinToTime(time.getHours(), time.getMinutes());
   if (fakeTime) time = "11:08a";
   var timeStamp = new Date(data.timestamp);
   //timeStamp = schedUtils.hourAndMinToMin(timeStamp.getHours(), timeStamp.getMinutes());
   timeStamp = schedUtils.hourAndMinToTime(timeStamp.getHours(), timeStamp.getMinutes());
 
-  var dataAge = time - timeStamp;
   console.log("Time: " + time + ", TimeStamp: " + timeStamp);
-  var unit = "m"
-  if (dataAge > 60){
-    dataAge = parseInt(dataAge/60);
-    unit = "h"
-  }
   //data.description = 	"Isolated Thunderstorms";
   tempAndConditionLabel.text = `${data.temperature}° ${util.shortenText(data.description)}`;
   
@@ -281,7 +278,7 @@ weather.onerror = (error) => {
        error = "Unknown"
   if (!weatherData){
     weatherImage.href = "";
-    weather.setMaximumAge(15 * 1000); 
+    weather.setMaximumAge(1 * 1000); 
     failCount++;
     if (showFailCount)
       tempAndConditionLabel.text = `Updating, try ${failCount}`;
@@ -713,7 +710,9 @@ function applySettings(){
 function setUpdateInterval(){
   console.log(`updateInterval is: ${settings.updateInterval}`);
   let oldInterval = updateInterval;
-  if (settings.updateInterval == "15 minutes")
+  if (settings.updateInterval == "5 minutes")
+    updateInterval = 5;
+  else if (settings.updateInterval == "15 minutes")
     updateInterval = 15;
   else if (settings.updateInterval == "30 minutes")
     updateInterval = 30;
@@ -721,15 +720,18 @@ function setUpdateInterval(){
     updateInterval = 60;
   else if (settings.updateInterval == "2 hours")
     updateInterval = 120;
-  if (updateInterval != oldInterval){
-    weather.setMaximumAge(0 * 60 * 1000); 
+  if (updateInterval < oldInterval){
+    weather.setMaximumAge(1 * 60 * 1000); 
     console.log("Forcing Update Interval Change");
-    weather.fetch();
+    if (!openedWeatherRequest){
+      openedWeatherRequest = true;
+      weather.fetch();
+    }
   }
   weather.setMaximumAge(updateInterval * 60 * 1000); 
   clearInterval(weatherInterval);
   weatherInterval = setInterval(fetchWeather, updateInterval*60*1000);
-  console.log("Acutal Interval: " + weather._maximumAge)
+  //console.log("Acutal Interval: " + weather._maximumAge)
 }
 
 function setColor(){
@@ -791,7 +793,10 @@ function setUnit(){
     weather.setMaximumAge(0 * 60 * 1000); 
     console.log("Forcing Update Unit Change");
     weather.setUnit(userUnits);
-    weather.fetch();
+    if (!openedWeatherRequest){
+      openedWeatherRequest = true;
+      weather.fetch();
+    }
     weather.setMaximumAge(updateInterval * 60 * 1000); 
   }
   weather.setUnit(userUnits);
@@ -835,17 +840,20 @@ function saveSettings() {
 
 function fetchWeather(){
   console.log("auto fetch");
-  weather.fetch();
+  if (!openedWeatherRequest){
+      openedWeatherRequest = true;
+      weather.fetch();
+  }
 }
 
 //-----------------Startup------------------------
 
 // Update the clock every tick event
 clock.ontick = () => updateClock();
-clearInterval();
+//clearInterval();
 setInterval(updateClockData, 3*1000);
 setInterval(updatePeriodData, 15*1000);
-weatherInterval = setInterval(fetchWeather, updateInterval*60*1000);
+//weatherInterval = setInterval(fetchWeather, updateInterval*60*1000);
 
 // Don't start with a blank screen
 updateClock();

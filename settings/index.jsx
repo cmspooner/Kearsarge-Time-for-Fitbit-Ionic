@@ -7,6 +7,7 @@ function mySettings(props) {
           label={`Update Interval`}
           settingsKey="updateInterval"
           options={[
+            {name:"5 minutes"},
             {name:"15 minutes"},
             {name:"30 minutes"},
             {name:"1 hour"},
@@ -137,6 +138,9 @@ function mySettings(props) {
       </Section>
       <Section
         title={<Text bold align="center">Build Version and Notes</Text>}>
+        <Text>
+          Beta 4.9: Got update running on time, without extra updates!
+        </Text>
         <Text>
           Beta 4.8: Major cleaning on setting application
         </Text>

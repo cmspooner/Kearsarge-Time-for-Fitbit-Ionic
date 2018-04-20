@@ -52,7 +52,7 @@ export default class Weather {
   
   fetch() {
     let now = new Date().getTime();
-    if(this._weather !== undefined && this._weather.timestamp !== undefined && (now - this._weather.timestamp < this._maximumAge)) {
+    if(this._weather !== undefined && this._weather.timestamp !== undefined && (Math.round((now - this._weather.timestamp)/10000) < Math.round(this._maximumAge/10000))) {
       // return previous weather if the maximu age is not reached
       if(this.onsuccess) this.onsuccess(this._weather);
       return;
