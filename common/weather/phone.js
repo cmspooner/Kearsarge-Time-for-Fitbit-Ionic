@@ -176,15 +176,16 @@ function prv_queryOWMWeather(apiKey, latitude, longitude, unit, success, error) 
   .catch((err) => { if(error) error(err); });
 };
 
-function prv_queryWUWeather(apiKey, feelsLike, latitude, longitude, success, error) {
+function prv_queryWUWeather(apiKey, feelsLike, latitude, longitude, unit, success, error) {
   var url = 'https://api.wunderground.com/api/' + apiKey + '/conditions/q/' + latitude + ',' + longitude + '.json';
-
+  console.log("Weather Underground: " + url)
+  
   fetch(url)
   .then((response) => {return response.json()})
   .then((data) => { 
       
       if(data.current_observation === undefined){
-        if(error) error(data);
+        if(error) error(data.response.error.description);
         return;
       }
 
@@ -216,17 +217,22 @@ function prv_queryWUWeather(apiKey, feelsLike, latitude, longitude, success, err
       else {
         condition = Conditions.Unknown;
       }
-
-      var temp = feelsLike ? parseFloat(data.current_observation.feelslike_c) : data.current_observation.temp_c;
+ 
+      if (unit  == 'f')
+        var temp = feelsLike ? parseFloat(data.current_observation.feelslike_f) : data.current_observation.temp_f;
+      else
+        var temp = feelsLike ? parseFloat(data.current_observation.feelslike_c) : data.current_observation.temp_c;
 
       let weather = {
         //temperatureK : (temp + 273.15).toFixed(1),
+        temperature : temp,
         temperatureC : temp,
         temperatureF : (temp*9/5 + 32),
         location : data.current_observation.display_location.city,
         description : data.current_observation.weather,
         isDay : data.current_observation.icon_url.indexOf("nt_") == -1,
-        conditionCode :condition,
+        conditionCode : condition,
+        realConditionCode : data.current_observation.icon,
         sunrise : 0,
         sunset : 0,
         timestamp : new Date().getTime()
@@ -237,12 +243,17 @@ function prv_queryWUWeather(apiKey, feelsLike, latitude, longitude, success, err
   .catch((err) => { if(error) error(err); });
 };
 
-function prv_queryDarkskyWeather(apiKey, feelsLike, latitude, longitude, success, error) {
-  let url = 'https://api.darksky.net/forecast/' + apiKey + '/' + latitude + ',' + longitude + '?exclude=minutely,hourly,alerts,flags&units=si';
-
+function prv_queryDarkskyWeather(apiKey, feelsLike, latitude, longitude, unit, success, error) {
+  if (unit == 'f')
+    unit = 'us'
+  else
+    unit = 'si'
+  let url = 'https://api.darksky.net/forecast/' + apiKey + '/' + latitude + ',' + longitude + '?exclude=minutely,hourly,alerts,flags&units=' + unit;
+  console.log("Darksky: " + url)
+  
   fetch(url)
   .then((response) => {return response.json()})
-  .then((data) => {        
+  .then((data) => {       
     
       if(data.currently === undefined){
         if(error) error(data);
@@ -279,12 +290,14 @@ function prv_queryDarkskyWeather(apiKey, feelsLike, latitude, longitude, success
 
       let weather = {
         //temperatureK : (temp + 273.15).toFixed(1),
+        temperature : temp,
         temperatureC : temp,
         temperatureF : (temp*9/5 + 32),
         location : "",
         description : data.currently.summary,
         isDay : data.currently.icon.indexOf("-day") > 0,
-        conditionCode :condition,
+        conditionCode : condition,
+        realConditionCode : data.currently.icon,
         sunrise : data.daily.data[0].sunriseTime * 1000,
         sunset : data.daily.data[0].sunsetTime * 1000,
         timestamp : new Date().getTime()

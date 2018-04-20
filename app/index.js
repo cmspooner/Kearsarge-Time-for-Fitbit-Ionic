@@ -35,7 +35,6 @@ var sched = "Regular";
 var sepratorGoal = true;
 var color = "deepskyblue";
 var updateInterval = 30;
-console.log("Pref Units: " + units.temperature);
 var userUnits =  units.temperature.toLowerCase();
 var showDataAge = false;
 var failCount = 0;
@@ -177,40 +176,42 @@ let hrm = new HeartRateSensor();
 
 let settings = loadSettings();
 //fs.unlinkSync(SETTINGS_FILE);
-console.log("Settings: " + settings.color);
+//console.log("Settings: " + settings.color);
 
 
 messaging.peerSocket.onmessage = evt => {
   console.log(`App received: ${JSON.stringify(evt)}`);
   if (evt.data.key === "updateInterval" && evt.data.newValue) {
     settings.updateInterval = JSON.parse(evt.data.newValue).values[0].name
+    setUpdateInterval();
   }
   if (evt.data.key === "color" && evt.data.newValue) {
     settings.color = JSON.parse(evt.data.newValue);
+    setColor();
   }
   if (evt.data.key === "schedule" && evt.data.newValue) {
     settings.schedule = JSON.parse(evt.data.newValue).values[0].name;
+    setSchedule();
   }
   if (evt.data.key === "seperatorToggle" && evt.data.newValue) {
     settings.seperatorToggle = JSON.parse(evt.data.newValue);
+    setSeperator();
   }
   if (evt.data.key === "dataAgeToggle" && evt.data.newValue) {
     settings.dataAgeToggle = JSON.parse(evt.data.newValue);
+    setDataAge();
   }
   if (evt.data.key === "unitToggle" && evt.data.newValue) {
     settings.unitToggle = JSON.parse(evt.data.newValue) 
+    setUnit();
   }
   if (evt.data.key === "errorMessageToggle" && evt.data.newValue) {
     settings.errorMessageToggle = JSON.parse(evt.data.newValue);
+    setErrorMessage();
   }
   if (evt.data.key === "failCountToggle" && evt.data.newValue) {
     settings.failCountToggle = JSON.parse(evt.data.newValue);
-  }
-  
-  if (evt.data.key != null){
-    console.log("Applying Settings")
-    applySettings(settings);
-    
+    setFailCount();
   }
   
 };
@@ -237,7 +238,7 @@ weather.setFeelsLike(false);
 console.log("Unit: "+userUnits)
 weather.setUnit(userUnits);
 
-applySettings(settings);
+applySettings();
 
 weather.onsuccess = (data) => {
   weatherData = data;
@@ -697,9 +698,19 @@ display.onchange = function() {
 
 //------------------Settings and FS--------------------
 
+function applySettings(){
+  setUpdateInterval();
+  setColor();
+  setSchedule();
+  setSeperator();
+  setDataAge();
+  setUnit();
+  setErrorMessage();
+  setFailCount();  
+}
 
-function applySettings(settings){
-  console.log(`updateInterval is: ${updateInterval}`);
+function setUpdateInterval(){
+  console.log(`updateInterval is: ${settings.updateInterval}`);
   if (settings.updateInterval == "15 minutes")
     updateInterval = 15;
   else if (settings.updateInterval == "30 minutes")
@@ -708,14 +719,19 @@ function applySettings(settings){
     updateInterval = 60;
   else if (settings.updateInterval == "2 hours")
     updateInterval = 120;
+  //updateInterval = 5;
   weather.setMaximumAge(updateInterval * 60 * 1000); 
-  
+}
+
+function setColor(){
   console.log(`Setting Seperator Bar color: ${settings.color}`);
   color = settings.color;
   seperatorEndLeft.style.fill = color;
   seperatorLine.style.fill = color;
   seperatorEndRight.style.fill = color;
-  
+}
+
+function setSchedule(){
   console.log(`Schedule is: ${settings.schedule}`);
   sched = settings.schedule;
   let today = new Date();
@@ -729,8 +745,15 @@ function applySettings(settings){
     weatherView.style.display = "inline";
   }
   
+  updatePeriodData();
+}
+
+function setSeperator(){  
   console.log(`seperator: ${settings.seperatorToggle}`);
   sepratorGoal = settings.seperatorToggle;
+  let today = new Date();
+  let time = schedUtils.hourAndMinToTime(today.getHours(), today.getMinutes());
+  if (fakeTime) time = "11:08a";
   if (schedUtils.isInSchedule(sched, time)){
     if (sepratorGoal){
       let scaledNow = schedUtils.timeToMin(time)-schedUtils.timeToMin(schedUtils.getStartofDay(sched))
@@ -741,10 +764,14 @@ function applySettings(settings){
       seperatorEndRight.style.fill = util.goalToColor(scaledNow, scaledEnd);
     }
   }
-  
+}
+ 
+function setDataAge(){
   console.log(`Data Age: ${settings.dataAgeToggle}`);
   showDataAge = settings.dataAgeToggle;
-  
+}
+
+function setUnit(){
   console.log(`Celsius: ${settings.unitToggle}`);
   var oldUnits = userUnits;
   if (settings.unitToggle)
@@ -759,15 +786,19 @@ function applySettings(settings){
     weather.setMaximumAge(updateInterval * 60 * 1000); 
   }
   weather.setUnit(userUnits);
-  
+}
+
+function setErrorMessage(){  
   console.log(`Show Error: ${settings.errorMessageToggle}`);
   showError = settings.errorMessageToggle;
-  
+}
+ 
+function setFailCount(){
   console.log(`Fail Count: ${settings.failCountToggle}`);
   showFailCount = settings.failCountToggle;
-  
-  updatePeriodData();
 }
+  
+
 
 me.onunload = saveSettings;
 
@@ -793,13 +824,18 @@ function saveSettings() {
   fs.writeFileSync(SETTINGS_FILE, settings, SETTINGS_TYPE);
 }
 
+function fetchWeather(){
+  console.log("auto fetch");
+  weather.fetch();
+}
+
 //-----------------Startup------------------------
 
 // Update the clock every tick event
 clock.ontick = () => updateClock();
 setInterval(updateClockData, 3*1000);
 setInterval(updatePeriodData, 15*1000);
-//setInterval(weather.fetch, updateInterval*60*1000);
+setInterval(fetchWeather, updateInterval*60*1000);
 
 // Don't start with a blank screen
 updateClock();

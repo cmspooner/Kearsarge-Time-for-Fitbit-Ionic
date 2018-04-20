@@ -48,7 +48,7 @@ export default class Weather {
     this._apiKey = '';
     this._provider = 'yahoo';
     this._feelsLike = true;
-
+    //this._weather = undefined;
     this._maximumAge = 0;
     this._unit = 'c'
     
@@ -103,7 +103,7 @@ export default class Weather {
   }
   
   fetch() {
-    console.log("I'm a fetch'n some weather!")
+    console.log("I'm a fetch'n some weather!");
     let now = new Date().getTime();
     if(this._weather !== undefined && this._weather.timestamp !== undefined && (now - this._weather.timestamp < this._maximumAge)) {
       // return previous weather if the maximum age is not reached

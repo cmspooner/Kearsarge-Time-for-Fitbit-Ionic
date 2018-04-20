@@ -138,6 +138,15 @@ function mySettings(props) {
       <Section
         title={<Text bold align="center">Build Version and Notes</Text>}>
         <Text>
+          Beta 4.8: Major cleaning on setting application
+        </Text>
+        <Text>
+          Beta 4.7.2: reset weather update interval...again?
+        </Text>
+        <Text>
+          Beta 4.7.1: reset weather update interval
+        </Text>
+        <Text>
           Beta 4.7: Fixed multiple hits to weather api on start
         </Text>
         <Text>

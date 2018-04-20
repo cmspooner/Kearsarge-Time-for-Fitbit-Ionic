@@ -46,3 +46,11 @@ function sendVal(data) {
     messaging.peerSocket.send(data);
   }
 }
+
+weather.onsuccess = (data) => {
+  console.log("Weather on phone " + JSON.stringify(data));
+}
+
+weather.onerror = (error) => {
+  console.log("Weather error " + error);
+}
