@@ -167,6 +167,7 @@ let day3LowValLabel = document.getElementById("day3LowValLabel");
 
 let didVib = false;
 let show = "clock";
+let weatherInterval = 0;
 
 // Heart Rate Monitor
 let hrm = new HeartRateSensor();
@@ -711,6 +712,7 @@ function applySettings(){
 
 function setUpdateInterval(){
   console.log(`updateInterval is: ${settings.updateInterval}`);
+  let oldInterval = updateInterval;
   if (settings.updateInterval == "15 minutes")
     updateInterval = 15;
   else if (settings.updateInterval == "30 minutes")
@@ -719,8 +721,15 @@ function setUpdateInterval(){
     updateInterval = 60;
   else if (settings.updateInterval == "2 hours")
     updateInterval = 120;
-  //updateInterval = 5;
+  if (updateInterval != oldInterval){
+    weather.setMaximumAge(0 * 60 * 1000); 
+    console.log("Forcing Update Interval Change");
+    weather.fetch();
+  }
   weather.setMaximumAge(updateInterval * 60 * 1000); 
+  clearInterval(weatherInterval);
+  weatherInterval = setInterval(fetchWeather, updateInterval*60*1000);
+  console.log("Acutal Interval: " + weather._maximumAge)
 }
 
 function setColor(){
@@ -780,7 +789,7 @@ function setUnit(){
     userUnits = 'f';
   if (oldUnits != userUnits){
     weather.setMaximumAge(0 * 60 * 1000); 
-    console.log("Forcing Update");
+    console.log("Forcing Update Unit Change");
     weather.setUnit(userUnits);
     weather.fetch();
     weather.setMaximumAge(updateInterval * 60 * 1000); 
@@ -833,9 +842,10 @@ function fetchWeather(){
 
 // Update the clock every tick event
 clock.ontick = () => updateClock();
+clearInterval();
 setInterval(updateClockData, 3*1000);
 setInterval(updatePeriodData, 15*1000);
-setInterval(fetchWeather, updateInterval*60*1000);
+weatherInterval = setInterval(fetchWeather, updateInterval*60*1000);
 
 // Don't start with a blank screen
 updateClock();
