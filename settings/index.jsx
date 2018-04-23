@@ -18,7 +18,7 @@ function mySettings(props) {
             {name:"2 hours"},
           ]}
          />
-        <Text align="left">
+        <Text align="center">
           Decreasing this will use more WATCH battery. 
         </Text>
         <Select
@@ -32,7 +32,7 @@ function mySettings(props) {
             {name:"2 hours"},
           ]}
          />
-         <Text align="left">
+         <Text align="center">
            Decreasing this will use more PHONE battery.
          </Text>
          <Toggle
@@ -158,6 +158,9 @@ function mySettings(props) {
       </Section>
       <Section
         title={<Text bold align="center">Build Version and Notes</Text>}>
+        <Text>
+          Beta 4.10.2: Small Tweaks.
+        </Text>
         <Text>
           Beta 4.10.1: Fixed settings layout.
         </Text>
