@@ -3,8 +3,12 @@ function mySettings(props) {
     <Page>
       <Section
         title={<Text bold align="center">Weather</Text>}>
+        <Toggle
+           settingsKey="unitToggle"
+           label="Tempterature in °F or °C"
+         />
         <Select
-          label={`Update Interval`}
+          label={`Weather Update Interval`}
           settingsKey="updateInterval"
           options={[
             {name:"5 minutes"},
@@ -14,10 +18,23 @@ function mySettings(props) {
             {name:"2 hours"},
           ]}
          />
-         <Toggle
-           settingsKey="unitToggle"
-           label="Tempterature in °F or °C"
+        <Text align="left">
+          Decreasing this will use more WATCH battery. 
+        </Text>
+        <Select
+          label={`Location Update Interval`}
+          settingsKey="locationUpdateInterval"
+          options={[
+            {name:"5 minutes"},
+            {name:"15 minutes"},
+            {name:"30 minutes"},
+            {name:"1 hour"},
+            {name:"2 hours"},
+          ]}
          />
+         <Text align="left">
+           Decreasing this will use more PHONE battery.
+         </Text>
          <Toggle
            settingsKey="dataAgeToggle"
            label="Show time of last weather update"
@@ -30,6 +47,9 @@ function mySettings(props) {
            settingsKey="failCountToggle"
            label="Show number of weather attempts"
          />
+        <Text align="left">
+          These are mostly for informataion for nerds and depugging.
+         </Text>
       </Section>
       <Section
         title={<Text bold align="center">Seperator Bar Color</Text>}>
@@ -138,6 +158,24 @@ function mySettings(props) {
       </Section>
       <Section
         title={<Text bold align="center">Build Version and Notes</Text>}>
+        <Text>
+          Beta 4.10.1: Fixed settings layout.
+        </Text>
+        <Text>
+          Beta 4.10: Added setting for location update interval.
+        </Text>
+        <Text>
+          Beta 4.9.4: Fix type in error message
+        </Text>
+        <Text>
+          Beta 4.9.3: It works when tethered to my computer!
+        </Text>
+        <Text>
+          Beta 4.9.2: I have no idea...
+        </Text>
+         <Text>
+          Beta 4.9.1: Maybe this time I have it right??
+        </Text>
         <Text>
           Beta 4.9: Got update running on time, without extra updates!
         </Text>
