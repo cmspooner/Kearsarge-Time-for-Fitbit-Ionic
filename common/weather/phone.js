@@ -13,6 +13,7 @@ export default class Weather {
     this._feelsLike = true;
     this._weather = undefined;
     this._maximumAge = 0;
+    this._maximumLocationAge = 30;
     this._unit = 'c'
 
     this.onerror = undefined;
@@ -22,7 +23,7 @@ export default class Weather {
       // We are receiving a request from the app
       if (evt.data !== undefined && evt.data[WEATHER_MESSAGE_KEY] !== undefined) {
         let message = evt.data[WEATHER_MESSAGE_KEY];
-        prv_fetchRemote(message.provider, message.apiKey, message.feelsLike, message.unit);
+        prv_fetchRemote(message.provider, message.apiKey, message.feelsLike, message.unit, message.maximumLocationAge);
       }
     });
   }
@@ -50,6 +51,10 @@ export default class Weather {
     this._maximumAge = maximumAge;
   }
   
+  setMaximumLocationAge(maximumAge){
+    this._maximumLocationAge = maximumAge;
+  }
+  
   fetch() {
     let now = new Date().getTime();
     if(this._weather !== undefined && this._weather.timestamp !== undefined && (Math.round((now - this._weather.timestamp)/10000) < Math.round(this._maximumAge/10000))) {
@@ -60,7 +65,7 @@ export default class Weather {
     
     geolocation.getCurrentPosition(
       (position) => {
-        //console.log("Latitude: " + position.coords.latitude + " Longitude: " + position.coords.longitude);
+        console.log("Latitude: " + position.coords.latitude + " Longitude: " + position.coords.longitude);
         prv_fetch(this._provider, this._apiKey, this._feelsLike, this_.unit, position.coords.latitude, position.coords.longitude, 
               (data) => {
                 data.provider = this._provider;
@@ -72,7 +77,7 @@ export default class Weather {
       (error) => {
         if(this.onerror) this.onerror(error);
       }, 
-      {"enableHighAccuracy" : false, "maximumAge" : 1000 * 1800});
+      {"enableHighAccuracy" : false, "maximumAge" : this._maximumLocationAge});
   }
 };
 
@@ -80,9 +85,10 @@ export default class Weather {
 /*********** PRIVATE FUNCTIONS  ************/
 /*******************************************/
 
-function prv_fetchRemote(provider, apiKey, feelsLike, unit) {
+function prv_fetchRemote(provider, apiKey, feelsLike, unit, maximumLocationAge) {
   geolocation.getCurrentPosition(
     (position) => {
+      console.log("Latitude: " + position.coords.latitude + " Longitude: " + position.coords.longitude);
       prv_fetch(provider, apiKey, feelsLike, unit, position.coords.latitude, position.coords.longitude,
           (data) => {
             data.provider = provider;
@@ -102,7 +108,7 @@ function prv_fetchRemote(provider, apiKey, feelsLike, unit) {
         .enqueue(WEATHER_ERROR_FILE, cbor.encode({ error : error }))
         .catch(error => console.log("Failed to send weather error: " + error));
     }, 
-    {"enableHighAccuracy" : false, "maximumAge" : 1000 * 1800});
+    {"enableHighAccuracy" : false, "maximumAge" : maximumLocationAge});
 }
 
 function prv_fetch(provider, apiKey, feelsLike, unit, latitude, longitude, success, error) {

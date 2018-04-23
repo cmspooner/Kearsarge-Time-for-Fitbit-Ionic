@@ -50,6 +50,7 @@ export default class Weather {
     this._feelsLike = true;
     //this._weather = undefined;
     this._maximumAge = 0;
+    this._maximumLocationAge = 30;
     this._unit = 'c'
     
     try {
@@ -97,6 +98,10 @@ export default class Weather {
     this._maximumAge = maximumAge;
   }
   
+  setMaximumLocationAge(maximumAge){
+    this._maximumLocationAge = maximumAge;
+  }
+  
   getData() {
     return this._weather;
   }
@@ -118,7 +123,7 @@ export default class Weather {
     if (peerSocket.readyState === peerSocket.OPEN) {
       // Send a command to the companion
       let message = {};
-      let params = { apiKey : this._apiKey, provider : this._provider, feelsLike : this._feelsLike, unit : this._unit };
+      let params = { apiKey : this._apiKey, provider : this._provider, feelsLike : this._feelsLike, unit : this._unit, maximumLocationAge : this._maximumLocationAge};
       message[WEATHER_MESSAGE_KEY] = params;
       peerSocket.send(message);
     }

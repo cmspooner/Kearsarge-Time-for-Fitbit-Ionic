@@ -35,6 +35,7 @@ var sched = "Regular";
 var sepratorGoal = true;
 var color = "deepskyblue";
 var updateInterval = 30;
+var updateLocationInterval = 30;
 var userUnits =  units.temperature.toLowerCase();
 var showDataAge = false;
 var failCount = 0;
@@ -167,7 +168,7 @@ let day3LowValLabel = document.getElementById("day3LowValLabel");
 
 let didVib = false;
 let show = "clock";
-let weatherInterval = 0;
+let weatherInterval = null;
 let openedWeatherRequest = false;
 
 // Heart Rate Monitor
@@ -186,6 +187,10 @@ messaging.peerSocket.onmessage = evt => {
   if (evt.data.key === "updateInterval" && evt.data.newValue) {
     settings.updateInterval = JSON.parse(evt.data.newValue).values[0].name
     setUpdateInterval();
+  }
+  if (evt.data.key === "locationUpdateInterval" && evt.data.newValue) {
+    settings.updateLocationInterval = JSON.parse(evt.data.newValue).values[0].name
+    setLocationUpdateInterval();
   }
   if (evt.data.key === "color" && evt.data.newValue) {
     settings.color = JSON.parse(evt.data.newValue);
@@ -221,10 +226,9 @@ messaging.peerSocket.onmessage = evt => {
 // Message socket opens
 messaging.peerSocket.onopen = () => {
   console.log("App Socket Open");
-  if (!openedWeatherRequest){
-    openedWeatherRequest = true;
-    weather.fetch();
-  }
+  weather.fetch();
+  console.log("I Should be Fetching Weather!");
+  openedWeatherRequest = true;
 };
 
 // Message socket closes
@@ -271,6 +275,7 @@ weather.onsuccess = (data) => {
 }
 
 weather.onerror = (error) => {
+  openedWeatherRequest = false;
   console.log("Weather error " + JSON.stringify(error));
   if (error == "No connection with the companion")
        error = "Companion Failure"
@@ -290,19 +295,12 @@ weather.onerror = (error) => {
       weatherLocationLabel.text = ``;
   } else {
       tempAndConditionLabel.text = `${weatherData.temperature}° ${util.shortenText(weatherData.description)}`;
-  
-      if (showDataAge)
-        //weatherLocationLabel.text = `${data.location} (${dataAge}${unit})`;
-        if (showError)
-          weatherLocationLabel.text = `${error}, (${timeStamp})`;
-        else
-          weatherLocationLabel.text = `Updating, (${timeStamp})`;
+      if (showError)
+        weatherLocationLabel.text = `${error}`;
       else
         weatherLocationLabel.text = `Updating...`;
-  
-    weatherImage.href = util.getWeatherIcon(weatherData);  
+      weatherImage.href = util.getWeatherIcon(weatherData);  
   }
-
 }
 
 
@@ -320,7 +318,7 @@ function updateClock() {
   let year = today.getYear()-100+2000;
   let hours = today.getHours();
   let mins = util.zeroPad(today.getMinutes());
-  let ampm = " am"
+  let ampm = " am";
   
   //console.log(preferences.clockDisplay);
   if (preferences.clockDisplay == "12h"){
@@ -698,13 +696,15 @@ display.onchange = function() {
 
 function applySettings(){
   setUpdateInterval();
+  setLocationUpdateInterval();
   setColor();
   setSchedule();
   setSeperator();
   setDataAge();
   setUnit();
   setErrorMessage();
-  setFailCount();  
+  setFailCount(); 
+  openedWeatherRequest = false;
 }
 
 function setUpdateInterval(){
@@ -722,16 +722,41 @@ function setUpdateInterval(){
     updateInterval = 120;
   if (updateInterval < oldInterval){
     weather.setMaximumAge(1 * 60 * 1000); 
-    console.log("Forcing Update Interval Change");
     if (!openedWeatherRequest){
+      console.log("Forcing Update Interval Change");
       openedWeatherRequest = true;
       weather.fetch();
     }
   }
   weather.setMaximumAge(updateInterval * 60 * 1000); 
-  clearInterval(weatherInterval);
+  if (weatherInterval != null)
+    clearInterval(weatherInterval);
   weatherInterval = setInterval(fetchWeather, updateInterval*60*1000);
   //console.log("Acutal Interval: " + weather._maximumAge)
+}
+
+function setLocationUpdateInterval(){
+  console.log(`locationUpdateInterval is: ${settings.updateLocationInterval}`);
+  let oldLocationInterval = updateLocationInterval;
+  if (settings.updateLocationInterval == "5 minutes")
+    updateLocationInterval = 5;
+  else if (settings.updateLocationInterval == "15 minutes")
+    updateLocationInterval = 15;
+  else if (settings.updateLocationInterval == "30 minutes")
+    updateLocationInterval = 30;
+  else if (settings.updateLocationInterval == "1 hour")
+    updateLocationInterval = 60;
+  else if (settings.updateLocationInterval == "2 hours")
+    updateLocationInterval = 120;
+  if (updateLocationInterval < oldLocationInterval){
+    weather.setMaximumLocationAge(1 * 60 * 1000); 
+    if (!openedWeatherRequest){
+    console.log("Forcing Location Update Interval Change");
+      openedWeatherRequest = true;
+      weather.fetch();
+    }
+  }
+  weather.setMaximumLocationAge(updateLocationInterval * 60 * 1000);
 }
 
 function setColor(){
@@ -791,9 +816,9 @@ function setUnit(){
     userUnits = 'f';
   if (oldUnits != userUnits){
     weather.setMaximumAge(0 * 60 * 1000); 
-    console.log("Forcing Update Unit Change");
     weather.setUnit(userUnits);
     if (!openedWeatherRequest){
+      console.log("Forcing Update Unit Change");
       openedWeatherRequest = true;
       weather.fetch();
     }
@@ -811,18 +836,18 @@ function setFailCount(){
   console.log(`Fail Count: ${settings.failCountToggle}`);
   showFailCount = settings.failCountToggle;
 }
-  
-
 
 me.onunload = saveSettings;
 
 function loadSettings() {
+  console.log("Loading Settings!")
   try {
     return fs.readFileSync(SETTINGS_FILE, SETTINGS_TYPE);
   } catch (ex) {
     // Defaults
     return {
       updateInterval : "30 minutes",
+      updateLocationInterval : "30 minutes",
       unitToggle : false,
       dataAgeToggle : true,
       errorMessageToggle: false,
@@ -839,11 +864,9 @@ function saveSettings() {
 }
 
 function fetchWeather(){
+  openedWeatherRequest = false;
   console.log("auto fetch");
-  if (!openedWeatherRequest){
-      openedWeatherRequest = true;
-      weather.fetch();
-  }
+  weather.fetch();
 }
 
 //-----------------Startup------------------------
@@ -853,7 +876,10 @@ clock.ontick = () => updateClock();
 //clearInterval();
 setInterval(updateClockData, 3*1000);
 setInterval(updatePeriodData, 15*1000);
-//weatherInterval = setInterval(fetchWeather, updateInterval*60*1000);
+if (weatherInterval != null)
+    clearInterval(weatherInterval);
+weatherInterval = setInterval(fetchWeather, updateInterval*60*1000);
+
 
 // Don't start with a blank screen
 updateClock();

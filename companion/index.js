@@ -28,8 +28,10 @@ settingsStorage.onchange = evt => {
 
 // Restore any previously saved settings and send to the device
 function restoreSettings() {
+  console.log("Restoring Settings! ", settingsStorage.length + " settings to restore");
   for (let index = 0; index < settingsStorage.length; index++) {
     let key = settingsStorage.key(index);
+    //console.log("restoring: " + data.key);
     if (key) {
       let data = {
         key: key,
