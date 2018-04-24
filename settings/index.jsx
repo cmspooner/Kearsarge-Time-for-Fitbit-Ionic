@@ -159,7 +159,16 @@ function mySettings(props) {
       <Section
         title={<Text bold align="center">Build Version and Notes</Text>}>
         <Text>
-          Beta 4.10.2: Small Tweaks.
+          Beta 4.11.3: Faster refresh when failed, actually this time.
+        </Text>
+        <Text>
+          Beta 4.11.2: Faster refresh when failed.
+        </Text>
+        <Text>
+          Beta 4.11.1: Force fecth when no settings.
+        </Text>
+        <Text>
+          Beta 4.11: More agressive rounding od recent time calc and more agressive settings saving.
         </Text>
         <Text>
           Beta 4.10.1: Fixed settings layout.

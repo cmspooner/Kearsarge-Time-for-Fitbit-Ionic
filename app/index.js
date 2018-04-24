@@ -178,7 +178,7 @@ let hrm = new HeartRateSensor();
 // Message is received
 
 let settings = loadSettings();
-//fs.unlinkSync(SETTINGS_FILE);
+//
 //console.log("Settings: " + settings.color);
 
 
@@ -219,7 +219,8 @@ messaging.peerSocket.onmessage = evt => {
   if (evt.data.key === "failCountToggle" && evt.data.newValue) {
     settings.failCountToggle = JSON.parse(evt.data.newValue);
     setFailCount();
-  }
+  }  
+  saveSettings();
   
 };
 
@@ -248,11 +249,19 @@ weather.setUnit(userUnits);
 
 applySettings();
 
+if (settings.noFile){
+  console.log("No Settings File");
+  weather.fetch();
+}
+
 weather.onsuccess = (data) => {
   weatherData = data;
   failCount = 0;
   openedWeatherRequest = false;
   weather.setMaximumAge(updateInterval * 60 * 1000); 
+  if (weatherInterval != null)
+    clearInterval(weatherInterval);
+  weatherInterval = setInterval(fetchWeather,updateInterval * 60 * 1000);
   var time = new Date();
   time = schedUtils.hourAndMinToTime(time.getHours(), time.getMinutes());
   if (fakeTime) time = "11:08a";
@@ -275,15 +284,19 @@ weather.onsuccess = (data) => {
 }
 
 weather.onerror = (error) => {
-  openedWeatherRequest = false;
   console.log("Weather error " + JSON.stringify(error));
+  weather.setMaximumAge(30 * 1000); 
+  openedWeatherRequest = false;
+  if (weatherInterval != null)
+    clearInterval(weatherInterval);
+  weatherInterval = setInterval(fetchWeather,30 * 1000);
   if (error == "No connection with the companion")
        error = "Companion Failure"
   if (JSON.stringify(error) == "{}")
        error = "Unknown"
   if (!weatherData){
     weatherImage.href = "";
-    weather.setMaximumAge(1 * 1000); 
+    
     failCount++;
     if (showFailCount)
       tempAndConditionLabel.text = `Updating, try ${failCount}`;
@@ -854,13 +867,17 @@ function loadSettings() {
       failCountToggle : true,
       seperatorToggle : true,
       color : "#004C99",
-      schedule : "Regular"
+      schedule : "Regular",
+      noFile : true
     }
   }
 }
 
 function saveSettings() {
+  console.log("Saving Settings");
+  settings.noFile = false;
   fs.writeFileSync(SETTINGS_FILE, settings, SETTINGS_TYPE);
+  //fs.unlinkSync(SETTINGS_FILE);  //kill file for testing first run
 }
 
 function fetchWeather(){
