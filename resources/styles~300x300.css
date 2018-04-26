@@ -51,37 +51,37 @@
   text-length: 32;
   text-anchor: middle;
   x: 50%;
-  y: 33%;
+  y: 36%;
   fill: white;
 }
 
 #hrLabel {
-  font-size: 25;
+  font-size: 27;
   font-family: Colfax-Regular;
   text-anchor: start;
-  text-length: 32;
-  x: 30%;
-  y: 46%;
+  text-length: 33;
+  x: 33%;
+  y: 50%;
   fill: white;
 }
 
 #stepsLabel {
-  font-size: 25;
+  font-size: 27;
   font-family: Colfax-Regular;
   text-anchor: start;
-  text-length: 32;
-  x: 30%;
-  y: 57%;
+  text-length: 33;
+  x: 33%;
+  y: 61%;
   fill: white;
 }
 
 #calsLabel {
-  font-size: 25;
+  font-size: 27;
   font-family: Colfax-Regular;
   text-anchor: start;
-  text-length: 32;
-  x: 30%;
-  y: 68%;
+  text-length: 33;
+  x: 33%;
+  y: 72%;
   fill: white;
 }
 
@@ -92,7 +92,7 @@
   text-length: 50;
   text-anchor: start;
   x: 15;
-  y: 83%;
+  y: 86%;
   fill: silver;
 }
 
@@ -102,7 +102,7 @@
   text-length: 50;
   text-anchor: start;
   x: 15;
-  y: 95%;
+  y: 97%;
   fill: silver;
 }
 
@@ -113,7 +113,7 @@
   text-length: 50;
   text-anchor: start;
   x: 75;
-  y: 83%;
+  y: 86%;
   fill: silver;
 }
 
@@ -123,7 +123,7 @@
   text-length: 50;
   text-anchor: start;
   x: 75;
-  y: 95%;
+  y: 97%;
   fill: silver;
 }
 
@@ -135,24 +135,15 @@
   text-anchor: start;
   text-length: 32;
   x: 25;
-  y: 13%;
-  fill: white;
-}
-#stepValueLabel {
-  font-size: 26;
-  font-family: Colfax-Medium;
-  text-anchor: start;
-  text-length: 32;
-  x: 120;
   y: 10%;
   fill: white;
 }
 #stepGoalLabel {
   font-size: 26;
-  font-family: Colfax-Medium;
-  text-anchor: start;
+  font-family: Colfax-Regular;
+  text-anchor: middle;
   text-length: 32;
-  x: 160;
+  x: 50%;
   y: 18%;
   fill: white;
 }
@@ -163,24 +154,15 @@
   text-anchor: start;
   text-length: 32;
   x: 25;
-  y: 32%;
-  fill: white;
-}
-#distValueLabel {
-  font-size: 26;
-  font-family: Colfax-Medium;
-  text-anchor: start;
-  text-length: 32;
-  x: 165;
   y: 29%;
   fill: white;
 }
 #distGoalLabel {
   font-size: 26;
-  font-family: Colfax-Medium;
-  text-anchor: start;
+  font-family: Colfax-Regular;
+  text-anchor: middle;
   text-length: 32;
-  x: 195;
+  x: 50%;
   y: 37%;
   fill: white;
 }
@@ -191,24 +173,15 @@
   text-anchor: start;
   text-length: 32;
   x: 25;
-  y: 51%;
-  fill: white;
-}
-#floorsValueLabel {
-  font-size: 26;
-  font-family: Colfax-Medium;
-  text-anchor: start;
-  text-length: 32;
-  x: 125;
   y: 48%;
   fill: white;
 }
 #floorsGoalLabel {
   font-size: 26;
-  font-family: Colfax-Medium;
-  text-anchor: start;
+  font-family: Colfax-Regular;
+  text-anchor: middle;
   text-length: 32;
-  x: 150;
+  x: 50%;
   y: 56%;
   fill: white;
 }
@@ -219,24 +192,15 @@
   text-anchor: start;
   text-length: 32;
   x: 25;
-  y: 70%;
-  fill: white;
-}
-#activeValueLabel {
-  font-size: 26;
-  font-family: Colfax-Medium;
-  text-anchor: start;
-  text-length: 32;
-  x: 127;
   y: 67%;
   fill: white;
 }
 #activeGoalLabel {
   font-size: 26;
-  font-family: Colfax-Medium;
-  text-anchor: start;
+  font-family: Colfax-Regular;
+  text-anchor: middle;
   text-length: 32;
-  x: 152;
+  x: 50%;
   y: 75%;
   fill: white;
 }
@@ -247,24 +211,15 @@
   text-anchor: start;
   text-length: 32;
   x: 25;
-  y: 89%;
-  fill: white;
-}
-#calsValueLabel {
-  font-size: 26;
-  font-family: Colfax-Medium;
-  text-anchor: start;
-  text-length: 32;
-  x: 155;
   y: 86%;
   fill: white;
 }
 #calsGoalLabel {
   font-size: 26;
-  font-family: Colfax-Medium;
-  text-anchor: start;
+  font-family: Colfax-Regular;
+  text-anchor: middle;
   text-length: 32;
-  x: 185;
+  x: 50%;
   y: 94%;
   fill: white;
 }

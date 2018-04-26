@@ -158,6 +158,9 @@ function mySettings(props) {
       </Section>
       <Section
         title={<Text bold align="center">Build Version and Notes</Text>}>
+         <Text>
+          Beta 4.12: Major reformatting for Versa (Thanks Fitbot!!!)
+        </Text>
         <Text>
           Beta 4.11.3: Faster refresh when failed, actually this time.
         </Text>

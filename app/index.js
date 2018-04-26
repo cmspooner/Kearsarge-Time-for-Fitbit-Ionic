@@ -88,19 +88,10 @@ let floorsStatsLabel = document.getElementById("floorsStatsLabel");
 let activeStatsLabel = document.getElementById("activeStatsLabel");
 let calsStatsLabel = document.getElementById("calsStatsLabel");
 if (device.screen.height == 300){
-  let stepValueLabel = document.getElementById("stepValueLabel");
   let stepGoalLabel = document.getElementById("stepGoalLabel");
-  
-  let distValueLabel = document.getElementById("distValueLabel");
   let distGoalLabel = document.getElementById("distGoalLabel");
-  
-  let floorsValueLabel = document.getElementById("floorsValueLabel");
   let floorsGoalLabel = document.getElementById("floorsGoalLabel");
-  
-  let activeValueLabel = document.getElementById("activeValueLabel");
   let activeGoalLabel = document.getElementById("activeGoalLabel");
-  
-  let calsValueLabel = document.getElementById("calsValueLabel");
   let calsGoalLabel = document.getElementById("calsGoalLabel");
 }
 
@@ -470,38 +461,28 @@ function updateStatsData(){
     if (device.screen.height == 300) {
       stepStatsLabel.style.fill = util.goalToColor(today.local.steps, goals.steps);
       stepStatsLabel.text = "Steps:";
-      stepValueLabel.style.fill = util.goalToColor(today.local.steps, goals.steps);
-      stepValueLabel.text = `${today.local.steps ? today.local.steps.toLocaleString() : 0} of `;
       stepGoalLabel.style.fill = util.goalToColor(today.local.steps, goals.steps);
-      stepGoalLabel.text = `${goals.steps.toLocaleString()}`;
+      stepGoalLabel.text = `${today.local.steps ? today.local.steps.toLocaleString() : 0} / ${goals.steps.toLocaleString()}`;
       
       distStatsLabel.style.fill = util.goalToColor(today.local.distance, goals.distance);
       distStatsLabel.text = "Distance:";
-      distValueLabel.style.fill = util.goalToColor(today.local.distance, goals.distance);
-      distValueLabel.text = `${today.local.distance ? util.round2(today.local.distance * 0.000621371) : 0 } of `;
       distGoalLabel.style.fill = util.goalToColor(today.local.distance, goals.distance);
-      distGoalLabel.text = `${util.round2(goals.distance*0.000621371)}.00`;
+      distGoalLabel.text = `${today.local.distance ? util.round2(today.local.distance * 0.000621371) : 0 } / ${util.round2(goals.distance*0.000621371)}`;
        
       floorsStatsLabel.style.fill = util.goalToColor(today.local.elevationGain, goals.elevationGain);
       floorsStatsLabel.text = "Floors:";
-      floorsValueLabel.style.fill = util.goalToColor(today.local.elevationGain, goals.elevationGain);
-      floorsValueLabel.text = `${today.local.elevationGain ? today.local.elevationGain.toLocaleString() : 0} of `;
       floorsGoalLabel.style.fill = util.goalToColor(today.local.elevationGain, goals.elevationGain);
-      floorsGoalLabel.text = `${goals.elevationGain.toLocaleString()}`;
+      floorsGoalLabel.text = `${today.local.elevationGain ? today.local.elevationGain : 0} / ${goals.elevationGain}`;
       
       activeStatsLabel.style.fill = util.goalToColor(today.local.activeMinutes, goals.activeMinutes);
       activeStatsLabel.text = "Active:";
-      activeValueLabel.style.fill = util.goalToColor(today.local.activeMinutes, goals.activeMinutes);
-      activeValueLabel.text = `${today.local.activeMinutes ? today.local.activeMinutes.toLocaleString() : 0} of `;
       activeGoalLabel.style.fill = util.goalToColor(today.local.activeMinutes, goals.activeMinutes);
-      activeGoalLabel.text = `${goals.activeMinutes.toLocaleString()}`;
+      activeGoalLabel.text = `${today.local.activeMinutes ? today.local.activeMinutes.toLocaleString() : 0} / ${goals.activeMinutes}`;
  
       calsStatsLabel.style.fill = util.goalToColor(today.local.calories, goals.calories);
       calsStatsLabel.text = "Calories:";
-      calsValueLabel.style.fill = util.goalToColor(today.local.calories, goals.calories);
-      calsValueLabel.text = `${today.local.calories ? today.local.calories.toLocaleString() : 0} of `;
       calsGoalLabel.style.fill = util.goalToColor(today.local.calories, goals.calories);
-      calsGoalLabel.text = `${goals.calories.toLocaleString()}`;
+      calsGoalLabel.text = `${today.local.calories ? today.local.calories.toLocaleString() : 0} / ${parseInt(goals.calories).toLocaleString()}`;
     } else {
       stepStatsLabel.style.fill = util.goalToColor(today.local.steps, goals.steps);
       stepStatsLabel.text = `Steps: ${today.local.steps ? today.local.steps.toLocaleString() : 0} / ${goals.steps.toLocaleString()}`;
