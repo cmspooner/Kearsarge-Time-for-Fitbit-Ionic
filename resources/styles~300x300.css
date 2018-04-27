@@ -144,7 +144,7 @@
   text-anchor: middle;
   text-length: 32;
   x: 50%;
-  y: 18%;
+  y: 19%;
   fill: white;
 }
 
@@ -163,7 +163,7 @@
   text-anchor: middle;
   text-length: 32;
   x: 50%;
-  y: 37%;
+  y: 38%;
   fill: white;
 }
 
@@ -182,7 +182,7 @@
   text-anchor: middle;
   text-length: 32;
   x: 50%;
-  y: 56%;
+  y: 57%;
   fill: white;
 }
 
@@ -201,7 +201,7 @@
   text-anchor: middle;
   text-length: 32;
   x: 50%;
-  y: 75%;
+  y: 76%;
   fill: white;
 }
 
@@ -220,7 +220,7 @@
   text-anchor: middle;
   text-length: 32;
   x: 50%;
-  y: 94%;
+  y: 95%;
   fill: white;
 }
 
@@ -542,7 +542,7 @@
   text-length: 50;
   text-anchor: start;
   x: 75;
-  y: 19%;
+  y: 18%;
   fill: white;
 }
 
@@ -552,7 +552,7 @@
   text-length: 50;
   text-anchor: start;
   x: 75;
-  y: 29%;
+  y: 28%;
   fill: white;
 }
 #todayHighValLabel {
@@ -561,7 +561,7 @@
   text-length: 50;
   text-anchor: start;
   x: 135;
-  y: 29%;
+  y: 28%;
   fill: red;
 }
 
@@ -571,7 +571,7 @@
   text-length: 50;
   text-anchor: start;
   x: 183;
-  y: 29%;
+  y: 28%;
   fill: white;
 }
 #todayLowValLabel {
@@ -580,7 +580,7 @@
   text-length: 50;
   text-anchor: start;
   x: 246;
-  y: 29%;
+  y: 28%;
   fill: cornflowerblue;
 }
 
@@ -648,7 +648,7 @@
   text-length: 50;
   text-anchor: start;
   x: 1%;
-  y: 77%;
+  y: 78%;
   fill: white;
 }
 

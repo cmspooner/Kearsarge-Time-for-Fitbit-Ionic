@@ -233,7 +233,7 @@ import Weather from '../common/weather/device';
 
 let weather = new Weather();
 weather.setProvider("yahoo"); 
-weather.setApiKey("dj0yJmk9TTkyWW5SNG5rT0JOJmQ9WVdrOVRVMURkRmhhTlRBbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmeD00MA--");
+weather.setApiKey("");
 weather.setMaximumAge(updateInterval * 60 * 1000); 
 weather.setFeelsLike(false);
 weather.setUnit(userUnits);
@@ -257,7 +257,6 @@ weather.onsuccess = (data) => {
   time = schedUtils.hourAndMinToTime(time.getHours(), time.getMinutes());
   if (fakeTime) time = "11:08a";
   var timeStamp = new Date(data.timestamp);
-  //timeStamp = schedUtils.hourAndMinToMin(timeStamp.getHours(), timeStamp.getMinutes());
   timeStamp = schedUtils.hourAndMinToTime(timeStamp.getHours(), timeStamp.getMinutes());
 
   console.log("Time: " + time + ", TimeStamp: " + timeStamp);
@@ -265,9 +264,7 @@ weather.onsuccess = (data) => {
   tempAndConditionLabel.text = `${data.temperature}° ${util.shortenText(data.description)}`;
   
   if (showDataAge)
-    //weatherLocationLabel.text = `${data.location} (${dataAge}${unit})`;
-        weatherLocationLabel.text = `${data.location} (${timeStamp})`;
-
+    weatherLocationLabel.text = `${data.location} (${timeStamp})`;
   else
     weatherLocationLabel.text = `${data.location}`;
   
@@ -799,6 +796,16 @@ function setSeperator(){
 function setDataAge(){
   console.log(`Data Age: ${settings.dataAgeToggle}`);
   showDataAge = settings.dataAgeToggle;
+  
+  if (weatherData){
+    if (showDataAge){
+      var timeStamp = new Date(weatherData.timestamp);
+      timeStamp = schedUtils.hourAndMinToTime(timeStamp.getHours(), timeStamp.getMinutes());
+      weatherLocationLabel.text = `${weatherData.location} (${timeStamp})`;
+    } else {
+      weatherLocationLabel.text = `${weatherData.location}`;
+    }
+  }
 }
 
 function setUnit(){

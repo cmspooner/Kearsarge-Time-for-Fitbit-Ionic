@@ -158,7 +158,16 @@ function mySettings(props) {
       </Section>
       <Section
         title={<Text bold align="center">Build Version and Notes</Text>}>
-         <Text>
+        <Text>
+          Beta 4.12.3: Update time stamp on setting change and small tweaks.
+        </Text>
+        <Text>
+          Beta 4.12.2: Minor reformatting for Versa on forecast.
+        </Text>
+        <Text>
+          Beta 4.12.1: Minor reformatting for Versa.
+        </Text>
+        <Text>
           Beta 4.12: Major reformatting for Versa (Thanks Fitbot!!!)
         </Text>
         <Text>
