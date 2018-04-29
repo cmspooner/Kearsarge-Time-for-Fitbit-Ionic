@@ -355,10 +355,10 @@ function updateClockData() {
           theHeartRate: hrm.heartRate ? hrm.heartRate : 0
         },
         step: {
-          steps: today.local.steps ? today.local.steps: 0
+          steps: today.adjusted.steps ? today.adjusted.steps: 0
         },
         cal: {
-          cals: today.local.calories ? today.local.calories: 0
+          cals: today.adjusted.calories ? today.adjusted.calories: 0
         }
       };
     } else {
@@ -367,7 +367,7 @@ function updateClockData() {
           theHeartRate: hrm.heartRate ? hrm.heartRate : 0
         },
         step: {
-          steps: today.local.steps ? today.local.steps: 0
+          steps: today.adjusted.steps ? today.adjusted.steps: 0
         }
       };
     }
@@ -456,46 +456,46 @@ function updatePeriodData() {
 function updateStatsData(){
   if (show == "stats" && display.on){
     if (device.screen.height == 300) {
-      stepStatsLabel.style.fill = util.goalToColor(today.local.steps, goals.steps);
+      stepStatsLabel.style.fill = util.goalToColor(today.adjusted.steps, goals.steps);
       stepStatsLabel.text = "Steps:";
-      stepGoalLabel.style.fill = util.goalToColor(today.local.steps, goals.steps);
-      stepGoalLabel.text = `${today.local.steps ? today.local.steps.toLocaleString() : 0} / ${goals.steps.toLocaleString()}`;
+      stepGoalLabel.style.fill = util.goalToColor(today.adjusted.steps, goals.steps);
+      stepGoalLabel.text = `${today.adjusted.steps ? today.adjusted.steps.toLocaleString() : 0} / ${goals.steps.toLocaleString()}`;
       
-      distStatsLabel.style.fill = util.goalToColor(today.local.distance, goals.distance);
+      distStatsLabel.style.fill = util.goalToColor(today.adjusted.distance, goals.distance);
       distStatsLabel.text = "Distance:";
-      distGoalLabel.style.fill = util.goalToColor(today.local.distance, goals.distance);
-      distGoalLabel.text = `${today.local.distance ? util.round2(today.local.distance * 0.000621371) : 0 } / ${util.round2(goals.distance*0.000621371)}`;
+      distGoalLabel.style.fill = util.goalToColor(today.adjusted.distance, goals.distance);
+      distGoalLabel.text = `${today.adjusted.distance ? util.round2(today.adjusted.distance * 0.000621371) : 0 } / ${util.round2(goals.distance*0.000621371)}`;
        
-      floorsStatsLabel.style.fill = util.goalToColor(today.local.elevationGain, goals.elevationGain);
+      floorsStatsLabel.style.fill = util.goalToColor(today.adjusted.elevationGain, goals.elevationGain);
       floorsStatsLabel.text = "Floors:";
-      floorsGoalLabel.style.fill = util.goalToColor(today.local.elevationGain, goals.elevationGain);
-      floorsGoalLabel.text = `${today.local.elevationGain ? today.local.elevationGain : 0} / ${goals.elevationGain}`;
+      floorsGoalLabel.style.fill = util.goalToColor(today.adjusted.elevationGain, goals.elevationGain);
+      floorsGoalLabel.text = `${today.adjusted.elevationGain ? today.adjusted.elevationGain : 0} / ${goals.elevationGain}`;
       
-      activeStatsLabel.style.fill = util.goalToColor(today.local.activeMinutes, goals.activeMinutes);
+      activeStatsLabel.style.fill = util.goalToColor(today.adjusted.activeMinutes, goals.activeMinutes);
       activeStatsLabel.text = "Active:";
-      activeGoalLabel.style.fill = util.goalToColor(today.local.activeMinutes, goals.activeMinutes);
-      activeGoalLabel.text = `${today.local.activeMinutes ? today.local.activeMinutes.toLocaleString() : 0} / ${goals.activeMinutes}`;
+      activeGoalLabel.style.fill = util.goalToColor(today.adjusted.activeMinutes, goals.activeMinutes);
+      activeGoalLabel.text = `${today.adjusted.activeMinutes ? today.adjusted.activeMinutes.toLocaleString() : 0} / ${goals.activeMinutes}`;
  
-      calsStatsLabel.style.fill = util.goalToColor(today.local.calories, goals.calories);
+      calsStatsLabel.style.fill = util.goalToColor(today.adjusted.calories, goals.calories);
       calsStatsLabel.text = "Calories:";
-      calsGoalLabel.style.fill = util.goalToColor(today.local.calories, goals.calories);
-      calsGoalLabel.text = `${today.local.calories ? today.local.calories.toLocaleString() : 0} / ${parseInt(goals.calories).toLocaleString()}`;
+      calsGoalLabel.style.fill = util.goalToColor(today.adjusted.calories, goals.calories);
+      calsGoalLabel.text = `${today.adjusted.calories ? today.adjusted.calories.toLocaleString() : 0} / ${parseInt(goals.calories).toLocaleString()}`;
     } else {
-      stepStatsLabel.style.fill = util.goalToColor(today.local.steps, goals.steps);
-      stepStatsLabel.text = `Steps: ${today.local.steps ? today.local.steps.toLocaleString() : 0} / ${goals.steps.toLocaleString()}`;
+      stepStatsLabel.style.fill = util.goalToColor(today.adjusted.steps, goals.steps);
+      stepStatsLabel.text = `Steps: ${today.adjusted.steps ? today.adjusted.steps.toLocaleString() : 0} / ${goals.steps.toLocaleString()}`;
 
       // Multiply by .000621371 to convert from meters to miles
-      distStatsLabel.style.fill = util.goalToColor(today.local.distance, goals.distance);
-      distStatsLabel.text = `Distance: ${today.local.distance ? util.round2(today.local.distance * 0.000621371) : 0 } / ${util.round2(goals.distance*0.000621371)}`;
+      distStatsLabel.style.fill = util.goalToColor(today.adjusted.distance, goals.distance);
+      distStatsLabel.text = `Distance: ${today.adjusted.distance ? util.round2(today.adjusted.distance * 0.000621371) : 0 } / ${util.round2(goals.distance*0.000621371)}`;
 
-      floorsStatsLabel.style.fill = util.goalToColor(today.local.elevationGain, goals.elevationGain);
-      floorsStatsLabel.text = `Floors: ${today.local.elevationGain ? today.local.elevationGain : 0} / ${goals.elevationGain}`;
+      floorsStatsLabel.style.fill = util.goalToColor(today.adjusted.elevationGain, goals.elevationGain);
+      floorsStatsLabel.text = `Floors: ${today.adjusted.elevationGain ? today.adjusted.elevationGain : 0} / ${goals.elevationGain}`;
 
-      activeStatsLabel.style.fill = util.goalToColor(today.local.activeMinutes, goals.activeMinutes);
-      activeStatsLabel.text = `Active: ${today.local.activeMinutes ? today.local.activeMinutes.toLocaleString() : 0} / ${goals.activeMinutes}`;
+      activeStatsLabel.style.fill = util.goalToColor(today.adjusted.activeMinutes, goals.activeMinutes);
+      activeStatsLabel.text = `Active: ${today.adjusted.activeMinutes ? today.adjusted.activeMinutes.toLocaleString() : 0} / ${goals.activeMinutes}`;
 
-      calsStatsLabel.style.fill = util.goalToColor(today.local.calories, goals.calories);
-      calsStatsLabel.text = `Calories: ${today.local.calories ? today.local.calories.toLocaleString() : 0} / ${parseInt(goals.calories).toLocaleString()}`;
+      calsStatsLabel.style.fill = util.goalToColor(today.adjusted.calories, goals.calories);
+      calsStatsLabel.text = `Calories: ${today.adjusted.calories ? today.adjusted.calories.toLocaleString() : 0} / ${parseInt(goals.calories).toLocaleString()}`;
     }
   }
 }
