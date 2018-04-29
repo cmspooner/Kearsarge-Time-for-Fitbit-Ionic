@@ -75,7 +75,7 @@
     <text id="todayLowValLabel" />
     
     <text id="tomorrowDateLabel" />
-    <image id="tomorrowWeatherImage" x="10" y="43%" width="60" height="60" href="" load="sync"/>
+    <image id="tomorrowWeatherImage" x="10" y="42%" width="60" height="60" href="" load="sync"/>
     <text id="tomorrowDescriptionLabel" />
     <text id="tomorrowHighLabel" />
     <text id="tomorrowHighValLabel" />

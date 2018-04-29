@@ -534,7 +534,7 @@
   text-length: 50;
   text-anchor: start;
   x: 1%;
-  y: 43%;
+  y: 42%;
   fill: white;
 }
 
@@ -544,7 +544,7 @@
   text-length: 50;
   text-anchor: start;
   x: 75;
-  y: 54%;
+  y: 53%;
   fill: white;
 }
 
@@ -554,7 +554,7 @@
   text-length: 50;
   text-anchor: start;
   x: 75;
-  y: 64%;
+  y: 63%;
   fill: white;
 }
 #tomorrowHighValLabel {
@@ -563,7 +563,7 @@
   text-length: 50;
   text-anchor: start;
   x: 135;
-  y: 64%;
+  y: 63%;
   fill: red;
 }
 
@@ -573,7 +573,7 @@
   text-length: 50;
   text-anchor: start;
   x: 183;
-  y: 64%;
+  y: 63%;
   fill: white;
 }
 #tomorrowLowValLabel {
@@ -582,7 +582,7 @@
   text-length: 50;
   text-anchor: start;
   x: 246;
-  y: 64%;
+  y: 63%;
   fill: cornflowerblue;
 }
 

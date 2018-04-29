@@ -159,6 +159,12 @@ function mySettings(props) {
       <Section
         title={<Text bold align="center">Build Version and Notes</Text>}>
         <Text>
+          Beta 4.13: Change from local to adjusted steps.
+        </Text>
+        <Text>
+          Beta 4.12.4: Very small tweaks.
+        </Text>
+        <Text>
           Beta 4.12.3: Update time stamp on setting change and small tweaks.
         </Text>
         <Text>
