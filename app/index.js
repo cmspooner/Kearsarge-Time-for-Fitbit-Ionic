@@ -26,6 +26,9 @@ import * as schedUtils from "scheduleUtils.js";
 import { me as device } from "device";
 if (!device.screen) device.screen = { width: 348, height: 250 };
 console.log(`Dimensions: ${device.screen.width}x${device.screen.height}`);
+var deviceType = "Ionic";
+if (device.screen.width == 300 && device.screen.height == 300)
+  deviceType = "Versa";
 
 const SETTINGS_TYPE = "cbor";
 const SETTINGS_FILE = "settings.cbor";
@@ -68,7 +71,7 @@ let dateLabel = document.getElementById("dateLabel");
 let batteryLevelLabel = document.getElementById("batteryLevelLabel");
 let hrLabel = document.getElementById("hrLabel");
 let stepsLabel = document.getElementById("stepsLabel");
-if (device.screen.height == 300)
+if (deviceType == "Versa")
   let calsLabel = document.getElementById("calsLabel");
 
 // Period View
@@ -87,7 +90,7 @@ let distStatsLabel = document.getElementById("distStatsLabel");
 let floorsStatsLabel = document.getElementById("floorsStatsLabel");
 let activeStatsLabel = document.getElementById("activeStatsLabel");
 let calsStatsLabel = document.getElementById("calsStatsLabel");
-if (device.screen.height == 300){
+if (deviceType == "Versa"){
   let stepGoalLabel = document.getElementById("stepGoalLabel");
   let distGoalLabel = document.getElementById("distGoalLabel");
   let floorsGoalLabel = document.getElementById("floorsGoalLabel");
@@ -349,7 +352,7 @@ function updateClock() {
 
 function updateClockData() {
   if (show == "clock" && display.on){
-    if (device.screen.height == 300) {
+    if (deviceType == "Versa") {
       let data = {
         heart: {
           theHeartRate: hrm.heartRate ? hrm.heartRate : 0
@@ -378,7 +381,7 @@ function updateClockData() {
 
     hrLabel.style.fill = 'white';
     stepsLabel.style.fill = 'white';
-    if (device.screen.height == 300)
+    if (deviceType == "Versa")
       calsLabel.style.fill = 'white';
     
     
@@ -399,7 +402,7 @@ function updateClockData() {
     
     stepsLabel.style.fill = util.goalToColor(data.step.steps, goals.steps);
     stepsLabel.text = `${data.step.steps.toLocaleString()} steps`;
-    if (device.screen.height == 300) {
+    if (deviceType == "Versa") {
       calsLabel.style.fill = util.goalToColor(data.cal.cals, goals.calories);
       calsLabel.text = `${data.cal.cals.toLocaleString()} kcal`;
     }
@@ -455,7 +458,7 @@ function updatePeriodData() {
 
 function updateStatsData(){
   if (show == "stats" && display.on){
-    if (device.screen.height == 300) {
+    if (deviceType == "Versa") {
       stepStatsLabel.style.fill = util.goalToColor(today.adjusted.steps, goals.steps);
       stepStatsLabel.text = "Steps:";
       stepGoalLabel.style.fill = util.goalToColor(today.adjusted.steps, goals.steps);

@@ -159,6 +159,15 @@ function mySettings(props) {
       <Section
         title={<Text bold align="center">Build Version and Notes</Text>}>
         <Text>
+          Beta 4.14.0: Reverted The reversion change because I broke Carbees Watch still.
+        </Text>
+        <Text>
+          Beta 4.13.0: Reverted change because I broke Carbees Watch.....ooops.
+        </Text>
+        <Text>
+          Beta 4.14: Changed height check to device check.
+        </Text>
+        <Text>
           Beta 4.13: Change from local to adjusted steps.
         </Text>
         <Text>
