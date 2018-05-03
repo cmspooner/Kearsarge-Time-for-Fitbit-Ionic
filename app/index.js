@@ -267,9 +267,9 @@ weather.onsuccess = (data) => {
   tempAndConditionLabel.text = `${data.temperature}° ${util.shortenText(data.description)}`;
   
   if (showDataAge)
-    weatherLocationLabel.text = `${data.location} (${timeStamp})`;
+    weatherLocationLabel.text = `${util.shortenText(data.location)} (${timeStamp})`;
   else
-    weatherLocationLabel.text = `${data.location}`;
+    weatherLocationLabel.text = `${util.shortenText(data.location)}`;
   
   weatherImage.href = util.getWeatherIcon(data);  
 }
@@ -547,7 +547,7 @@ function updateForecastData(){
     console.log("Today Code: " + weatherData.todayCondition)
     todayWeatherImage.href = util.getForecastIcon(weatherData.todayCondition, 
                                                   weatherData.tomorrowDescription);
-    todayDescriptionLabel.text = weatherData.todayDescription;
+    todayDescriptionLabel.text = util.shortenText(weatherData.todayDescription);
     todayHighLabel.text = "High:"
     todayHighValLabel.text = weatherData.todayHigh + "°"
     todayLowLabel.text = "Low:"
@@ -557,7 +557,7 @@ function updateForecastData(){
     console.log("Tomorrow Code: " + weatherData.tomorrowCondition)
     tomorrowWeatherImage.href = util.getForecastIcon(weatherData.tomorrowCondition, 
                                                      weatherData.tomorrowDescription);
-    tomorrowDescriptionLabel.text = weatherData.tomorrowDescription;
+    tomorrowDescriptionLabel.text = util.shortenText(weatherData.tomorrowDescription);
     tomorrowHighLabel.text = "High:"
     tomorrowHighValLabel.text = weatherData.tomorrowHigh + "°"
     tomorrowLowLabel.text = "Low:"
@@ -567,7 +567,7 @@ function updateForecastData(){
     console.log("day3 Code: " + weatherData.day3Condition)
     day3WeatherImage.href = util.getForecastIcon(weatherData.day3Condition, 
                                                      weatherData.day3Description);
-    day3DescriptionLabel.text = weatherData.day3Description;
+    day3DescriptionLabel.text = util.shortenText(weatherData.day3Description);
     day3HighLabel.text = "High:"
     day3HighValLabel.text = weatherData.day3High + "°"
     day3LowLabel.text = "Low:"
@@ -618,6 +618,7 @@ background.onclick = function(evt) {
       forecastView.style.display = "inline";//test
       console.log("forecast Loaded");
     } else {
+      show = "clock";
       statsView.style.display = "none";
       scheduleView.style.display = "none";
       forecastView.style.display = "none";

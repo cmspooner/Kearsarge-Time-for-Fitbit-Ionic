@@ -159,6 +159,21 @@ function mySettings(props) {
       <Section
         title={<Text bold align="center">Build Version and Notes</Text>}>
         <Text>
+          Beta 4.15.3: Fixed yet another shortener.
+        </Text>
+        <Text>
+          Beta 4.15.2.1: Fixing yet another shortener.
+        </Text>
+        <Text>
+          Beta 4.15.2: Fixed yet another shortener.
+        </Text>
+        <Text>
+          Beta 4.15.1: Fixed another shortener.
+        </Text>
+        <Text>
+          Beta 4.15: Shortened text fields that were running off the screen.
+        </Text>
+        <Text>
           Beta 4.14.0: Reverted The reversion change because I broke Carbees Watch still.
         </Text>
         <Text>
