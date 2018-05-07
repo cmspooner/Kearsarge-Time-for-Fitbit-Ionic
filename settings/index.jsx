@@ -159,6 +159,9 @@ function mySettings(props) {
       <Section
         title={<Text bold align="center">Build Version and Notes</Text>}>
         <Text>
+          Beta 4.15.4: Fixed overly aggressive and replacement.
+        </Text>
+        <Text>
           Beta 4.15.3: Fixed yet another shortener.
         </Text>
         <Text>

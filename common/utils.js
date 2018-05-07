@@ -118,7 +118,7 @@ export function shortenText(text){
   else
     text = text.replace("Showers", "Rain");
   
-  text = text.replace("And", "&");
+  text = text.replace("And ", "& ");
   text = text.replace("Mixed ", "");
   text = text.replace("Severe", "Bad");
   text = text.replace("Thunderstorms", "T-Storms");
