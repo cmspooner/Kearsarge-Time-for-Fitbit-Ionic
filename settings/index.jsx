@@ -158,6 +158,9 @@ function mySettings(props) {
       </Section>
       <Section
         title={<Text bold align="center">Build Version and Notes</Text>}>
+         <Text>
+           4.1: Fixed metric units.
+        </Text>
         <Text>
            4.0: Now includes forecast screan and numerous fixes.
         </Text>
