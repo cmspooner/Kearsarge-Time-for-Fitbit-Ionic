@@ -7,6 +7,14 @@ function mySettings(props) {
            settingsKey="unitToggle"
            label="Tempterature in °F or °C"
          />
+        <Toggle
+           settingsKey="weatherScrollToggle"
+           label="Dissable weather scrolling"
+         />
+         <Toggle
+           settingsKey="locationScrollToggle"
+           label="Dissable location scrolling"
+         />
         <Select
           label={`Weather Update Interval`}
           settingsKey="updateInterval"

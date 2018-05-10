@@ -214,6 +214,14 @@ messaging.peerSocket.onmessage = evt => {
     settings.failCountToggle = JSON.parse(evt.data.newValue);
     setFailCount();
   }  
+  if (evt.data.key === "weatherScrollToggle" && evt.data.newValue) {
+    settings.weatherScrollToggle = JSON.parse(evt.data.newValue);
+    setWeatherScroll();
+  }
+  if (evt.data.key === "locationScrollToggle" && evt.data.newValue) {
+    settings.locationScrollToggle = JSON.parse(evt.data.newValue);
+    setLocationScroll();
+  }
   saveSettings();
   
 };
@@ -705,6 +713,8 @@ function applySettings(){
   setUnit();
   setErrorMessage();
   setFailCount(); 
+  setWeatherScroll();
+  setLocationScroll();
   openedWeatherRequest = false;
 }
 
@@ -847,6 +857,37 @@ function setFailCount(){
   console.log(`Fail Count: ${settings.failCountToggle}`);
   showFailCount = settings.failCountToggle;
 }
+function setWeatherScroll(){
+  console.log(`Weather Scroll Dissable: ${settings.weatherScrollToggle}`);
+  if (settings.weatherScrollToggle){
+    tempAndConditionLabel.state = "disabled"
+    tempAndConditionLabel.text = "";
+    if (weatherData)
+      tempAndConditionLabel.text = `${weatherData.temperature}° ${util.shortenText(weatherData.description)}`;
+    else
+      tempAndConditionLabel.text = "Updating..."
+  } else
+    tempAndConditionLabel.state = "enabled"
+  
+}
+
+function setLocationScroll(){
+  console.log(`Weather Scroll Dissable: ${settings.locationScrollToggle}`);
+  if (settings.locationScrollToggle){
+    weatherLocationLabel.state = "disabled"
+    weatherLocationLabel.text = "";
+    if (weatherData){
+      if (showDataAge){
+        var timeStamp = new Date(weatherData.timestamp);
+        timeStamp = schedUtils.hourAndMinToTime(timeStamp.getHours(), timeStamp.getMinutes());
+        weatherLocationLabel.text = `${weatherData.location} (${timeStamp})`;
+      } else {
+        weatherLocationLabel.text = `${weatherData.location}`;
+      }
+    }
+  }  else
+    weatherLocationLabel.state = "enabled"
+}
 
 me.onunload = saveSettings;
 
@@ -860,10 +901,11 @@ function loadSettings() {
       updateInterval : "30 minutes",
       updateLocationInterval : "30 minutes",
       unitToggle : false,
-      dataAgeToggle : true,
+      dataAgeToggle : false,
       errorMessageToggle: false,
-      failCountToggle : true,
-      seperatorToggle : true,
+      failCountToggle : false,
+      weatherScrollToggle : false,
+      locationScrollToggle : false,
       color : "#004C99",
       schedule : "Regular",
       noFile : true
