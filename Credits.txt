@@ -1,5 +1,7 @@
 Concept and Code by Christopher Spooner
 
+Activity Icons by Madison Neal
+
 Weather Code by gregoiresage
 https://github.com/gregoiresage/fitbit-weather
 
