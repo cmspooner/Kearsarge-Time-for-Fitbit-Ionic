@@ -184,35 +184,35 @@ export function getWeatherIcon(data){
   }
 }
 export function getForecastIcon(code, description){
-switch(code){
-  case 0: //ClearSky
-    return "../resources/icons/weather/whiteSun.png"
-    break;
-  case 1: //FewClouds
-  case 2: //ScatteredClouds
-    return "../resources/icons/weather/whitePartlySunny.png"
-    break;
-  case 3: //BrokenClouds
-    return "../resources/icons/weather/whiteCloud.png"
-    break;
-  case 4: //ShowerRain
-  case 5: //Rain
-   return "../resources/icons/weather/whiteRain.png"
-    break;
-  case 6: //Thunderstorm
-    if (wordStartsWith("T", description))
-      return "../resources/icons/weather/whiteStorm.png"
-    else
-      return "../resources/icons/weather/whiteRain.png"
-    break;
-  case 7: //Snow
-    return "../resources/icons/weather/whiteSnow.png"
-    break;
-  case 8: //Mist
-    return "../resources/icons/weather/whiteHaze .png"
-    break;
-  default: //Other
-    return "../resources/icons/weather/whiteSun.png"
-    break;
-  }
+  switch(code){
+    case 0: //ClearSky
+      return "../resources/icons/weather/whiteSun.png"
+      break;
+    case 1: //FewClouds
+    case 2: //ScatteredClouds
+      return "../resources/icons/weather/whitePartlySunny.png"
+      break;
+    case 3: //BrokenClouds
+      return "../resources/icons/weather/whiteCloud.png"
+      break;
+    case 4: //ShowerRain
+    case 5: //Rain
+     return "../resources/icons/weather/whiteRain.png"
+      break;
+    case 6: //Thunderstorm
+      if (wordStartsWith("T", description))
+        return "../resources/icons/weather/whiteStorm.png"
+      else
+        return "../resources/icons/weather/whiteRain.png"
+      break;
+    case 7: //Snow
+      return "../resources/icons/weather/whiteSnow.png"
+      break;
+    case 8: //Mist
+      return "../resources/icons/weather/whiteHaze .png"
+      break;
+    default: //Other
+      return "../resources/icons/weather/whiteSun.png"
+      break;
+    }
 }
