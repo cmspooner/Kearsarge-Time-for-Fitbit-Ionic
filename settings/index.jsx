@@ -5,10 +5,8 @@ function mySettings(props) {
         title={<Text bold align="center">Weather</Text>}>
         <Toggle
            settingsKey="unitToggle"
-           label="US or Metric Units" 
-           onChange={value => props.settingsStorage.setItem('unit', value.toString())}
+           label="Tempterature in °F or °C"
          />
-        <Text>Temperatures in degrees {props.settingsStorage.getItem('unit') == "true" ? "celsius" : "fahrenheit"}</Text>
         <Toggle
            settingsKey="weatherScrollToggle"
            label="Dissable weather scrolling"
@@ -142,7 +140,7 @@ function mySettings(props) {
       <Section
         title={<Text bold align="center">Contact Me</Text>}>
         <Text>
-          Please don't hesitate to contact me with questions or suggestions; but be sure to let me know which app or watchface you are talking about. This and all my other apps will always be free and Open Source. If you really like my app please consider buying me a coffee (or more likely electronic components that end up in my classroom). Thanks!
+          Please don't hesitiate to contact me with questions or suggestions; but be sure to let me know which app or watchface you are talking about. This and all my other apps will always be free and Open Source. If you really like my app please considder buying me a coffee (or more likely electonic components that end up in my classroom). Thanks!
         </Text>
         <Link source="https://rawgit.com/cmspooner/Kearsarge-Time-for-Fitbit-Ionic/master/settings/email.html">
           <TextImageRow
@@ -169,25 +167,202 @@ function mySettings(props) {
       <Section
         title={<Text bold align="center">Build Version and Notes</Text>}>
         <Text>
-           4.2.1: Settings now shows units.
+          Beta 5.0: Moved weather and condition on ionic.
         </Text>
         <Text>
-           4.2: Added scrolling text when weather condition or location are too long.
+          Beta 4.15.4: Fixed overly aggressive and replacement.
+        </Text>
+        <Text>
+          Beta 4.15.3: Fixed yet another shortener.
+        </Text>
+        <Text>
+          Beta 4.15.2.1: Fixing yet another shortener.
+        </Text>
+        <Text>
+          Beta 4.15.2: Fixed yet another shortener.
+        </Text>
+        <Text>
+          Beta 4.15.1: Fixed another shortener.
+        </Text>
+        <Text>
+          Beta 4.15: Shortened text fields that were running off the screen.
+        </Text>
+        <Text>
+          Beta 4.14.0: Reverted The reversion change because I broke Carbees Watch still.
+        </Text>
+        <Text>
+          Beta 4.13.0: Reverted change because I broke Carbees Watch.....ooops.
+        </Text>
+        <Text>
+          Beta 4.14: Changed height check to device check.
+        </Text>
+        <Text>
+          Beta 4.13: Change from local to adjusted steps.
+        </Text>
+        <Text>
+          Beta 4.12.4: Very small tweaks.
+        </Text>
+        <Text>
+          Beta 4.12.3: Update time stamp on setting change and small tweaks.
+        </Text>
+        <Text>
+          Beta 4.12.2: Minor reformatting for Versa on forecast.
+        </Text>
+        <Text>
+          Beta 4.12.1: Minor reformatting for Versa.
+        </Text>
+        <Text>
+          Beta 4.12: Major reformatting for Versa (Thanks Fitbot!!!)
+        </Text>
+        <Text>
+          Beta 4.11.3: Faster refresh when failed, actually this time.
+        </Text>
+        <Text>
+          Beta 4.11.2: Faster refresh when failed.
+        </Text>
+        <Text>
+          Beta 4.11.1: Force fecth when no settings.
+        </Text>
+        <Text>
+          Beta 4.11: More agressive rounding od recent time calc and more agressive settings saving.
+        </Text>
+        <Text>
+          Beta 4.10.1: Fixed settings layout.
+        </Text>
+        <Text>
+          Beta 4.10: Added setting for location update interval.
+        </Text>
+        <Text>
+          Beta 4.9.4: Fix type in error message
+        </Text>
+        <Text>
+          Beta 4.9.3: It works when tethered to my computer!
+        </Text>
+        <Text>
+          Beta 4.9.2: I have no idea...
         </Text>
          <Text>
-           4.1: Fixed metric units.
+          Beta 4.9.1: Maybe this time I have it right??
         </Text>
         <Text>
-           4.0: Now includes forecast screan and numerous fixes.
+          Beta 4.9: Got update running on time, without extra updates!
         </Text>
         <Text>
-           3.0: Completely Versa Compatible. Includes Weather, debugging options, and tons of color choices.
+          Beta 4.8: Major cleaning on setting application
         </Text>
         <Text>
-           2.0 (Beta  Only): Added Weather.
+          Beta 4.7.2: reset weather update interval...again?
         </Text>
         <Text>
-           1.3: Changed daily schedule and main bar now changes color throughout the day.
+          Beta 4.7.1: reset weather update interval
+        </Text>
+        <Text>
+          Beta 4.7: Fixed multiple hits to weather api on start
+        </Text>
+        <Text>
+          Beta 4.6: Now running on most recent weather API
+        </Text>
+        <Text>
+          Beta 4.5.2: Changed draw/hide order.
+        </Text>
+        <Text>
+          Beta 4.5.1: Fixed overdraw error when changing schedule.
+        </Text>
+        <Text>
+          Beta 4.5: Contact links in settings.
+        </Text>
+        <Text>
+          Beta 4.4: Settings now stored properly.
+        </Text>
+        <Text>
+          Beta 4.3.1: Updating to make sure that I'm in sync.
+        </Text>
+        <Text>
+          Beta 4.3: Now using proper deg F via yahoo api, rather derived from deg C.
+        </Text>
+        <Text>
+          Beta 4.2: Fixed shortening bug.
+        </Text>
+        <Text>
+          Beta 4.1: Fixes to forcast screen.
+        </Text>
+        <Text>
+          Beta 4.0: Weather forcast screen.
+        </Text>
+        <Text>
+          Beta 3.2: Storing weather and showing last weather loaded and moving update message to location.
+        </Text>
+        <Text>
+          Beta 3.1: back to beta! Manually fixing thunderstorm icons when showers.
+        </Text>
+        <Text>
+          Beta 3.0.4: fixed shortener and now works... I hope
+        </Text>
+        <Text>
+          Beta 3.0.3: Fixed duplicate red in settings, cleaned up spacing in versa stats screen
+        </Text>
+        <Text>
+          Beta 3.0.2: Changed shortener change showers to rain, removed linking to submodules folder, removed non-build files from fitbit project; will leave in repo though.
+        </Text>
+        <Text>
+          Beta 3.0.1: Changed shortener to fix more "Showers" problems
+        </Text>
+        <Text>
+          Beta 3.0.0.1: Fixed Ionic Break!
+        </Text>
+        <Text>
+          Beta 3.0: Now Versa Compatible!
+        </Text>
+        <Text>
+          Beta 2.1.12: Changed color coding to be more rainbow-like, for reals this time. Used pallet tool at: http://www.perbang.dk/
+        </Text>
+        <Text>
+          Beta 2.1.11: Changed color coding to be more rainbow-like
+        </Text>
+        <Text>
+          Beta 2.1.10: Added a huge number of color options
+        </Text>
+        <Text>
+          Beta 2.1.9: Shortened long weather descriptions
+        </Text>
+        <Text>
+          Beta 2.1.8: Weather should update in background, all intervals now in x*1000 notation.
+        </Text>
+        <Text>
+          Beta 2.1.7: Made changes to weather error handling.
+        </Text>
+        <Text>
+          Beta 2.1.6: Fixed Rain showing as thunderstorm and added comments to weather icon switch statement
+        </Text>
+        <Text>
+          Beta 2.1.5: Added this section
+        </Text>
+        <Text>
+          Beta 2.1.4.2: Added Error Message to Weather
+        </Text>
+        <Text>
+          Beta 2.1.4.1: Fixed updating message
+        </Text>
+        <Text>
+          Beta 2.1.4: Updating Message Added
+        </Text>
+        <Text>
+          Beta 2.1.2.1: Reverted Battery Change
+        </Text>
+        <Text>
+          Beta 2.1.3: Chaged Battery
+        </Text>
+        <Text>
+          Beta 2.1.2: Clean Up Battery
+        </Text>
+        <Text>
+          Beta 2.1.1: Added Battery Percentage Color based on level
+        </Text>
+        <Text>
+          Beta 2.1: Added Battery Percentage.
+        </Text>
+        <Text>
+          Beta 2.0: Added Weather.
         </Text>
       </Section>
     </Page>
