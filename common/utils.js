@@ -96,10 +96,7 @@ export function goalToColor(value, total, low = 'fb-red',
 }
 
 export function round2(number){
-  var factor = Math.pow(10, 2);
-  var tempNumber = number * factor;
-  var roundedTempNumber = Math.round(tempNumber);
-  return roundedTempNumber / factor;
+  return Math.round(number * Math.pow(10, 2)) / Math.pow(10, 2);
 }
 
 export function isInRange(value, low, high){
@@ -112,7 +109,7 @@ export function shortenText(text){
   text = text.replace("South", "S.");
   text = text.replace("West", "W.");
   
-  console.log(text.indexOf("Rain"));
+  //console.log(text.indexOf("Rain"));
   if (text.indexOf("Rain") != -1)
     text = text.replace("Showers", "");
   else

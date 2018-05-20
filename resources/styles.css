@@ -95,30 +95,6 @@
   fill: silver;
 }
 
-/* Weather */
-/*
-#tempAndConditionLabel {
-  font-size: 28;
-  font-family: Colfax-Bold;
-  text-length: 20;
-  text-anchor: start;
-  text-overflow: ellipsis;
-  x: 75;
-  y: 83%;
-  fill: silver;
-}
-
-#weatherLocationLabel {
-  font-size: 28;
-  font-family: Colfax-Regular;
-  text-length: 20;
-  text-anchor: start;
-  text-overflow: ellipsis;
-  x: 75;
-  y: 95%;
-  fill: silver;
-}
-*/
 
 /* Stats View Labels */
 #stepStatsLabel {
