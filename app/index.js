@@ -31,8 +31,7 @@ let deviceType = "Ionic";
 if (device.screen.width == 300 && device.screen.height == 300)
   deviceType = "Versa";
 
-const SETTINGS_TYPE = "cbor";
-const SETTINGS_FILE = "settings.cbor";
+
 
 let sched = "Regular";
 let inSched = false;
@@ -40,7 +39,7 @@ let inSched = false;
 let userUnits =  units.temperature.toLowerCase();
 let failCount = 0;
 
-let weatherData = null;
+
 
 let today = new Date();
 let time = schedUtils.hourAndMinToTime(today.getHours(), today.getMinutes());
@@ -62,6 +61,7 @@ let hrm = new HeartRateSensor();
 //----------------------------Messaging and Settings--------------
 
 let settings = loadSettings();
+let weatherData = null;
 
 messaging.peerSocket.onmessage = evt => {
   console.log(`App received: ${JSON.stringify(evt)}`);
@@ -778,6 +778,9 @@ function setDataAge(){
 
 function setUnit(){
   console.log(`Celsius: ${settings.unitToggle}`);
+  
+  let tempAndConditionLabel = document.getElementById("tempAndConditionLabel");
+  
   let oldUnits = userUnits;
   if (settings.unitToggle)
     userUnits = 'c';
@@ -846,6 +849,9 @@ me.onunload = saveSettings;
 
 function loadSettings() {
   console.log("Loading Settings!")
+  const SETTINGS_TYPE = "cbor";
+  const SETTINGS_FILE = "settings.cbor";
+  
   try {
     return fs.readFileSync(SETTINGS_FILE, SETTINGS_TYPE);
   } catch (ex) {
@@ -869,14 +875,20 @@ function loadSettings() {
 
 function saveSettings() {
   console.log("Saving Settings");
+  
+  const SETTINGS_TYPE = "cbor";
+  const SETTINGS_FILE = "settings.cbor";
+  
   settings.noFile = false;
   fs.writeFileSync(SETTINGS_FILE, settings, SETTINGS_TYPE);
 }
 
 function fetchWeather(){
-  openedWeatherRequest = false;
-  console.log("auto fetch");
-  weather.fetch();
+  if (!inSched){
+    openedWeatherRequest = false;
+    console.log("auto fetch");
+    weather.fetch();
+  }
 }
 
 //-----------------Startup------------------------

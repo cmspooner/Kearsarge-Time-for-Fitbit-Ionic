@@ -1,48 +1,52 @@
-let months = [
-  "Jan.", 
-  "Feb.", 
-  "Mar.", 
-  "Apr.", 
-  "May", 
-  "June", 
-  "July", 
-  "Aug.", 
-  "Sept.", 
-  "Oct.",
-  "Nov.",
-  "Dec.",
-  
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December"
-]
+function months (){
+  return [
+    "Jan.", 
+    "Feb.", 
+    "Mar.", 
+    "Apr.", 
+    "May", 
+    "June", 
+    "July", 
+    "Aug.", 
+    "Sept.", 
+    "Oct.",
+    "Nov.",
+    "Dec.",
 
-let days = [ 
-  "Sun", 
-  "Mon", 
-  "Tues", 
-  "Wed", 
-  "Thurs", 
-  "Fri", 
-  "Sat",
-  
-  "Sunday",
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-  "Saturday"
-]
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December"
+  ]
+}
+
+function days(){
+  return [
+    "Sun", 
+    "Mon", 
+    "Tues", 
+    "Wed", 
+    "Thurs", 
+    "Fri", 
+    "Sat",
+
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday"
+  ]
+}
 
 
 // Add zero in front of numbers < 10
@@ -57,7 +61,7 @@ export function toMonth(month, len = "short") {
   if (len == "long"){
     month += 12;
   }
-  return months[month];
+  return months()[month];
 }
 
 export function toDay(day, len = "short") {
@@ -65,7 +69,7 @@ export function toDay(day, len = "short") {
   if (len == "long"){
     day += 7;
   }
-  return days[day];
+  return days()[day];
 }
 
 export function expandDay(day){

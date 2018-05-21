@@ -61,7 +61,7 @@ export function getDailySchedule(typeOfDay){
   if (typeOfDay == "Regular"){
     typeOfDay = "Normal";
   }
-  return sched.schedule[typeOfDay];
+  return sched.schedule()[typeOfDay];
 }
 
 export function isInSchedule(typeOfDay, time){
@@ -120,5 +120,5 @@ export function getPeriodList(typeOfDay){
   //let todaySched = getDailySchedule(typeOfDay);
   //let periods = getDailySchedule(typeOfDay).filter(x => sched.ignoredPeriods.indexOf(x.name) === -1);
   
-  return getDailySchedule(typeOfDay).filter(x => sched.ignoredPeriods.indexOf(x.name) === -1);
+  return getDailySchedule(typeOfDay).filter(x => sched.ignoredPeriods().indexOf(x.name) === -1);
 }

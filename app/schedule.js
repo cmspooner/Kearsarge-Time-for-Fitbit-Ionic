@@ -1,30 +1,36 @@
-export var dayToSchedule = {                
-      "Sunday": "No School",
-      "Monday": "Normal",
-      "Tuesday": "Normal",
-      "Wednesday": "Normal",
-      "Thursday": "Normal",
-      "Friday": "Normal",
-      "Saturday": "No School"
+export function dayToSchedule(){                
+  return {"Sunday": "No School",
+          "Monday": "Normal",
+          "Tuesday": "Normal",
+          "Wednesday": "Normal",
+          "Thursday": "Normal",
+          "Friday": "Normal",
+          "Saturday": "No School"
     }
+}
 
-export var ignoredPeriods = [
+export function ignoredPeriods(){ 
+    return [
                       "No School",
                       "Before School",
                       "Warning Bell",
                       "Passing Time",
                       "Teacher Time"
                      ];
+}
 
-export var splitPeriods = {
+export function splitPeriods(){
+  return {
       "Period 5": [
               "Period 5, 1st Wave",
               "Period 5, 2nd Wave",
               "Period 5, 3rd Wave"
        ]
     }
+}
 
-export var schedule = {
+export function schedule(){
+  return {
     "No School" : [
           {name: "No School", start: "12:00a", end: "12:00a"}
          ], 
@@ -144,5 +150,6 @@ export var schedule = {
            {name: "Make-Up", start: "12:45p", end: "2:15p"},
            {name: "Teacher Time", start: "2:15p", end: "3:15p"}
           ]
-};
+  }
+}
 
