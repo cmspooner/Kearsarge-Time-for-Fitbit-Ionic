@@ -107,6 +107,25 @@ export function isInRange(value, low, high){
   return value >= low && value < high;
 }
 
+export function dateParse(fmt, today){
+  //dateLabel.text = `${util.toDay(today.getDay(), "short")}, ${util.toMonth(today.getMonth())} ${today.getDate()}`;
+  //return toDay(today.getDay(), "short")+", " + toMonth(today.getMonth()) + " " + today.getDate();
+  switch (fmt){
+    case "Mon, Jan 31":
+      return toDay(today.getDay(), "short") + ", " + toMonth(today.getMonth()) + " " + today.getDate();
+    case "Jan 31, 2018":
+      return toMonth(today.getMonth()) + " " + today.getDate() + ", " + (today.getYear()+1900);
+    case "1/31/2018":
+      return (today.getMonth()+1) + "/" + today.getDate() + "/" + (today.getYear()+1900);
+    case "Mon 31 Jan":
+      return toDay(today.getDay(), "short") + " " + today.getDate() + " " + toMonth(today.getMonth());
+    case "31 Jan 2018":
+      return today.getDate() + " " + toMonth(today.getMonth()) + " " + (today.getYear()+1900);
+    case "31/1/2018":
+      return today.getDate() + "/" + (today.getMonth()+1) + "/" + (today.getYear()+1900);
+  } 
+}
+
 export function shortenText(text){
   text = text.replace("North", "N.");
   text = text.replace("East", "E.");

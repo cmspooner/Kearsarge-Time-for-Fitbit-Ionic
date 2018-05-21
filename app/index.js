@@ -31,7 +31,14 @@ let deviceType = "Ionic";
 if (device.screen.width == 300 && device.screen.height == 300)
   deviceType = "Versa";
 
+import Weather from '../common/weather/device';
 
+let weather = new Weather();
+weather.setProvider("yahoo"); 
+weather.setApiKey("");
+weather.setMaximumAge(10 * 60 * 1000); 
+weather.setFeelsLike(false);
+weather.setUnit(userUnits);
 
 let sched = "Regular";
 let inSched = false;
@@ -61,10 +68,28 @@ let hrm = new HeartRateSensor();
 //----------------------------Messaging and Settings--------------
 
 let settings = loadSettings();
-let weatherData = null;
+let weatherData = loadWeather();
+if (weatherData == null){
+  drawWeatherUpdatingMsg();
+} else {
+  drawWeather(weatherData);
+}
+
+function drawWeatherUpdatingMsg(){
+  let tempAndConditionLabel = document.getElementById("tempAndConditionLabel");
+  let weatherLocationLabel = document.getElementById("weatherLocationLabel");
+  let weatherImage = document.getElementById("weatherImage");
+  tempAndConditionLabel = "Updating...";
+  weatherLocationLabel = "";
+  weatherImage = ""; 
+}
 
 messaging.peerSocket.onmessage = evt => {
   console.log(`App received: ${JSON.stringify(evt)}`);
+  if (evt.data.key === "dateFormat" && evt.data.newValue) {
+    settings.dateFormat = JSON.parse(evt.data.newValue).values[0].name;
+    setDateFormat();
+  }
   if (evt.data.key === "updateInterval" && evt.data.newValue) {
     let oldInterval = settings.updateInterval;
     settings.updateInterval = JSON.parse(evt.data.newValue).values[0].name
@@ -126,14 +151,7 @@ messaging.peerSocket.close = () => {
 };
 
 //----------------Weather Setup------------------------
-import Weather from '../common/weather/device';
 
-let weather = new Weather();
-weather.setProvider("yahoo"); 
-weather.setApiKey("");
-weather.setMaximumAge(settings.updateInterval * 60 * 1000); 
-weather.setFeelsLike(false);
-weather.setUnit(userUnits);
 
 applySettings();
 
@@ -142,16 +160,19 @@ if (settings.noFile){
   weather.fetch();
 }
 
-weather.onsuccess = (data) => {
-  // Weather View
+weather.onsuccess = (data) =>{
+  weatherData = data;
+  openedWeatherRequest = false;
+
+  drawWeather(data);
+}
+
+function drawWeather(data){
   let tempAndConditionLabel = document.getElementById("tempAndConditionLabel");
-  tempAndConditionLabel.text = "Updating...";
   let weatherLocationLabel = document.getElementById("weatherLocationLabel");
   let weatherImage = document.getElementById("weatherImage");
   
-  weatherData = data;
   failCount = 0;
-  openedWeatherRequest = false;
   weather.setMaximumAge(settings.updateInterval * 60 * 1000); 
   if (weatherInterval != null)
     clearInterval(weatherInterval);
@@ -161,6 +182,7 @@ weather.onsuccess = (data) => {
 
   tempAndConditionLabel.text = `${data.temperature}° ${util.shortenText(data.description)}`;
   let timeStamp = new Date(weatherData.timestamp);
+  console.log(settings.showDataAge)
   if (settings.showDataAge)
     weatherLocationLabel.text = `${util.shortenText(data.location)} (${schedUtils.hourAndMinToTime(timeStamp.getHours(), timeStamp.getMinutes())})`;
   else
@@ -171,6 +193,14 @@ weather.onsuccess = (data) => {
 
 weather.onerror = (error) => {
   console.log("Weather error " + JSON.stringify(error));
+  drawError(error);
+}
+
+function drawError(error){
+  let tempAndConditionLabel = document.getElementById("tempAndConditionLabel");
+  let weatherLocationLabel = document.getElementById("weatherLocationLabel");
+  let weatherImage = document.getElementById("weatherImage");
+  
   weather.setMaximumAge(30 * 1000); 
   openedWeatherRequest = false;
   if (weatherInterval != null)
@@ -236,8 +266,8 @@ function updateClock() {
   } else {
     ampm = ""
   }
-  
-  dateLabel.text = `${util.toDay(today.getDay(), "short")}, ${util.toMonth(today.getMonth())} ${today.getDate()}`;
+
+  dateLabel.text = util.dateParse(settings.dateFormat, today);
 
   batteryLevelLabel.style.fill = util.goalToColor(battery.chargeLevel, 90)
   batteryLevelLabel.text = `${battery.chargeLevel}%`
@@ -645,6 +675,7 @@ display.onchange = function() {
 //------------------Settings and FS--------------------
 
 function applySettings(){
+  setDateFormat();
   setUpdateInterval();
   setLocationUpdateInterval();
   setColor();
@@ -655,6 +686,14 @@ function applySettings(){
   setWeatherScroll();
   setLocationScroll();
   openedWeatherRequest = false;
+}
+
+function setDateFormat(){
+  console.log(`dateFormat is: ${settings.dateFormat}`);
+  
+  let dateLabel = document.getElementById("dateLabel");
+  
+  dateLabel.text = util.dateParse(settings.dateFormat, today);
 }
 
 function setUpdateInterval(oldInterval){
@@ -833,7 +872,7 @@ function setLocationScroll(){
     weatherLocationLabel.state = "disabled"
     weatherLocationLabel.text = "";
     if (weatherData){
-      if (settings.dataAgeToggle){
+      if (settings.showDataAge){
         let timeStamp = new Date(weatherData.timestamp);
         timeStamp = schedUtils.hourAndMinToTime(timeStamp.getHours(), timeStamp.getMinutes());
         weatherLocationLabel.text = `${weatherData.location} (${timeStamp})`;
@@ -857,11 +896,12 @@ function loadSettings() {
   } catch (ex) {
     // Defaults
     return {
+      dateFormat : "Mon, Jan 31",
       updateInterval : "30 minutes",
       updateLocationInterval : "30 minutes",
       sepratorGoal : false,
       unitToggle : false,
-      dataAgeToggle : false,
+      showDataAge : true,
       showError: false,
       showFailCount : false,
       weatherScrollToggle : false,
@@ -873,14 +913,39 @@ function loadSettings() {
   }
 }
 
+function loadWeather(){
+  console.log("Loading Weather");
+  
+  const WEATHER_FILE = "weather.cbor";
+  const SETTINGS_TYPE = "cbor";
+
+  
+  try {
+    return fs.readFileSync(WEATHER_FILE, SETTINGS_TYPE);
+  } catch (ex) {
+    // Defaults
+    return null;
+  }
+}
+
 function saveSettings() {
   console.log("Saving Settings");
   
-  const SETTINGS_TYPE = "cbor";
   const SETTINGS_FILE = "settings.cbor";
+  const SETTINGS_TYPE = "cbor";
   
   settings.noFile = false;
   fs.writeFileSync(SETTINGS_FILE, settings, SETTINGS_TYPE);
+  saveWeather();
+}
+
+function saveWeather() {
+  console.log("Saving Weather");
+  
+  const WEATHER_FILE = "weather.cbor";
+  const SETTINGS_TYPE = "cbor";
+
+  fs.writeFileSync(WEATHER_FILE, weatherData, SETTINGS_TYPE);
 }
 
 function fetchWeather(){

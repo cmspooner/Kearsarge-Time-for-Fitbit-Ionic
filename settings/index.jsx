@@ -183,6 +183,15 @@ function mySettings(props) {
       <Section
         title={<Text bold align="center">Build Version and Notes</Text>}>
         <Text>
+          Beta 5.6: Now with date options!
+        </Text>
+        <Text>
+          Beta 5.5.1: Missed a DOM ref
+        </Text>
+        <Text>
+          Beta 5.5: Weather now saves!!!
+        </Text>
+        <Text>
           Beta 5.4: Moved each variable in schedule.js to functions
         </Text>
         <Text>
