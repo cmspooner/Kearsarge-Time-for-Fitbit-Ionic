@@ -108,7 +108,7 @@ export function getTimeLeftInPeriod(typeOfDay, time){
   if (isInSchedule(typeOfDay, time)){
     for (let i = 0; i < todaySched.length; i++){
       if (timeToMin(time) < timeToMin(todaySched[i].end)){
-        return timeToMin(todaySched[i].end) - min;
+        return timeToMin(todaySched[i].end) - timeToMin(time);
       }
     }
   } else {

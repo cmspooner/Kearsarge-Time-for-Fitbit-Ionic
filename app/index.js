@@ -345,19 +345,19 @@ function updateClockData() {
     if (deviceType == "Versa")
       calsLabel.style.fill = 'white';
     
-    if (hrm.heartRate ? hrm.heartRate : 0 == 0) {
+    if (!hrm.heartRate || hrm.heartRate == 0) {
         hrLabel.text = `--`;
     } else {
-        if (user.heartRateZone(hrm.heartRate ? hrm.heartRate : 0) == "out-of-range"){
+        if (user.heartRateZone(hrm.heartRate) == "out-of-range"){
           hrLabel.style.fill = 'fb-cyan';  // #14D3F5
-        } else if (user.heartRateZone(hrm.heartRate ? hrm.heartRate : 0) == "fat-burn"){
+        } else if (user.heartRateZone(hrm.heartRate) == "fat-burn"){
           hrLabel.style.fill = 'fb-mint'; // #5BE37D
-        } else if (user.heartRateZone(hrm.heartRate ? hrm.heartRate : 0) == "cardio"){
+        } else if (user.heartRateZone(harm.heartRate) == "cardio"){
           hrLabel.style.fill = 'fb-peach'; // #FFCC33
-        } else if (user.heartRateZone(hrm.heartRate ? hrm.heartRate : 0) == "peak"){
+        } else if (user.heartRateZone(hrm.heartRate) == "peak"){
           hrLabel.style.fill = 'fb-red'; // #F83C40
         }
-        hrLabel.text = `${hrm.heartRate ? hrm.heartRate : 0} bpm`;
+        hrLabel.text = `${hrm.heartRate} bpm`;
     }
     
     stepsLabel.style.fill = util.goalToColor(todayActivity.adjusted.steps ? todayActivity.adjusted.steps: 0, goals.steps);
@@ -704,7 +704,7 @@ function setColor(){
 function setSchedule(){
   console.log(`Schedule is: ${settings.schedule}`);
   sched = settings.schedule;
-  console.log(time);
+  inSched = schedUtils.isInSchedule(sched, time)
   if (inSched && show == "clock"){
     periodView.style.display = "inline";
     weatherView.style.display = "none";
@@ -712,29 +712,29 @@ function setSchedule(){
     periodView.style.display = "none";
     weatherView.style.display = "inline";
   }
-  
   updatePeriodData();
 }
 
 function setSeperator(){  
   console.log(`seperator: ${settings.sepratorGoal}`);  
-  if (inSched){
-    if (settings.sepratorGoal){
-      let scaledNow = schedUtils.timeToMin(time)-schedUtils.timeToMin(schedUtils.getStartofDay(sched))
-      let scaledEnd = schedUtils.timeToMin(schedUtils.getEndofDay(sched))-schedUtils.timeToMin(schedUtils.getStartofDay(sched))
-      seperatorEndLeft.style.fill = util.goalToColor(scaledNow, scaledEnd);
-      seperatorLine.style.fill = util.goalToColor(scaledNow, scaledEnd);
-      seperatorEndRight.style.fill = util.goalToColor(scaledNow, scaledEnd);
-    }
+  if (inSched && settings.sepratorGoal){
+    let scaledNow = schedUtils.timeToMin(time)-schedUtils.timeToMin(schedUtils.getStartofDay(sched))
+    let scaledEnd = schedUtils.timeToMin(schedUtils.getEndofDay(sched))-schedUtils.timeToMin(schedUtils.getStartofDay(sched))
+    seperatorEndLeft.style.fill = util.goalToColor(scaledNow, scaledEnd);
+    seperatorLine.style.fill = util.goalToColor(scaledNow, scaledEnd);
+    seperatorEndRight.style.fill = util.goalToColor(scaledNow, scaledEnd);
+  } else {
+    seperatorEndLeft.style.fill = settings.color;
+    seperatorLine.style.fill = settings.color;
+    seperatorEndRight.style.fill = settings.color;
   }
 }
  
 function setDataAge(){
-  console.log(`Data Age: ${settings.dataAgeToggle}`);
-  settings.dataAgeToggle;
+  console.log(`Data Age: ${settings.showDataAge}`);
   
   if (weatherData){
-    if (settings.dataAgeToggle){
+    if (settings.showDataAge){
       let timeStamp = new Date(weatherData.timestamp);
       timeStamp = schedUtils.hourAndMinToTime(timeStamp.getHours(), timeStamp.getMinutes());
       weatherLocationLabel.text = `${weatherData.location} (${timeStamp})`;
@@ -749,17 +749,25 @@ function setUnit(){
   let oldUnits = userUnits;
   if (settings.unitToggle)
     userUnits = 'c';
-  else
+  else 
     userUnits = 'f';
-  if (oldUnits != userUnits){
-    weather.setMaximumAge(0 * 60 * 1000); 
-    weather.setUnit(userUnits);
-    if (!openedWeatherRequest){
-      console.log("Forcing Update Unit Change");
-      openedWeatherRequest = true;
-      weather.fetch();
+  
+  if (weatherData){
+    if (oldUnits != userUnits){
+      if (userUnits == 'c')
+        weatherData.temperature = parseInt((weatherData.temperature-32)*.5556);
+      else
+        weatherData.temperature = parseInt((weatherData.temperature*1.8)+32);
+      weather.setMaximumAge(0 * 60 * 1000); 
+      weather.setUnit(userUnits);
+      tempAndConditionLabel.text = `${weatherData.temperature}° ${util.shortenText(weatherData.description)}`;
+      if (!openedWeatherRequest){
+        console.log("Forcing Update Unit Change");
+        openedWeatherRequest = true;
+        weather.fetch();
+      }
+      weather.setMaximumAge(settings.updateInterval * 60 * 1000); 
     }
-    weather.setMaximumAge(settings.updateInterval * 60 * 1000); 
   }
   weather.setUnit(userUnits);
 }

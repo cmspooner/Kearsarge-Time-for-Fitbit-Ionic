@@ -5,10 +5,9 @@ function mySettings(props) {
         title={<Text bold align="center">Weather</Text>}>
         <Toggle
            settingsKey="unitToggle"
-           label="US or Metric Units" 
+           label="Set Temperature to Metric Units" 
            onChange={value => props.settingsStorage.setItem('unit', value.toString())}
          />
-        <Text>Temperatures in degrees {props.settingsStorage.getItem('unit') == "true" ? "celsius" : "fahrenheit"}</Text>
         <Toggle
            settingsKey="weatherScrollToggle"
            label="Dissable weather scrolling"
@@ -168,6 +167,15 @@ function mySettings(props) {
       </Section>
       <Section
         title={<Text bold align="center">Build Version and Notes</Text>}>
+        <Text>
+          Beta 5.2.2: Fix tons of schedule stuff
+        </Text>
+        <Text>
+          Beta 5.2.1: Fix heart rate
+        </Text>
+        <Text>
+          Beta 5.2: Memory clean-up work
+        </Text>
         <Text>
           Beta 5.0.0: Revert...time to start cleaning memory usage
         </Text>
