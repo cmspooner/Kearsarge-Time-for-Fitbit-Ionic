@@ -267,7 +267,7 @@ function updateClock() {
     ampm = ""
   }
 
-  dateLabel.text = util.dateParse(settings.dateFormat, today);
+  dateLabel.text = util.dateParse(settings.dateFormat, today) ? util.dateParse(settings.dateFormat, today) : util.toDay(today.getDay(), "short") + ", " + util.toMonth(today.getMonth()) + " " + today.getDate();
 
   batteryLevelLabel.style.fill = util.goalToColor(battery.chargeLevel, 90)
   batteryLevelLabel.text = `${battery.chargeLevel}%`

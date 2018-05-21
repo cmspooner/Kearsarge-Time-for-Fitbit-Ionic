@@ -183,6 +183,9 @@ function mySettings(props) {
       <Section
         title={<Text bold align="center">Build Version and Notes</Text>}>
         <Text>
+          Beta 5.6.1: Fix first run I think...
+        </Text>
+        <Text>
           Beta 5.6: Now with date options!
         </Text>
         <Text>
