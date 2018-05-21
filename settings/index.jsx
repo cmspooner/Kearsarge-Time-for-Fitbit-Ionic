@@ -2,19 +2,34 @@ function mySettings(props) {
   return (
     <Page>
       <Section
+        title={<Text bold align="center">Date</Text>}>
+        <Select
+          label={`Date Format`}
+          settingsKey="dateFormat"
+          options={[
+            {name:"Mon, Jan 31"},
+            {name:"Jan 31, 2018"},
+            {name:"1/31/2018"},
+            {name:"Mon 31 Jan"},
+            {name:"31 Jan 2018"},
+            {name:"31/1/2018"},
+          ]}
+          />
+      </Section>
+      <Section
         title={<Text bold align="center">Weather</Text>}>
         <Toggle
            settingsKey="unitToggle"
-           label="Set Temperature to Metric Units" 
+           label="Set Temperature units to Celsius" 
            onChange={value => props.settingsStorage.setItem('unit', value.toString())}
          />
         <Toggle
            settingsKey="weatherScrollToggle"
-           label="Dissable weather scrolling"
+           label="Disable weather scrolling"
          />
          <Toggle
            settingsKey="locationScrollToggle"
-           label="Dissable location scrolling"
+           label="Disable location scrolling"
          />
         <Select
           label={`Weather Update Interval`}
@@ -167,6 +182,12 @@ function mySettings(props) {
       </Section>
       <Section
         title={<Text bold align="center">Build Version and Notes</Text>}>
+        <Text>
+          Beta 5.3: Moved Dom References into functions
+        </Text>
+        <Text>
+          Beta 5.2.3: Fix temp change error
+        </Text>
         <Text>
           Beta 5.2.2: Fix tons of schedule stuff
         </Text>

@@ -50,115 +50,10 @@ clock.granularity = "minutes";
 
 let background = document.getElementById("clickbg");
 
-// Views
-let clockView = document.getElementById("clock");
-let periodView = document.getElementById("period");
-let weatherView = document.getElementById("weather");
-let statsView = document.getElementById("stats");
-let scheduleView = document.getElementById("schedule");
-let forecastView = document.getElementById("forecast");
-
-// Clock view
-let clockLabel = document.getElementById("clockLabel");
-let seperatorEndLeft = document.getElementById("seperatorEndLeft");
-let seperatorLine = document.getElementById("seperatorLine");
-let seperatorEndRight = document.getElementById("seperatorEndRight");
-let dateLabel = document.getElementById("dateLabel");
-let batteryLevelLabel = document.getElementById("batteryLevelLabel");
-let hrLabel = document.getElementById("hrLabel");
-let stepsLabel = document.getElementById("stepsLabel");
-if (deviceType == "Versa")
-  let calsLabel = document.getElementById("calsLabel");
-
-// Period View
-let periodLabel = document.getElementById("periodLabel");
-let timeRemainingLabel = document.getElementById("timeRemainingLabel");
-
-// Weather View
-let tempAndConditionLabel = document.getElementById("tempAndConditionLabel");
-tempAndConditionLabel.text = "Updating...";
-let weatherLocationLabel = document.getElementById("weatherLocationLabel");
-let weatherImage = document.getElementById("weatherImage");
-
-// Stats View
-let stepStatsLabel = document.getElementById("stepStatsLabel");
-let distStatsLabel = document.getElementById("distStatsLabel");
-let floorsStatsLabel = document.getElementById("floorsStatsLabel");
-let activeStatsLabel = document.getElementById("activeStatsLabel");
-let calsStatsLabel = document.getElementById("calsStatsLabel");
-if (deviceType == "Versa"){
-  let stepGoalLabel = document.getElementById("stepGoalLabel");
-  let distGoalLabel = document.getElementById("distGoalLabel");
-  let floorsGoalLabel = document.getElementById("floorsGoalLabel");
-  let activeGoalLabel = document.getElementById("activeGoalLabel");
-  let calsGoalLabel = document.getElementById("calsGoalLabel");
-}
-
-// Schedule view
-let periodLabels = [
-  {start: document.getElementById("period0StartLabel"), 
-    name: document.getElementById("period0NameLabel"), 
-    end: document.getElementById("period0EndLabel")},
-  {start: document.getElementById("period1StartLabel"), 
-    name: document.getElementById("period1NameLabel"), 
-    end: document.getElementById("period1EndLabel")},
-  {start: document.getElementById("period2StartLabel"), 
-    name: document.getElementById("period2NameLabel"), 
-    end: document.getElementById("period2EndLabel")},
-  {start: document.getElementById("period3StartLabel"), 
-    name: document.getElementById("period3NameLabel"), 
-    end: document.getElementById("period3EndLabel")},
-  {start: document.getElementById("period4StartLabel"), 
-    name: document.getElementById("period4NameLabel"), 
-    end: document.getElementById("period4EndLabel")},
-  {start: document.getElementById("period5StartLabel"), 
-    name: document.getElementById("period5NameLabel"), 
-    end: document.getElementById("period5EndLabel")},
-  {start: document.getElementById("period6StartLabel"), 
-    name: document.getElementById("period6NameLabel"), 
-    end: document.getElementById("period6EndLabel")},
-  {start: document.getElementById("period7StartLabel"), 
-    name: document.getElementById("period7NameLabel"), 
-    end: document.getElementById("period7EndLabel")},
-  {start: document.getElementById("period8StartLabel"), 
-    name: document.getElementById("period8NameLabel"), 
-    end: document.getElementById("period8EndLabel")},
-  {start: document.getElementById("period9StartLabel"), 
-    name: document.getElementById("period9NameLabel"), 
-    end: document.getElementById("period9EndLabel")}
-  ]
-
-// Forecast View
-let todayDateLabel = document.getElementById("todayDateLabel");
-let todayWeatherImage = document.getElementById("todayWeatherImage");
-let weatherImage = document.getElementById("weatherImage");
-let todayDescriptionLabel = document.getElementById("todayDescriptionLabel");
-let todayHighLabel = document.getElementById("todayHighLabel");
-let todayHighValLabel = document.getElementById("todayHighValLabel");
-let todayLowLabel = document.getElementById("todayLowLabel");
-let todayLowValLabel = document.getElementById("todayLowValLabel");
-
-let tomorrowDateLabel = document.getElementById("tomorrowDateLabel");
-let tomorrowWeatherImage = document.getElementById("tomorrowWeatherImage");
-let weatherImage = document.getElementById("weatherImage");
-let tomorrowDescriptionLabel = document.getElementById("tomorrowDescriptionLabel");
-let tomorrowHighLabel = document.getElementById("tomorrowHighLabel");
-let tomorrowHighValLabel = document.getElementById("tomorrowHighValLabel");
-let tomorrowLowLabel = document.getElementById("tomorrowLowLabel");
-let tomorrowLowValLabel = document.getElementById("tomorrowLowValLabel");
-
-let day3DateLabel = document.getElementById("day3DateLabel");
-let day3WeatherImage = document.getElementById("day3WeatherImage");
-let day3Image = document.getElementById("day3Image");
-let day3DescriptionLabel = document.getElementById("day3DescriptionLabel");
-let day3HighLabel = document.getElementById("day3HighLabel");
-let day3HighValLabel = document.getElementById("day3HighValLabel");
-let day3LowLabel = document.getElementById("day3LowLabel");
-let day3LowValLabel = document.getElementById("day3LowValLabel");
-
 let didVib = false;
 let show = "clock";
 let weatherInterval = null;
+let periodInterval = null;
 let openedWeatherRequest = false;
 
 // Heart Rate Monitor
@@ -248,6 +143,12 @@ if (settings.noFile){
 }
 
 weather.onsuccess = (data) => {
+  // Weather View
+  let tempAndConditionLabel = document.getElementById("tempAndConditionLabel");
+  tempAndConditionLabel.text = "Updating...";
+  let weatherLocationLabel = document.getElementById("weatherLocationLabel");
+  let weatherImage = document.getElementById("weatherImage");
+  
   weatherData = data;
   failCount = 0;
   openedWeatherRequest = false;
@@ -309,6 +210,11 @@ weather.onerror = (error) => {
 
 // Update the <text> element with the current time
 function updateClock() {
+  // Clock view
+  let clockLabel = document.getElementById("clockLabel");
+  let dateLabel = document.getElementById("dateLabel");
+  let batteryLevelLabel = document.getElementById("batteryLevelLabel");
+
   today = new Date();
   time = schedUtils.hourAndMinToTime(today.getHours(), today.getMinutes());
   //let year = today.getYear()-100+2000;
@@ -340,6 +246,11 @@ function updateClock() {
 
 function updateClockData() {
   if (show == "clock" && display.on){
+    let hrLabel = document.getElementById("hrLabel");
+    let stepsLabel = document.getElementById("stepsLabel");
+    if (deviceType == "Versa")
+      let calsLabel = document.getElementById("calsLabel");
+    
     hrLabel.style.fill = 'white';
     stepsLabel.style.fill = 'white';
     if (deviceType == "Versa")
@@ -371,6 +282,14 @@ function updateClockData() {
 
 function updatePeriodData() {
   if (show == "clock"){
+    let seperatorEndLeft = document.getElementById("seperatorEndLeft");
+    let seperatorLine = document.getElementById("seperatorLine");
+    let seperatorEndRight = document.getElementById("seperatorEndRight");
+    
+    // Period View
+    let periodLabel = document.getElementById("periodLabel");
+    let timeRemainingLabel = document.getElementById("timeRemainingLabel");
+    
     let remaining = schedUtils.getTimeLeftInPeriod(sched, time);
     inSched = schedUtils.isInSchedule(sched, time)
     if (inSched){
@@ -412,7 +331,21 @@ function updatePeriodData() {
 
 function updateStatsData(){
   if (show == "stats" && display.on){
+    
+    // Stats View
+    let stepStatsLabel = document.getElementById("stepStatsLabel");
+    let distStatsLabel = document.getElementById("distStatsLabel");
+    let floorsStatsLabel = document.getElementById("floorsStatsLabel");
+    let activeStatsLabel = document.getElementById("activeStatsLabel");
+    let calsStatsLabel = document.getElementById("calsStatsLabel");
+    
     if (deviceType == "Versa") {
+      let stepGoalLabel = document.getElementById("stepGoalLabel");
+      let distGoalLabel = document.getElementById("distGoalLabel");
+      let floorsGoalLabel = document.getElementById("floorsGoalLabel");
+      let activeGoalLabel = document.getElementById("activeGoalLabel");
+      let calsGoalLabel = document.getElementById("calsGoalLabel");
+      
       stepStatsLabel.style.fill = util.goalToColor(todayActivity.adjusted.steps, goals.steps);
       stepStatsLabel.text = "Steps:";
       stepGoalLabel.style.fill = util.goalToColor(todayActivity.adjusted.steps, goals.steps);
@@ -465,6 +398,40 @@ function updateStatsData(){
   
 function updateScheduleData(){
   if (show == "schedule" && display.on){
+    // Schedule View
+    let periodLabels = [
+      {start: document.getElementById("period0StartLabel"), 
+        name: document.getElementById("period0NameLabel"), 
+        end: document.getElementById("period0EndLabel")},
+      {start: document.getElementById("period1StartLabel"), 
+        name: document.getElementById("period1NameLabel"), 
+        end: document.getElementById("period1EndLabel")},
+      {start: document.getElementById("period2StartLabel"), 
+        name: document.getElementById("period2NameLabel"), 
+        end: document.getElementById("period2EndLabel")},
+      {start: document.getElementById("period3StartLabel"), 
+        name: document.getElementById("period3NameLabel"), 
+        end: document.getElementById("period3EndLabel")},
+      {start: document.getElementById("period4StartLabel"), 
+        name: document.getElementById("period4NameLabel"), 
+        end: document.getElementById("period4EndLabel")},
+      {start: document.getElementById("period5StartLabel"), 
+        name: document.getElementById("period5NameLabel"), 
+        end: document.getElementById("period5EndLabel")},
+      {start: document.getElementById("period6StartLabel"), 
+        name: document.getElementById("period6NameLabel"), 
+        end: document.getElementById("period6EndLabel")},
+      {start: document.getElementById("period7StartLabel"), 
+        name: document.getElementById("period7NameLabel"), 
+        end: document.getElementById("period7EndLabel")},
+      {start: document.getElementById("period8StartLabel"), 
+        name: document.getElementById("period8NameLabel"), 
+        end: document.getElementById("period8EndLabel")},
+      {start: document.getElementById("period9StartLabel"), 
+        name: document.getElementById("period9NameLabel"), 
+        end: document.getElementById("period9EndLabel")}
+      ]
+    
     let per = schedUtils.getCurrentPeriod(sched, time);
     let periods = schedUtils.getPeriodList(sched);
     
@@ -497,6 +464,35 @@ function updateScheduleData(){
 
 function updateForecastData(){
   if (show == "forecast" && display.on){
+    
+    // Forecast View
+    let todayDateLabel = document.getElementById("todayDateLabel");
+    let todayWeatherImage = document.getElementById("todayWeatherImage");
+    let weatherImage = document.getElementById("weatherImage");
+    let todayDescriptionLabel = document.getElementById("todayDescriptionLabel");
+    let todayHighLabel = document.getElementById("todayHighLabel");
+    let todayHighValLabel = document.getElementById("todayHighValLabel");
+    let todayLowLabel = document.getElementById("todayLowLabel");
+    let todayLowValLabel = document.getElementById("todayLowValLabel");
+
+    let tomorrowDateLabel = document.getElementById("tomorrowDateLabel");
+    let tomorrowWeatherImage = document.getElementById("tomorrowWeatherImage");
+    let weatherImage = document.getElementById("weatherImage");
+    let tomorrowDescriptionLabel = document.getElementById("tomorrowDescriptionLabel");
+    let tomorrowHighLabel = document.getElementById("tomorrowHighLabel");
+    let tomorrowHighValLabel = document.getElementById("tomorrowHighValLabel");
+    let tomorrowLowLabel = document.getElementById("tomorrowLowLabel");
+    let tomorrowLowValLabel = document.getElementById("tomorrowLowValLabel");
+
+    let day3DateLabel = document.getElementById("day3DateLabel");
+    let day3WeatherImage = document.getElementById("day3WeatherImage");
+    let day3Image = document.getElementById("day3Image");
+    let day3DescriptionLabel = document.getElementById("day3DescriptionLabel");
+    let day3HighLabel = document.getElementById("day3HighLabel");
+    let day3HighValLabel = document.getElementById("day3HighValLabel");
+    let day3LowLabel = document.getElementById("day3LowLabel");
+    let day3LowValLabel = document.getElementById("day3LowValLabel");
+    
     let day = new Date().getDay()
     
     todayDateLabel.text  = "Today";
@@ -532,6 +528,16 @@ function updateForecastData(){
 
 background.onclick = function(evt) {
   console.log("Click");
+  
+  // Views
+  let clockView = document.getElementById("clock");
+  let periodView = document.getElementById("period");
+  let weatherView = document.getElementById("weather");
+  let statsView = document.getElementById("stats");
+  let scheduleView = document.getElementById("schedule");
+  let forecastView = document.getElementById("forecast");
+
+  
   if (show == "clock"){           // In Clock -> Switching to Stats
     show = "stats";
     clockView.style.display = "none";
@@ -607,6 +613,14 @@ background.onclick = function(evt) {
 
 display.onchange = function() {
   if (display.on) {
+    // Views
+    let clockView = document.getElementById("clock");
+    let periodView = document.getElementById("period");
+    let weatherView = document.getElementById("weather");
+    let statsView = document.getElementById("stats");
+    let scheduleView = document.getElementById("schedule");
+    let forecastView = document.getElementById("forecast");
+    
     show = "clock";
     statsView.style.display = "none";
     scheduleView.style.display = "none";
@@ -696,6 +710,10 @@ function setLocationUpdateInterval(oldLocationInterval){
 
 function setColor(){
   console.log(`Setting Seperator Bar color: ${settings.color}`);
+  let seperatorEndLeft = document.getElementById("seperatorEndLeft");
+  let seperatorLine = document.getElementById("seperatorLine");
+  let seperatorEndRight = document.getElementById("seperatorEndRight");
+  
   seperatorEndLeft.style.fill = settings.color;
   seperatorLine.style.fill = settings.color;
   seperatorEndRight.style.fill = settings.color;
@@ -703,6 +721,11 @@ function setColor(){
 
 function setSchedule(){
   console.log(`Schedule is: ${settings.schedule}`);
+  
+  // Views
+  let periodView = document.getElementById("period");
+  let weatherView = document.getElementById("weather");
+  
   sched = settings.schedule;
   inSched = schedUtils.isInSchedule(sched, time)
   if (inSched && show == "clock"){
@@ -717,6 +740,10 @@ function setSchedule(){
 
 function setSeperator(){  
   console.log(`seperator: ${settings.sepratorGoal}`);  
+  let seperatorEndLeft = document.getElementById("seperatorEndLeft");
+  let seperatorLine = document.getElementById("seperatorLine");
+  let seperatorEndRight = document.getElementById("seperatorEndRight");
+  
   if (inSched && settings.sepratorGoal){
     let scaledNow = schedUtils.timeToMin(time)-schedUtils.timeToMin(schedUtils.getStartofDay(sched))
     let scaledEnd = schedUtils.timeToMin(schedUtils.getEndofDay(sched))-schedUtils.timeToMin(schedUtils.getStartofDay(sched))
@@ -732,6 +759,11 @@ function setSeperator(){
  
 function setDataAge(){
   console.log(`Data Age: ${settings.showDataAge}`);
+  
+  // Weather View
+  let tempAndConditionLabel = document.getElementById("tempAndConditionLabel");
+  let weatherLocationLabel = document.getElementById("weatherLocationLabel");
+  let weatherImage = document.getElementById("weatherImage");
   
   if (weatherData){
     if (settings.showDataAge){
@@ -754,10 +786,6 @@ function setUnit(){
   
   if (weatherData){
     if (oldUnits != userUnits){
-      if (userUnits == 'c')
-        weatherData.temperature = parseInt((weatherData.temperature-32)*.5556);
-      else
-        weatherData.temperature = parseInt((weatherData.temperature*1.8)+32);
       weather.setMaximumAge(0 * 60 * 1000); 
       weather.setUnit(userUnits);
       tempAndConditionLabel.text = `${weatherData.temperature}° ${util.shortenText(weatherData.description)}`;
@@ -774,6 +802,12 @@ function setUnit(){
  
 function setWeatherScroll(){
   console.log(`Weather Scroll Dissable: ${settings.weatherScrollToggle}`);
+  
+  // Weather View
+  let tempAndConditionLabel = document.getElementById("tempAndConditionLabel");
+  let weatherLocationLabel = document.getElementById("weatherLocationLabel");
+  let weatherImage = document.getElementById("weatherImage");
+  
   if (settings.weatherScrollToggle){
     tempAndConditionLabel.state = "disabled"
     tempAndConditionLabel.text = "";
@@ -787,6 +821,11 @@ function setWeatherScroll(){
 
 function setLocationScroll(){
   console.log(`Weather Scroll Dissable: ${settings.locationScrollToggle}`);
+  // Weather View
+  let tempAndConditionLabel = document.getElementById("tempAndConditionLabel");
+  let weatherLocationLabel = document.getElementById("weatherLocationLabel");
+  let weatherImage = document.getElementById("weatherImage");
+  
   if (settings.locationScrollToggle){
     weatherLocationLabel.state = "disabled"
     weatherLocationLabel.text = "";
@@ -844,7 +883,11 @@ function fetchWeather(){
 // Update the clock every tick event
 clock.ontick = () => updateClock();
 setInterval(updateClockData, 3*1000);
-setInterval(updatePeriodData, 15*1000);
+
+if (periodInterval != null)
+    clearInterval(periodInterval);
+periodInterval = setInterval(updatePeriodData, 15*1000);
+
 if (weatherInterval != null)
     clearInterval(weatherInterval);
 weatherInterval = setInterval(fetchWeather, settings.updateInterval*60*1000);
