@@ -183,6 +183,9 @@ function mySettings(props) {
       <Section
         title={<Text bold align="center">Build Version and Notes</Text>}>
         <Text>
+          Beta 5.6.3: Changed view loading to only load the parts needed
+        </Text>
+        <Text>
           Beta 5.6.2: Fixed Versa cal bug and moved initial clock/period load before weather load 
         </Text>
         <Text>

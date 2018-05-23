@@ -560,21 +560,16 @@ background.onclick = function(evt) {
   console.log("Click");
   
   // Views
-  let clockView = document.getElementById("clock");
-  let periodView = document.getElementById("period");
-  let weatherView = document.getElementById("weather");
-  let statsView = document.getElementById("stats");
-  let scheduleView = document.getElementById("schedule");
-  let forecastView = document.getElementById("forecast");
-
   
   if (show == "clock"){           // In Clock -> Switching to Stats
     show = "stats";
+    let clockView = document.getElementById("clock");
+    let periodView = document.getElementById("period");
+    let weatherView = document.getElementById("weather");
+    let statsView = document.getElementById("stats");
     clockView.style.display = "none";
     periodView.style.display = "none";
     weatherView.style.display = "none";
-    scheduleView.style.display = "none";
-    forecastView.style.display = "none";
     updateStatsData()
     statsView.style.display = "inline";
     console.log("stats Loaded");
@@ -582,39 +577,37 @@ background.onclick = function(evt) {
   } else if (show == "stats"){                   // In Stats -> Switching to forcast or schedule    
     if (inSched){  
       show = "schedule";
-      clockView.style.display = "none";
-      periodView.style.display = "none";
-      weatherView.style.display = "none";
+      let statsView = document.getElementById("stats");
+      let scheduleView = document.getElementById("schedule");
       statsView.style.display = "none";
-      forecastView.style.display = "none";
       updateScheduleData();
       scheduleView.style.display = "inline";
       console.log("schedule Loaded");
     } else if(weatherData != null) {
       show = "forecast";
-      clockView.style.display = "none";//test
-      periodView.style.display = "none";
-      weatherView.style.display = "none";//test
+      let statsView = document.getElementById("stats");
+      let forecastView = document.getElementById("forecast");
       statsView.style.display = "none";
-      scheduleView.style.display = "none";
-      updateClock();
-      updateClockData();
       updateForecastData();
       forecastView.style.display = "inline";//test
       console.log("forecast Loaded");
     } else {
       show = "clock";
+      let statsView = document.getElementById("stats");
+      let clockView = document.getElementById("clock");
       statsView.style.display = "none";
-      scheduleView.style.display = "none";
-      forecastView.style.display = "none";
       updateClock();
       updateClockData();
       clockView.style.display = "inline";//test
       if (inSched){ 
+        let weatherView = document.getElementById("weather");
+        let periodView = document.getElementById("period");
         updatePeriodData();
         weatherView.style.display = "none";
         periodView.style.display = "inline";
       } else {
+        let periodView = document.getElementById("period");
+        let weatherView = document.getElementById("weather");
         periodView.style.display = "none";
         weatherView.style.display = "inline";//test
       }
@@ -622,17 +615,23 @@ background.onclick = function(evt) {
     } 
   } else {                                  // In Schedule -> Switching to Clock
     show = "clock";
-    statsView.style.display = "none";
+    let scheduleView = document.getElementById("schedule");
+    let forecastView = document.getElementById("forecast");
+    let clockView = document.getElementById("clock");
     scheduleView.style.display = "none";
     forecastView.style.display = "none";
     updateClock();
     updateClockData();
     clockView.style.display = "inline";//test
     if (inSched){ 
+      let weatherView = document.getElementById("weather");
+      let periodView = document.getElementById("period");
       weatherView.style.display = "none";
       updatePeriodData();
       periodView.style.display = "inline";
     } else {
+      let periodView = document.getElementById("period");
+      let weatherView = document.getElementById("weather");
       periodView.style.display = "none";
       weatherView.style.display = "inline";//test
     }
