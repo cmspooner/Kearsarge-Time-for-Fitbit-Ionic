@@ -2,7 +2,7 @@ function mySettings(props) {
   return (
     <Page>
       <Section
-        title={<Text bold align="center">Date</Text>}>
+        title={<Text bold align="center">Heading</Text>}>
         <Select
           label={`Date Format`}
           settingsKey="dateFormat"
@@ -15,6 +15,11 @@ function mySettings(props) {
             {name:"31/1/2018"},
           ]}
           />
+        <Toggle
+           settingsKey="batteryToggle"
+           label="Change Batter Bar to %" 
+           onChange={value => props.settingsStorage.setItem('unit', value.toString())}
+         />
       </Section>
       <Section
         title={<Text bold align="center">Weather</Text>}>
@@ -72,17 +77,17 @@ function mySettings(props) {
            label="Show number of weather attempts"
          />
         <Text align="left">
-          These are mostly for informataion for nerds and depugging.
+          These are mostly for information for nerds and debugging.
          </Text>
       </Section>
       <Section
-        title={<Text bold align="center">Seperator Bar Color</Text>}>
+        title={<Text bold align="center">Separator Bar Color</Text>}>
         <Toggle
           settingsKey="seperatorToggle"
           label="Color based on day's progress"
         />
         <Text align="center">
-          Color when not over-ridden
+          Color when not overridden
         </Text>
         <ColorSelect
           settingsKey="color"
@@ -183,55 +188,82 @@ function mySettings(props) {
       <Section
         title={<Text bold align="center">Build Version and Notes</Text>}>
         <Text>
-          Beta 5.6.3: Changed view loading to only load the parts needed
-        </Text>
-        <Text>
-          Beta 5.6.2: Fixed Versa cal bug and moved initial clock/period load before weather load 
-        </Text>
-        <Text>
-          Beta 5.6.1: Fix first run I think...
-        </Text>
-        <Text>
-          Beta 5.6: Now with date options!
-        </Text>
-        <Text>
-          Beta 5.5.1: Missed a DOM ref
-        </Text>
-        <Text>
-          Beta 5.5: Weather now saves!!!
-        </Text>
-        <Text>
-          Beta 5.4: Moved each variable in schedule.js to functions
-        </Text>
-        <Text>
-          Beta 5.3.2: changed preriod stuff
-        </Text>
-        <Text>
-          Beta 5.3: Moved Dom References into functions
-        </Text>
-        <Text>
-          Beta 5.2.3: Fix temp change error
-        </Text>
-        <Text>
-          Beta 5.2.2: Fix tons of schedule stuff
-        </Text>
-        <Text>
-          Beta 5.2.1: Fix heart rate
-        </Text>
-        <Text>
-          Beta 5.2: Memory clean-up work
+          Beta 5.10.1: Forgot to do Ionic...fixed now!
         </Text>
         <Text>
-          Beta 5.0.0: Revert...time to start cleaning memory usage
+          Beta 5.10: Battery % to bar graph option
         </Text>
         <Text>
-          Beta 5.1: Saving weather data
+          Beta 5.9.1: Add update Period to update Clock
         </Text>
         <Text>
-          Beta 5.0: Moved weather and condition on ionic.
+          Beta 5.9: Fix timeStamp error; Thanks Dave!
         </Text>
         <Text>
-          Beta 4.15.4: Fixed overly aggressive and replacement.
+          Beta 5.8: Changed views to global; hope to fix some performance issues
+        </Text>
+        <Text>
+          Beta 5.7.2.1: Change reset view on change to off, using the correct syntax
+        </Text>
+        <Text>
+          Beta 5.7.2: Change reset view on change to off
+        </Text>
+        <Text>
+          Beta 5.7.1: Remove reset view on change
+        </Text>
+        <Text>
+          Beta 5.7: only update correct interval
+        </Text>
+        <Text>
+          Beta 5.6.3: Changed view loading to only load the parts needed
+        </Text>
+        <Text>
+          Beta 5.6.2: Fixed Versa cal bug and moved initial clock/period load before weather load 
+        </Text>
+        <Text>
+          Beta 5.6.1: Fix first run I think...
+        </Text>
+        <Text>
+          Beta 5.6: Now with date options!
+        </Text>
+        <Text>
+          Beta 5.5.1: Missed a DOM ref
+        </Text>
+        <Text>
+          Beta 5.5: Weather now saves!!!
+        </Text>
+        <Text>
+          Beta 5.4: Moved each variable in schedule.js to functions
+        </Text>
+        <Text>
+          Beta 5.3.2: changed period stuff
+        </Text>
+        <Text>
+          Beta 5.3: Moved Dom References into functions
+        </Text>
+        <Text>
+          Beta 5.2.3: Fix temp change error
+        </Text>
+        <Text>
+          Beta 5.2.2: Fix tons of schedule stuff
+        </Text>
+        <Text>
+          Beta 5.2.1: Fix heart rate
+        </Text>
+        <Text>
+          Beta 5.2: Memory clean-up work
+        </Text>
+        <Text>
+          Beta 5.0.0: Revert...time to start cleaning memory usage
+        </Text>
+        <Text>
+          Beta 5.1: Saving weather data
+        </Text>
+        <Text>
+          Beta 5.0: Moved weather and condition on ionic.
+        </Text>
+        <Text>
+          Beta 4.15.4: Fixed overly aggressive and replacement.
         </Text>
         <Text>
           Beta 4.15.3: Fixed yet another shortener.
@@ -273,7 +305,7 @@ function mySettings(props) {
           Beta 4.12.1: Minor reformatting for Versa.
         </Text>
         <Text>
-          Beta 4.12: Major reformatting for Versa (Thanks Fitbot!!!)
+          Beta 4.12: Major reformatting for Versa (Thanks Fitbit!!!)
         </Text>
         <Text>
           Beta 4.11.3: Faster refresh when failed, actually this time.
@@ -282,10 +314,10 @@ function mySettings(props) {
           Beta 4.11.2: Faster refresh when failed.
         </Text>
         <Text>
-          Beta 4.11.1: Force fecth when no settings.
+          Beta 4.11.1: Force fetch when no settings.
         </Text>
         <Text>
-          Beta 4.11: More agressive rounding od recent time calc and more agressive settings saving.
+          Beta 4.11: More aggressive rounding of recent time calc and more aggressive settings saving.
         </Text>
         <Text>
           Beta 4.10.1: Fixed settings layout.
@@ -348,7 +380,7 @@ function mySettings(props) {
           Beta 4.1: Fixes to forcast screen.
         </Text>
         <Text>
-          Beta 4.0: Weather forcast screen.
+          Beta 4.0: Weather forecast screen.
         </Text>
         <Text>
           Beta 3.2: Storing weather and showing last weather loaded and moving update message to location.
@@ -411,7 +443,7 @@ function mySettings(props) {
           Beta 2.1.2.1: Reverted Battery Change
         </Text>
         <Text>
-          Beta 2.1.3: Chaged Battery
+          Beta 2.1.3: Change Battery
         </Text>
         <Text>
           Beta 2.1.2: Clean Up Battery
@@ -431,3 +463,5 @@ function mySettings(props) {
 }
 
 registerSettingsPage(mySettings);
+
+

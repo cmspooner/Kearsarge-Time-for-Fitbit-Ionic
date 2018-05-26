@@ -2,6 +2,7 @@
   <svg id="clock" display="inline">
     <text id="dateLabel" />
     <image x="80%" y="2%" width="50" height="20" href="icons/battery/battery.png" load="sync"/>
+    <rect id="batteryLevelRect" x="281" y="8" width="39" height="14" fill="white" />
     <text id="batteryLevelLabel" />
     <circle id = "seperatorEndLeft"cx="5%" cy="15%" />
     <line id = "seperatorLine" x1="5%" y1="15%" x2="95%" y2="15%"/>
