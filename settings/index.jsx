@@ -17,7 +17,7 @@ function mySettings(props) {
           />
         <Toggle
            settingsKey="batteryToggle"
-           label="Change Batter Bar to %" 
+           label="Change Battery Bar to Battery %" 
            onChange={value => props.settingsStorage.setItem('unit', value.toString())}
          />
       </Section>
@@ -187,6 +187,15 @@ function mySettings(props) {
       </Section>
       <Section
         title={<Text bold align="center">Build Version and Notes</Text>}>
+        <Text>
+          Beta 5.12: Changed schedule function to return only one schedule
+        </Text>
+        <Text>
+          Beta 5.11: Fixed the auto day switching error
+        </Text>
+        <Text>
+          Beta 5.10.1.1: Speeling es hrad
+        </Text>
         <Text>
           Beta 5.10.1: Forgot to do Ionic...fixed now!
         </Text>

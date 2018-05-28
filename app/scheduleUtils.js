@@ -59,9 +59,11 @@ export function timeDiff(time1, time2){
 
 export function getDailySchedule(typeOfDay){
   if (typeOfDay == "Regular"){
-    typeOfDay = "Normal";
+    let today = new Date();
+    let day = today.getDay();
+    typeOfDay = sched.dayToSchedule()[util.toDay(day, "long")];
   }
-  return sched.schedule()[typeOfDay];
+  return sched.schedule(typeOfDay);
 }
 
 export function isInSchedule(typeOfDay, time){

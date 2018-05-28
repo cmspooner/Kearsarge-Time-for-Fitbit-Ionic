@@ -29,12 +29,15 @@ export function splitPeriods(){
     }
 }
 
-export function schedule(){
-  return {
-    "No School" : [
+export function schedule(typeOfDay){
+  switch (typeOfDay) {
+   case "No School" :
+      return [
           {name: "No School", start: "12:00a", end: "12:00a"}
-         ], 
-    "Normal": [
+         ];
+      break;
+    case "Normal": 
+      return [
            {name: "Before School", start: "6:35a", end: "7:35a"},
            {name: "Warning Bell", start: "7:35a", end: "7:40a"},
            {name: "Period 1", start: "7:40a", end: "8:25a"},
@@ -55,8 +58,10 @@ export function schedule(){
            {name: "Passing Time", start: "1:51p", end: "1:55p"},
            {name: "Period 8", start: "1:55p", end: "2:35p"},
            {name: "Teacher Time", start: "2:35p", end: "3:15p"}
-          ],
-    "2 Hour Delay": [
+          ];
+      break;
+    case "2 Hour Delay": 
+      return [
            {name: "Before School", start: "8:35a", end: "9:35a"}, 
            {name: "Warning Bell", start: "9:35a", end: "9:40a"},
            {name: "Period 1", start: "9:40a", end: "10:12a"},
@@ -75,8 +80,10 @@ export function schedule(){
            {name: "Passing Time", start: "1:56p", end: "2:00p"},
            {name: "Period 7", start: "2:00p", end: "2:35p"},
            {name: "Teacher Time", start: "2:35p", end: "3:15p"}
-          ],
-    "PM Activity": [
+          ];
+      break;
+   case "PM Activity": 
+      return [
            {name: "Before School", start: "6:35a", end: "7:35a"}, 
            {name: "Warning Bell", start: "7:35a", end: "7:40a"},
            {name: "Period 1", start: "7:40a", end: "8:20a"},
@@ -97,8 +104,10 @@ export function schedule(){
            {name: "Passing Time", start: "1:21p", end: "1:25p"},
            {name: "PM Activity", start: "1:25p", end: "2:35p"},
            {name: "Teacher Time", start: "2:35p", end: "3:15p"}
-          ],
-    "Assembly": [
+          ];
+      break;
+    case "Assembly":
+      return [
            {name: "Before School", start: "6:35a", end: "7:35a"},
            {name: "Warning Bell", start: "7:35a", end: "7:40a"},
            {name: "Period 1", start: "7:40a", end: "8:25a"},
@@ -119,8 +128,10 @@ export function schedule(){
            {name: "Passing Time", start: "1:46p", end: "1:50p"},
            {name: "Period 7", start: "1:50p", end: "2:35p"},
            {name: "Teacher Time", start: "2:35p", end: "3:15p"}
-          ],
-    "7 Period": [
+          ];
+      break;
+    case "7 Period": 
+      return [
            {name: "Before School", start: "6:35a", end: "7:35a"},
            {name: "Warning Bell", start: "7:35a", end: "7:40a"},
            {name: "Period 1", start: "7:40a", end: "8:32a"},
@@ -139,8 +150,10 @@ export function schedule(){
            {name: "Passing Time", start: "1:40p", end: "1:44p"},
            {name: "Period 7", start: "1:44p", end: "2:35p"},
            {name: "Teacher Time", start: "2:35p", end: "3:15p"}
-          ],
-    "Exam": [
+          ];
+      break;
+    case "Exam": 
+      return [
            {name: "Before School", start: "6:35a", end: "7:30a"},
            {name: "Before Exam 1", start: "7:30a", end: "8:00a"},
            {name: "Exam 1", start: "8:00a", end: "9:30a"},
@@ -149,7 +162,8 @@ export function schedule(){
            {name: "Lunch", start: "11:30a", end: "12:45p"},
            {name: "Make-Up", start: "12:45p", end: "2:15p"},
            {name: "Teacher Time", start: "2:15p", end: "3:15p"}
-          ]
+          ];
+      break;
   }
 }
 
