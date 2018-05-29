@@ -188,283 +188,28 @@ function mySettings(props) {
       <Section
         title={<Text bold align="center">Build Version and Notes</Text>}>
         <Text>
-          Beta 5.12: Changed schedule function to return only one schedule
+           5.0: Weather now loaded from file on load, Multiple date formats, and new battery bar option.
         </Text>
         <Text>
-          Beta 5.11: Fixed the auto day switching error
+           4.2.1: Settings now shows units.
         </Text>
         <Text>
-          Beta 5.10.1.1: Speeling es hrad
-        </Text>
-        <Text>
-          Beta 5.10.1: Forgot to do Ionic...fixed now!
-        </Text>
-        <Text>
-          Beta 5.10: Battery % to bar graph option
-        </Text>
-        <Text>
-          Beta 5.9.1: Add update Period to update Clock
-        </Text>
-        <Text>
-          Beta 5.9: Fix timeStamp error; Thanks Dave!
-        </Text>
-        <Text>
-          Beta 5.8: Changed views to global; hope to fix some performance issues
-        </Text>
-        <Text>
-          Beta 5.7.2.1: Change reset view on change to off, using the correct syntax
-        </Text>
-        <Text>
-          Beta 5.7.2: Change reset view on change to off
-        </Text>
-        <Text>
-          Beta 5.7.1: Remove reset view on change
-        </Text>
-        <Text>
-          Beta 5.7: only update correct interval
-        </Text>
-        <Text>
-          Beta 5.6.3: Changed view loading to only load the parts needed
-        </Text>
-        <Text>
-          Beta 5.6.2: Fixed Versa cal bug and moved initial clock/period load before weather load 
-        </Text>
-        <Text>
-          Beta 5.6.1: Fix first run I think...
-        </Text>
-        <Text>
-          Beta 5.6: Now with date options!
-        </Text>
-        <Text>
-          Beta 5.5.1: Missed a DOM ref
-        </Text>
-        <Text>
-          Beta 5.5: Weather now saves!!!
-        </Text>
-        <Text>
-          Beta 5.4: Moved each variable in schedule.js to functions
-        </Text>
-        <Text>
-          Beta 5.3.2: changed period stuff
-        </Text>
-        <Text>
-          Beta 5.3: Moved Dom References into functions
-        </Text>
-        <Text>
-          Beta 5.2.3: Fix temp change error
-        </Text>
-        <Text>
-          Beta 5.2.2: Fix tons of schedule stuff
-        </Text>
-        <Text>
-          Beta 5.2.1: Fix heart rate
-        </Text>
-        <Text>
-          Beta 5.2: Memory clean-up work
-        </Text>
-        <Text>
-          Beta 5.0.0: Revert...time to start cleaning memory usage
-        </Text>
-        <Text>
-          Beta 5.1: Saving weather data
-        </Text>
-        <Text>
-          Beta 5.0: Moved weather and condition on ionic.
-        </Text>
-        <Text>
-          Beta 4.15.4: Fixed overly aggressive and replacement.
-        </Text>
-        <Text>
-          Beta 4.15.3: Fixed yet another shortener.
-        </Text>
-        <Text>
-          Beta 4.15.2.1: Fixing yet another shortener.
-        </Text>
-        <Text>
-          Beta 4.15.2: Fixed yet another shortener.
-        </Text>
-        <Text>
-          Beta 4.15.1: Fixed another shortener.
-        </Text>
-        <Text>
-          Beta 4.15: Shortened text fields that were running off the screen.
-        </Text>
-        <Text>
-          Beta 4.14.0: Reverted The reversion change because I broke Carbees Watch still.
-        </Text>
-        <Text>
-          Beta 4.13.0: Reverted change because I broke Carbees Watch.....ooops.
-        </Text>
-        <Text>
-          Beta 4.14: Changed height check to device check.
-        </Text>
-        <Text>
-          Beta 4.13: Change from local to adjusted steps.
-        </Text>
-        <Text>
-          Beta 4.12.4: Very small tweaks.
-        </Text>
-        <Text>
-          Beta 4.12.3: Update time stamp on setting change and small tweaks.
-        </Text>
-        <Text>
-          Beta 4.12.2: Minor reformatting for Versa on forecast.
-        </Text>
-        <Text>
-          Beta 4.12.1: Minor reformatting for Versa.
-        </Text>
-        <Text>
-          Beta 4.12: Major reformatting for Versa (Thanks Fitbit!!!)
-        </Text>
-        <Text>
-          Beta 4.11.3: Faster refresh when failed, actually this time.
-        </Text>
-        <Text>
-          Beta 4.11.2: Faster refresh when failed.
-        </Text>
-        <Text>
-          Beta 4.11.1: Force fetch when no settings.
-        </Text>
-        <Text>
-          Beta 4.11: More aggressive rounding of recent time calc and more aggressive settings saving.
-        </Text>
-        <Text>
-          Beta 4.10.1: Fixed settings layout.
-        </Text>
-        <Text>
-          Beta 4.10: Added setting for location update interval.
-        </Text>
-        <Text>
-          Beta 4.9.4: Fix type in error message
-        </Text>
-        <Text>
-          Beta 4.9.3: It works when tethered to my computer!
-        </Text>
-        <Text>
-          Beta 4.9.2: I have no idea...
+           4.2: Added scrolling text when weather condition or location are too long.
         </Text>
          <Text>
-          Beta 4.9.1: Maybe this time I have it right??
+           4.1: Fixed metric units.
         </Text>
         <Text>
-          Beta 4.9: Got update running on time, without extra updates!
+           4.0: Now includes forecast screan and numerous fixes.
         </Text>
         <Text>
-          Beta 4.8: Major cleaning on setting application
+           3.0: Completely Versa Compatible. Includes Weather, debugging options, and tons of color choices.
         </Text>
         <Text>
-          Beta 4.7.2: reset weather update interval...again?
+           2.0 (Beta  Only): Added Weather.
         </Text>
         <Text>
-          Beta 4.7.1: reset weather update interval
-        </Text>
-        <Text>
-          Beta 4.7: Fixed multiple hits to weather api on start
-        </Text>
-        <Text>
-          Beta 4.6: Now running on most recent weather API
-        </Text>
-        <Text>
-          Beta 4.5.2: Changed draw/hide order.
-        </Text>
-        <Text>
-          Beta 4.5.1: Fixed overdraw error when changing schedule.
-        </Text>
-        <Text>
-          Beta 4.5: Contact links in settings.
-        </Text>
-        <Text>
-          Beta 4.4: Settings now stored properly.
-        </Text>
-        <Text>
-          Beta 4.3.1: Updating to make sure that I'm in sync.
-        </Text>
-        <Text>
-          Beta 4.3: Now using proper deg F via yahoo api, rather derived from deg C.
-        </Text>
-        <Text>
-          Beta 4.2: Fixed shortening bug.
-        </Text>
-        <Text>
-          Beta 4.1: Fixes to forcast screen.
-        </Text>
-        <Text>
-          Beta 4.0: Weather forecast screen.
-        </Text>
-        <Text>
-          Beta 3.2: Storing weather and showing last weather loaded and moving update message to location.
-        </Text>
-        <Text>
-          Beta 3.1: back to beta! Manually fixing thunderstorm icons when showers.
-        </Text>
-        <Text>
-          Beta 3.0.4: fixed shortener and now works... I hope
-        </Text>
-        <Text>
-          Beta 3.0.3: Fixed duplicate red in settings, cleaned up spacing in versa stats screen
-        </Text>
-        <Text>
-          Beta 3.0.2: Changed shortener change showers to rain, removed linking to submodules folder, removed non-build files from fitbit project; will leave in repo though.
-        </Text>
-        <Text>
-          Beta 3.0.1: Changed shortener to fix more "Showers" problems
-        </Text>
-        <Text>
-          Beta 3.0.0.1: Fixed Ionic Break!
-        </Text>
-        <Text>
-          Beta 3.0: Now Versa Compatible!
-        </Text>
-        <Text>
-          Beta 2.1.12: Changed color coding to be more rainbow-like, for reals this time. Used pallet tool at: http://www.perbang.dk/
-        </Text>
-        <Text>
-          Beta 2.1.11: Changed color coding to be more rainbow-like
-        </Text>
-        <Text>
-          Beta 2.1.10: Added a huge number of color options
-        </Text>
-        <Text>
-          Beta 2.1.9: Shortened long weather descriptions
-        </Text>
-        <Text>
-          Beta 2.1.8: Weather should update in background, all intervals now in x*1000 notation.
-        </Text>
-        <Text>
-          Beta 2.1.7: Made changes to weather error handling.
-        </Text>
-        <Text>
-          Beta 2.1.6: Fixed Rain showing as thunderstorm and added comments to weather icon switch statement
-        </Text>
-        <Text>
-          Beta 2.1.5: Added this section
-        </Text>
-        <Text>
-          Beta 2.1.4.2: Added Error Message to Weather
-        </Text>
-        <Text>
-          Beta 2.1.4.1: Fixed updating message
-        </Text>
-        <Text>
-          Beta 2.1.4: Updating Message Added
-        </Text>
-        <Text>
-          Beta 2.1.2.1: Reverted Battery Change
-        </Text>
-        <Text>
-          Beta 2.1.3: Change Battery
-        </Text>
-        <Text>
-          Beta 2.1.2: Clean Up Battery
-        </Text>
-        <Text>
-          Beta 2.1.1: Added Battery Percentage Color based on level
-        </Text>
-        <Text>
-          Beta 2.1: Added Battery Percentage.
-        </Text>
-        <Text>
-          Beta 2.0: Added Weather.
+           1.3: Changed daily schedule and main bar now changes color throughout the day.
         </Text>
       </Section>
     </Page>
@@ -472,5 +217,3 @@ function mySettings(props) {
 }
 
 registerSettingsPage(mySettings);
-
-
