@@ -1,8 +1,8 @@
 {
   "fitbit": {
-    "appUUID": "78de7609-7b92-4eda-bdf6-fb20c1ff151f",
+    "appUUID": "646b0d0d-9fe9-44de-be20-b50172c39509",
     "appType": "clockface",
-    "appDisplayName": "KearsargeTime",
+    "appDisplayName": "KRHS Time Beta",
     "iconFile": "resources/icon.png",
     "wipeColor": "#607d8b",
     "requestedPermissions": [
@@ -18,7 +18,7 @@
     ],
     "i18n": {
       "en": {
-        "name": "KearsargeTime"
+        "name": "KRHS Time Beta"
       }
     }
   }

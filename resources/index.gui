@@ -1,7 +1,7 @@
 <svg class="background">
   <svg id="clock" display="inline">
     <text id="dateLabel" />
-    <image x="80%" y="2%" width="50" height="20" href="icons/battery/battery.png" load="sync"/>
+    <image id="batteryLevelImage" x="80%" y="2%" width="50" height="20" href="icons/battery/battery.png" load="sync"/>
     <rect id="batteryLevelRect" x="281" y="8" width="39" height="14" fill="white" />
     <text id="batteryLevelLabel" />
     <circle id = "seperatorEndLeft"cx="5%" cy="15%" />
@@ -29,7 +29,7 @@
     </use>
   </svg>
   <svg id="stats" display="none">
-    <image x="0" y="4%" width="21" height="21" href="icons/21/steps.png" load="sync"/>
+    <image id="stepsStatsImage" x="0" y="4%" width="21" height="21" href="icons/21/steps.png" load="sync"/>
     <text id="stepStatsLabel" />
     <image x="0" y="24%" width="21" height="21" href="icons/21/distance.png" load="sync"/>
     <text id="distStatsLabel" />

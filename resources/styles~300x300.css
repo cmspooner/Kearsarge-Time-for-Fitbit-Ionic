@@ -25,8 +25,8 @@
   font-family: Colfax-Medium;
   text-length: 4;
   text-anchor: end;
-  x: 92%;
-  y: 9%;
+  x: 276;
+  y: 27;
   fill: white;
 }
 
@@ -510,7 +510,7 @@
   font-family: Colfax-Bold;
   text-length: 50;
   text-anchor: start;
-  x: 1%;
+  x: 50;
   y: 8%;
   fill: white;
 }
@@ -568,7 +568,7 @@
   font-family: Colfax-Bold;
   text-length: 50;
   text-anchor: start;
-  x: 1%;
+  x: 50;
   y: 43%;
   fill: white;
 }
@@ -626,7 +626,7 @@
   font-family: Colfax-Bold;
   text-length: 50;
   text-anchor: start;
-  x: 1%;
+  x: 50;
   y: 78%;
   fill: white;
 }

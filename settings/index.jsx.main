@@ -2,20 +2,39 @@ function mySettings(props) {
   return (
     <Page>
       <Section
+        title={<Text bold align="center">Heading</Text>}>
+        <Select
+          label={`Date Format`}
+          settingsKey="dateFormat"
+          options={[
+            {name:"Mon, Jan 31"},
+            {name:"Jan 31, 2018"},
+            {name:"1/31/2018"},
+            {name:"Mon 31 Jan"},
+            {name:"31 Jan 2018"},
+            {name:"31/1/2018"},
+          ]}
+          />
+        <Toggle
+           settingsKey="batteryToggle"
+           label="Change Battery Bar to Battery %" 
+           onChange={value => props.settingsStorage.setItem('unit', value.toString())}
+         />
+      </Section>
+      <Section
         title={<Text bold align="center">Weather</Text>}>
         <Toggle
            settingsKey="unitToggle"
-           label="US or Metric Units" 
+           label="Set Temperature units to Celsius" 
            onChange={value => props.settingsStorage.setItem('unit', value.toString())}
          />
-        <Text>Temperatures in degrees {props.settingsStorage.getItem('unit') == "true" ? "celsius" : "fahrenheit"}</Text>
         <Toggle
            settingsKey="weatherScrollToggle"
-           label="Dissable weather scrolling"
+           label="Disable weather scrolling"
          />
          <Toggle
            settingsKey="locationScrollToggle"
-           label="Dissable location scrolling"
+           label="Disable location scrolling"
          />
         <Select
           label={`Weather Update Interval`}
@@ -58,17 +77,17 @@ function mySettings(props) {
            label="Show number of weather attempts"
          />
         <Text align="left">
-          These are mostly for informataion for nerds and depugging.
+          These are mostly for information for nerds and debugging.
          </Text>
       </Section>
       <Section
-        title={<Text bold align="center">Seperator Bar Color</Text>}>
+        title={<Text bold align="center">Separator Bar Color</Text>}>
         <Toggle
           settingsKey="seperatorToggle"
           label="Color based on day's progress"
         />
         <Text align="center">
-          Color when not over-ridden
+          Color when not overridden
         </Text>
         <ColorSelect
           settingsKey="color"
@@ -168,6 +187,9 @@ function mySettings(props) {
       </Section>
       <Section
         title={<Text bold align="center">Build Version and Notes</Text>}>
+        <Text>
+           5.0: Weather now loaded from file on load, Multiple date formats, and new battery bar option.
+        </Text>
         <Text>
            4.2.1: Settings now shows units.
         </Text>

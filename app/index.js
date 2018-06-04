@@ -53,6 +53,8 @@ let inSched = null;
 let userUnits =  units.temperature.toLowerCase();
 let failCount = 0;
 
+let isBatteryAlert = false;
+let wasBatteryAlert = true;
 
 
 let today = new Date();
@@ -75,6 +77,8 @@ let hrm = new HeartRateSensor();
 //----------------------------Messaging and Settings--------------
 
 let settings = loadSettings();
+updateClock();  
+
 let weatherData = loadWeather();
 if (weatherData == null){
   drawWeatherUpdatingMsg();
@@ -242,8 +246,17 @@ function drawError(error){
       tempAndConditionLabel.text = `${weatherData.temperature}° ${util.shortenText(weatherData.description)}`;
       if (settings.showError)
         weatherLocationLabel.text = `${error}`;
-      else
-        weatherLocationLabel.text = `Updating...`;
+      else {
+        let timeStamp = new Date(weatherData.timestamp);
+        if (timeStamp.getDate()!=today.getDate())
+          timeStamp = timeStamp.getMonth()+1+"/"+timeStamp.getDate()
+        else
+          timeStamp = schedUtils.hourAndMinToTime(timeStamp.getHours(), timeStamp.getMinutes());
+        if (settings.showDataAge)
+          weatherLocationLabel.text = `${util.shortenText(weatherData.location)} (${timeStamp})`;
+        else
+          weatherLocationLabel.text = `${util.shortenText(weatherData.location)}`;
+      }
       weatherImage.href = util.getWeatherIcon(weatherData);  
   }
 }
@@ -261,6 +274,7 @@ function updateClock() {
   let dateLabel = document.getElementById("dateLabel");
   let batteryLevelLabel = document.getElementById("batteryLevelLabel");
   let batteryLevelRect = document.getElementById("batteryLevelRect");
+  let batteryLevelImage = document.getElementById("batteryLevelImage");
 
   today = new Date();
   time = schedUtils.hourAndMinToTime(today.getHours(), today.getMinutes());
@@ -304,7 +318,43 @@ function updateClock() {
 
   dateLabel.text = util.dateParse(settings.dateFormat, today) ? util.dateParse(settings.dateFormat, today) : util.toDay(today.getDay(), "short") + ", " + util.toMonth(today.getMonth()) + " " + today.getDate();
   
-  if (settings.batteryToggle){
+  //let batterychargeLevel = 14;
+  
+  wasBatteryAlert = isBatteryAlert;
+  if ((battery.chargeLevel <= 15 || battery.charging) && !isBatteryAlert) {
+    console.log("battery Alert on");
+    isBatteryAlert = true;
+  } else if (battery.chargeLevel > 15 && !battery.charging) {
+    console.log("battery Alert off");
+    isBatteryAlert = false;
+  }
+  
+  if (isBatteryAlert != wasBatteryAlert){
+    if (isBatteryAlert){
+      dateLabel.x = 44;
+      batteryLevelLabel.style.fontSize = 30;
+      if (deviceType == "Versa"){
+        batteryLevelLabel.x = 285;
+        batteryLevelLabel.y = 35;
+      } else{ 
+        batteryLevelLabel.y = 24;
+      }
+      batteryLevelRect.style.display = "none";
+      batteryLevelImage.href = "";
+    } else {
+      dateLabel.x = 15;
+      if (deviceType == "Versa"){
+        batteryLevelLabel.x = 276;
+        batteryLevelLabel.y = 28;
+      } else {
+        batteryLevelLabel.y = 20;
+      }
+      batteryLevelLabel.style.fontSize = 14;
+      batteryLevelImage.href = "icons/battery/battery.png";
+    }
+    updateStatsData();
+  }
+  if (settings.batteryToggle || isBatteryAlert){
     batteryLevelLabel.style.fill = util.goalToColor(battery.chargeLevel, 90)
     batteryLevelLabel.text = `${battery.chargeLevel}%`
     batteryLevelRect.style.display = "none";
@@ -315,100 +365,124 @@ function updateClock() {
     batteryLevelRect.style.display = "inline";
     batteryLevelLabel.style.display = "none";
   }
-  clockLabel.text = `${hours}:${mins}${ampm}`;
   
+  clockLabel.text = `${hours}:${mins}${ampm}`;
+ 
   if (inSched)
     updatePeriodData();
 }
 
 function updateClockData() {
-  if (show == "clock" && display.on){
-    let hrLabel = document.getElementById("hrLabel");
-    let stepsLabel = document.getElementById("stepsLabel");
-    if (deviceType == "Versa")
-      let calsLabel = document.getElementById("calsLabel");
-    
-    hrLabel.style.fill = 'white';
-    stepsLabel.style.fill = 'white';
-    if (deviceType == "Versa")
-      calsLabel.style.fill = 'white';
-    
-    if (!hrm.heartRate || hrm.heartRate == 0) {
-        hrLabel.text = `--`;
-    } else {
-        if (user.heartRateZone(hrm.heartRate) == "out-of-range"){
-          hrLabel.style.fill = 'fb-cyan';  // #14D3F5
-        } else if (user.heartRateZone(hrm.heartRate) == "fat-burn"){
-          hrLabel.style.fill = 'fb-mint'; // #5BE37D
-        } else if (user.heartRateZone(harm.heartRate) == "cardio"){
-          hrLabel.style.fill = 'fb-peach'; // #FFCC33
-        } else if (user.heartRateZone(hrm.heartRate) == "peak"){
-          hrLabel.style.fill = 'fb-red'; // #F83C40
-        }
-        hrLabel.text = `${hrm.heartRate} bpm`;
+  let hrLabel = document.getElementById("hrLabel");
+  let stepsLabel = document.getElementById("stepsLabel");
+  if (deviceType == "Versa")
+    let calsLabel = document.getElementById("calsLabel");
+
+  hrLabel.style.fill = 'white';
+  stepsLabel.style.fill = 'white';
+  if (deviceType == "Versa")
+    calsLabel.style.fill = 'white';
+
+  //console.log(hrm.heart);
+  if (!hrm){
+    hrLabel.text = "NO SENSOR!!!";
+  } else if (!hrm.heartRate) {
+    //hrLabel.text = hrm.timeStamp;
+    hrLabel.text = "NO HEART RATE"
+    hrm.start(); 
+  } else if (hrm.heartRate == 0){
+    hrLabel.text = "0";
+  } else {
+    if (user.heartRateZone(hrm.heartRate) == "out-of-range"){
+      hrLabel.style.fill = 'fb-cyan';  // #14D3F5
+    } else if (user.heartRateZone(hrm.heartRate) == "fat-burn"){
+      hrLabel.style.fill = 'fb-mint'; // #5BE37D
+    } else if (user.heartRateZone(hrm.heartRate) == "cardio"){
+      hrLabel.style.fill = 'fb-peach'; // #FFCC33
+    } else if (user.heartRateZone(hrm.heartRate) == "peak"){
+      hrLabel.style.fill = 'fb-red'; // #F83C40
     }
+    hrLabel.text = `${hrm.heartRate} bpm`;
+  }
     
-    stepsLabel.style.fill = util.goalToColor(todayActivity.adjusted.steps ? todayActivity.adjusted.steps: 0, goals.steps);
-    stepsLabel.text = `${(todayActivity.adjusted.steps ? todayActivity.adjusted.steps: 0).toLocaleString()} steps`;
-    if (deviceType == "Versa") {
-      calsLabel.style.fill = util.goalToColor(todayActivity.adjusted.calories ? todayActivity.adjusted.calories: 0, goals.calories);
-      calsLabel.text = `${(todayActivity.adjusted.calories ? todayActivity.adjusted.calories: 0).toLocaleString()} kcal`;
-    }
+  stepsLabel.style.fill = util.goalToColor(todayActivity.adjusted.steps ? todayActivity.adjusted.steps: 0, goals.steps);
+  stepsLabel.text = `${(todayActivity.adjusted.steps ? todayActivity.adjusted.steps: 0).toLocaleString()} steps`;
+  if (deviceType == "Versa") {
+    calsLabel.style.fill = util.goalToColor(todayActivity.adjusted.calories ? todayActivity.adjusted.calories: 0, goals.calories);
+    calsLabel.text = `${(todayActivity.adjusted.calories ? todayActivity.adjusted.calories: 0).toLocaleString()} kcal`;
   }
 }
 
 function updatePeriodData() {
-  console.log("updating period Data");
-  if (show == "clock"){
-    console.log("Really updating period Data");
-    let seperatorEndLeft = document.getElementById("seperatorEndLeft");
-    let seperatorLine = document.getElementById("seperatorLine");
-    let seperatorEndRight = document.getElementById("seperatorEndRight");
-    
-    // Period View
-    let periodLabel = document.getElementById("periodLabel");
-    let timeRemainingLabel = document.getElementById("timeRemainingLabel");
-    
-    let remaining = schedUtils.getTimeLeftInPeriod(sched, time);
-    
-    if (inSched){
-        periodLabel.text = `${schedUtils.getCurrentPeriod(sched, time)}`;
-        if (remaining <= 2){
-          timeRemainingLabel.style.fill = 'fb-red';
-          if (!didVib){
-            vibration.start("nudge-max");
-            didVib = true;
-          }
-        } else if (remaining > 2 && didVib){
-          didVib = false;
-          timeRemainingLabel.style.fill = 'silver';
-        } else {
-          timeRemainingLabel.style.fill = 'silver';
-        }
-        timeRemainingLabel.text = `Remaining: ${remaining} min`;
+  let seperatorEndLeft = document.getElementById("seperatorEndLeft");
+  let seperatorLine = document.getElementById("seperatorLine");
+  let seperatorEndRight = document.getElementById("seperatorEndRight");
 
-      if (settings.sepratorGoal){
-        let scaledNow = schedUtils.timeToMin(time)-schedUtils.timeToMin(schedUtils.getStartofDay(sched))
-        let scaledEnd = schedUtils.timeToMin(schedUtils.getEndofDay(sched))-schedUtils.timeToMin(schedUtils.getStartofDay(sched))
-        seperatorEndLeft.style.fill = util.goalToColor(scaledNow, scaledEnd);
-        seperatorLine.style.fill = util.goalToColor(scaledNow, scaledEnd);
-        seperatorEndRight.style.fill = util.goalToColor(scaledNow, scaledEnd);
+  // Period View
+  let periodLabel = document.getElementById("periodLabel");
+  let timeRemainingLabel = document.getElementById("timeRemainingLabel");
+
+  let remaining = schedUtils.getTimeLeftInPeriod(sched, time);
+
+  if (inSched){
+      periodLabel.text = `${schedUtils.getCurrentPeriod(sched, time)}`;
+      if (remaining <= 2){
+        timeRemainingLabel.style.fill = 'fb-red';
+        if (!didVib){
+          vibration.start("nudge-max");
+          didVib = true;
+        }
+      } else if (remaining > 2 && didVib){
+        didVib = false;
+        timeRemainingLabel.style.fill = 'silver';
       } else {
-        seperatorEndLeft.style.fill = settings.color;
-        seperatorLine.style.fill = settings.color;
-        seperatorEndRight.style.fill = settings.color;
+        timeRemainingLabel.style.fill = 'silver';
       }
+      timeRemainingLabel.text = `Remaining: ${remaining} min`;
+
+    if (settings.sepratorGoal){
+      let scaledNow = schedUtils.timeToMin(time)-schedUtils.timeToMin(schedUtils.getStartofDay(sched))
+      let scaledEnd = schedUtils.timeToMin(schedUtils.getEndofDay(sched))-schedUtils.timeToMin(schedUtils.getStartofDay(sched))
+      seperatorEndLeft.style.fill = util.goalToColor(scaledNow, scaledEnd);
+      seperatorLine.style.fill = util.goalToColor(scaledNow, scaledEnd);
+      seperatorEndRight.style.fill = util.goalToColor(scaledNow, scaledEnd);
     } else {
-      periodLabel.text = ``;
-      timeRemainingLabel.text = ``;
       seperatorEndLeft.style.fill = settings.color;
       seperatorLine.style.fill = settings.color;
       seperatorEndRight.style.fill = settings.color;
     }
+  } else {
+    periodLabel.text = ``;
+    timeRemainingLabel.text = ``;
+    seperatorEndLeft.style.fill = settings.color;
+    seperatorLine.style.fill = settings.color;
+    seperatorEndRight.style.fill = settings.color;
   }
 }
 
 function updateStatsData(){
+  if (isBatteryAlert != wasBatteryAlert){
+    if (isBatteryAlert){
+      let batteryLevelRect = document.getElementById("batteryLevelRect");
+      let batteryLevelImage = document.getElementById("batteryLevelImage");
+      let stepStatsLabel = document.getElementById("stepStatsLabel");
+      let stepsStatsImage = document.getElementById("stepsStatsImage");
+      stepsStatsImage.x = 44
+      stepStatsLabel.x = 65
+    } else {
+      if (deviceType == "Versa"){
+        let stepStatsLabel = document.getElementById("stepStatsLabel");
+        let stepsStatsImage = document.getElementById("stepsStatsImage");
+        stepsStatsImage.x = 6
+        stepStatsLabel.x = 25
+      } else{ 
+        let stepStatsLabel = document.getElementById("stepStatsLabel");
+        let stepsStatsImage = document.getElementById("stepsStatsImage");
+        stepsStatsImage.y = 10
+        stepStatsLabel.y = 30
+      }
+    }
+  }
   if (show == "stats" && display.on){
     
     // Stats View
@@ -454,8 +528,11 @@ function updateStatsData(){
       calsGoalLabel.text = `${todayActivity.adjusted.calories ? todayActivity.adjusted.calories.toLocaleString() : 0} / ${parseInt(goals.calories).toLocaleString()}`;
     } else {
       stepStatsLabel.style.fill = util.goalToColor(todayActivity.adjusted.steps, goals.steps);
-      stepStatsLabel.text = `Steps: ${todayActivity.adjusted.steps ? todayActivity.adjusted.steps.toLocaleString() : 0} / ${goals.steps.toLocaleString()}`;
-
+      if (isBatteryAlert){
+        stepStatsLabel.text = `Steps: ${todayActivity.adjusted.steps ? todayActivity.adjusted.steps.toLocaleString() : 0} / ${parseInt(goals.steps/1000)}k`;
+      } else {
+       stepStatsLabel.text = `Steps: ${todayActivity.adjusted.steps ? todayActivity.adjusted.steps.toLocaleString() : 0} / ${goals.steps.toLocaleString()}`;
+      }
       // Multiply by .000621371 to convert from meters to miles
       distStatsLabel.style.fill = util.goalToColor(todayActivity.adjusted.distance, goals.distance);
       if (units.distance == "us")
@@ -574,7 +651,7 @@ function updateForecastData(){
     
     let day = new Date().getDay()
     
-    todayDateLabel.text  = "Today";
+    todayDateLabel.text  = "Today".toUpperCase();
     todayWeatherImage.href = util.getForecastIcon(weatherData.todayCondition, 
                                                   weatherData.tomorrowDescription);
     todayDescriptionLabel.text = util.shortenText(weatherData.todayDescription);
@@ -583,7 +660,7 @@ function updateForecastData(){
     todayLowLabel.text = "Low:"
     todayLowValLabel.text = weatherData.todayLow + "°"
     
-    tomorrowDateLabel.text = util.toDay(day+1, "long");
+    tomorrowDateLabel.text = util.toDay(day+1, "long").toUpperCase();
     tomorrowWeatherImage.href = util.getForecastIcon(weatherData.tomorrowCondition, 
                                                      weatherData.tomorrowDescription);
     tomorrowDescriptionLabel.text = util.shortenText(weatherData.tomorrowDescription);
@@ -592,7 +669,7 @@ function updateForecastData(){
     tomorrowLowLabel.text = "Low:"
     tomorrowLowValLabel.text = weatherData.tomorrowLow + "°"
     
-    day3DateLabel.text = util.toDay(day+2, "long");
+    day3DateLabel.text = util.toDay(day+2, "long").toUpperCase();
     day3WeatherImage.href = util.getForecastIcon(weatherData.day3Condition, 
                                                      weatherData.day3Description);
     day3DescriptionLabel.text = util.shortenText(weatherData.day3Description);
@@ -686,6 +763,8 @@ background.onclick = function(evt) {
   }
 }
 
+battery.onchange = function() {updateClockData()};
+
 display.onchange = function() {
   if (!display.on && show != "clock") {
     show = "clock";
@@ -744,10 +823,46 @@ function setDateFormat(){
 }
 
 function setBattery(){
+  let dateLabel = document.getElementById("dateLabel");
   let batteryLevelLabel = document.getElementById("batteryLevelLabel");
   let batteryLevelRect = document.getElementById("batteryLevelRect");
-
-  if (settings.batteryToggle){
+  let batteryLevelImage = document.getElementById("batteryLevelImage");
+  
+  wasBatteryAlert = isBatteryAlert;
+  if ((battery.chargeLevel <= 15 || battery.charging) && !isBatteryAlert) {
+    console.log("battery Alert on");
+    isBatteryAlert = true;
+  } else if (!(battery.chargeLevel <= 15 || battery.charging)){
+    console.log("battery Alert off");
+    isBatteryAlert = false;
+  }
+  
+  if (isBatteryAlert != wasBatteryAlert){
+    if (isBatteryAlert){
+      dateLabel.x = 44;
+      batteryLevelLabel.style.fontSize = 30;
+      if (deviceType == "Versa"){
+        batteryLevelLabel.x = 290;
+        batteryLevelLabel.y = 30;
+      } else{ 
+        batteryLevelLabel.y = 24;
+      }
+      batteryLevelRect.style.display = "none";
+      batteryLevelImage.href = "";
+    } else {
+      dateLabel.x = 15;
+      if (deviceType == "Versa"){
+        batteryLevelLabel.x = 276;
+        batteryLevelLabel.y = 28;
+      } else {
+        batteryLevelLabel.y = 20;
+      }
+      batteryLevelLabel.style.fontSize = 14;
+      batteryLevelImage.href = "icons/battery/battery.png";
+    }
+    updateStatsData();
+  }
+  if (settings.batteryToggle || isBatteryAlert){
     batteryLevelLabel.style.fill = util.goalToColor(battery.chargeLevel, 90)
     batteryLevelLabel.text = `${battery.chargeLevel}%`
     batteryLevelRect.style.display = "none";
@@ -1057,8 +1172,6 @@ function fetchWeather(){
 // Update the clock every tick event
 clock.ontick = () => updateClock();
 setInterval(updateClockData, 3*1000);
-
-
 
 updateClock();
 updateClockData();
