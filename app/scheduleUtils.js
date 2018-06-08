@@ -61,7 +61,7 @@ export function getDailySchedule(typeOfDay){
   if (typeOfDay == "Regular"){
     let today = new Date();
     let day = today.getDay();
-    typeOfDay = sched.dayToSchedule()[util.toDay(day, "long")];
+    typeOfDay = sched.dayToSchedule(util.toDay(day, "long"));
   }
   return sched.schedule(typeOfDay);
 }

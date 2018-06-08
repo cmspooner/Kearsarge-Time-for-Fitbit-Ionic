@@ -76,8 +76,9 @@ let hrm = new HeartRateSensor();
 
 //----------------------------Messaging and Settings--------------
 
-let settings = loadSettings();
+let settings = {};
 updateClock();  
+settings = loadSettings();
 
 let weatherData = loadWeather();
 if (weatherData == null){
@@ -140,6 +141,9 @@ messaging.peerSocket.onmessage = evt => {
   }
   if (evt.data.key === "failCountToggle" && evt.data.newValue) {
     settings.showFailCount = JSON.parse(evt.data.newValue);
+  }  
+  if (evt.data.key === "fetchToggle" && evt.data.newValue) {
+    settings.fetchToggle = JSON.parse(evt.data.newValue);
   }  
   if (evt.data.key === "weatherScrollToggle" && evt.data.newValue) {
     settings.weatherScrollToggle = JSON.parse(evt.data.newValue);
@@ -283,25 +287,6 @@ function updateClock() {
   let mins = util.zeroPad(today.getMinutes());
   let ampm = " am";
   
-  let oldSched = inSched;
-  inSched = schedUtils.isInSchedule(sched, time)
-  if (oldSched != inSched){
-    if (inSched){
-      clearInterval(weatherInterval);
-      if (periodInterval != null)
-        clearInterval(periodInterval);
-      periodInterval = setInterval(updatePeriodData, 15*1000);
-      console.log("-----------------School Mode---------------------")
-    } else {
-      clearInterval(periodInterval);
-      if (weatherInterval != null)
-        clearInterval(weatherInterval);
-      weatherInterval = setInterval(fetchWeather,settings.updateInterval * 60 * 1000);
-      console.log("-----------------Weather Mode---------------------")
-      fetchWeather();
-    } 
-  }
-  
   //console.log(preferences.clockDisplay);
   if (preferences.clockDisplay == "12h"){
     if (hours > 12){
@@ -316,7 +301,10 @@ function updateClock() {
     ampm = ""
   }
 
+  if (!settings.dateFormat){
+    settings.dateFormat = "Mon, Jan 31"
   dateLabel.text = util.dateParse(settings.dateFormat, today) ? util.dateParse(settings.dateFormat, today) : util.toDay(today.getDay(), "short") + ", " + util.toMonth(today.getMonth()) + " " + today.getDate();
+  }
   
   //let batterychargeLevel = 14;
   
@@ -354,6 +342,9 @@ function updateClock() {
     }
     updateStatsData();
   }
+  if (!settings.batteryToggle)
+    settings.batteryToggle = false;
+  
   if (settings.batteryToggle || isBatteryAlert){
     batteryLevelLabel.style.fill = util.goalToColor(battery.chargeLevel, 90)
     batteryLevelLabel.text = `${battery.chargeLevel}%`
@@ -367,8 +358,32 @@ function updateClock() {
   }
   
   clockLabel.text = `${hours}:${mins}${ampm}`;
+  console.log("We should have a clock!")
  
-  if (inSched)
+  let oldSched = inSched;
+  inSched = schedUtils.isInSchedule(sched, time)
+  if (oldSched != inSched){
+    if (inSched){
+      clearInterval(weatherInterval);
+      if (periodInterval != null)
+        clearInterval(periodInterval);
+      periodInterval = setInterval(updatePeriodData, 15*1000);
+      console.log("-----------------School Mode---------------------")
+      weatherView.style.display = "none";
+      periodView.style.display = "inline";
+    } else {
+      clearInterval(periodInterval);
+      if (weatherInterval != null)
+        clearInterval(weatherInterval);
+      weatherInterval = setInterval(fetchWeather,settings.updateInterval * 60 * 1000);
+      console.log("-----------------Weather Mode---------------------")
+      fetchWeather();
+      weatherView.style.display = "inline";
+      periodView.style.display = "none";
+    } 
+  }
+  
+  if (inSched && settings.schedule)
     updatePeriodData();
 }
 
@@ -463,25 +478,16 @@ function updatePeriodData() {
 function updateStatsData(){
   if (isBatteryAlert != wasBatteryAlert){
     if (isBatteryAlert){
-      let batteryLevelRect = document.getElementById("batteryLevelRect");
-      let batteryLevelImage = document.getElementById("batteryLevelImage");
-      let stepStatsLabel = document.getElementById("stepStatsLabel");
+      let stepStatsLabel = document.getElementById("stepStatsLabel");
       let stepsStatsImage = document.getElementById("stepsStatsImage");
       stepsStatsImage.x = 44
       stepStatsLabel.x = 65
     } else {
-      if (deviceType == "Versa"){
-        let stepStatsLabel = document.getElementById("stepStatsLabel");
-        let stepsStatsImage = document.getElementById("stepsStatsImage");
-        stepsStatsImage.x = 6
-        stepStatsLabel.x = 25
-      } else{ 
-        let stepStatsLabel = document.getElementById("stepStatsLabel");
-        let stepsStatsImage = document.getElementById("stepsStatsImage");
-        stepsStatsImage.y = 10
-        stepStatsLabel.y = 30
-      }
-    }
+      let stepStatsLabel = document.getElementById("stepStatsLabel");
+      let stepsStatsImage = document.getElementById("stepsStatsImage");
+      stepsStatsImage.x = 0
+      stepStatsLabel.x = 25
+    }
   }
   if (show == "stats" && display.on){
     
@@ -1116,6 +1122,7 @@ function loadSettings() {
       showDataAge : true,
       showError: false,
       showFailCount : false,
+      fetchToggle : false,
       weatherScrollToggle : false,
       locationScrollToggle : false,
       color : "#004C99",
@@ -1164,6 +1171,12 @@ function fetchWeather(){
   if (!inSched){
     openedWeatherRequest = false;
     console.log("auto fetch");
+    if (settings.fetchToggle){
+      let weatherLocationLabel = document.getElementById("weatherLocationLabel");
+      let timeStamp = new Date();
+      timeStamp = schedUtils.hourAndMinToTime(timeStamp.getHours(), timeStamp.getMinutes());
+      weatherLocationLabel.text = "Fetching at " + timeStamp;
+    }
     weather.fetch();
   }
 }

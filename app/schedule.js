@@ -1,22 +1,23 @@
-export function dayToSchedule(){                
-  return {"Sunday": "No School",
-          "Monday": "Normal",
-          "Tuesday": "Normal",
-          "Wednesday": "Normal",
-          "Thursday": "Normal",
-          "Friday": "Normal",
-          "Saturday": "No School"
-    }
+export function dayToSchedule(day){                
+  switch(day){
+    case "Sunday": return "No School";
+    case "Monday": return "Normal";
+    case "Tuesday": return "Normal";
+    case "Wednesday": return "Normal";
+    case "Thursday": return "Normal";
+    case "Friday": return "Normal";
+    case "Saturday": return "No School";
+  }
 }
 
 export function ignoredPeriods(){ 
-    return [
-                      "No School",
-                      "Before School",
-                      "Warning Bell",
-                      "Passing Time",
-                      "Teacher Time"
-                     ];
+  return [
+          "No School",
+          "Before School",
+          "Warning Bell",
+          "Passing Time",
+          "Teacher Time"
+         ];
 }
 
 export function splitPeriods(){

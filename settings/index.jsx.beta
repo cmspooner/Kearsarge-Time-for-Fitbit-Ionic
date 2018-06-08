@@ -76,6 +76,10 @@ function mySettings(props) {
            settingsKey="failCountToggle"
            label="Show number of weather attempts"
          />
+        <Toggle
+           settingsKey="fetchToggle"
+           label="Show when weather is fetched"
+         />
         <Text align="left">
           These are mostly for information for nerds and debugging.
          </Text>
@@ -187,6 +191,87 @@ function mySettings(props) {
       </Section>
       <Section
         title={<Text bold align="center">Build Version and Notes</Text>}>
+        <Text>
+          Beta 6.13.1: Moved steps icon on both versa and ionic when coming off charger
+        </Text>
+        <Text>
+          Beta 6.13: Fix steps on remove from charger on ionic
+        </Text>
+        <Text>
+          Beta 6.12: Added show fetch option
+        </Text>
+        <Text>
+          Beta 6.11: Change dayToSched to switch statement
+        </Text>
+        <Text>
+          Beta 6.10: Make sure weather/period switch at beginning/end of day.
+        </Text>
+        <Text>
+          Beta 6.9.2: Only update period after settings loaded;
+        </Text>
+        <Text>
+          Beta 6.9.1: Load clock before setting to speed up start...maybe;
+        </Text>
+        <Text>
+          Beta 6.9: Load clock right after setting to speed up start;
+        </Text>
+        <Text>
+          Beta 6.8.1: Moved steps other direction on Ionic
+        </Text>
+        <Text>
+          Beta 6.8: Back to work on handling battery state changes
+        </Text>
+        <Text>
+          Beta 6.7.5: Remove some esoteric debugging issues, since it seems better...
+        </Text>
+        <Text>
+          Beta 6.7.4: How bout now??
+        </Text>
+        <Text>
+          Beta 6.7.3: EBEN MOAR DEBUG
+        </Text>
+        <Text>
+          Beta 6.7.2: MOAR DEBUG
+        </Text>
+        <Text>
+          Beta 6.7.1: Force Re-start Heart Monitor if no heartrate.
+        </Text>
+        <Text>
+          Beta 6.7: Removed view check for clock and period data
+        </Text>
+        <Text>
+          Beta 6.6: Update charge info when pluggedin/unplugged
+        </Text>
+        <Text>
+          Beta 6.5: More Detailed Heartrate Failure Modes
+        </Text>
+        <Text>
+          Beta 6.4: If no show error, show location
+        </Text>
+        <Text>
+          Beta 6.3: Bold forecast dates!
+        </Text>
+        <Text>
+          Beta 6.2.1: Steps image way low, steps text too high
+        </Text>
+        <Text>
+          Beta 6.2: Started handle battery alert on other screens
+        </Text>
+        <Text>
+          Beta 6.1.3: Small adjustment on Veras....Ionic is probably trash!
+        </Text>
+        <Text>
+          Beta 6.1.2: Trying again again again
+        </Text>
+        <Text>
+          Beta 6.1.1: Trying again again
+        </Text>
+        <Text>
+          Beta 6.1: Trying again
+        </Text>
+        <Text>
+          Beta 6.0: Trying to handle low-battery and charging states.
+        </Text>
         <Text>
           Beta 5.12: Changed schedule function to return only one schedule
         </Text>
