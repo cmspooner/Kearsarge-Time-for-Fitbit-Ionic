@@ -332,7 +332,7 @@ function prv_queryDarkskyWeather(apiKey, feelsLike, latitude, longitude, unit, s
 };
 
 function prv_queryYahooWeather(latitude, longitude, unit, success, error) {
-  var url = 'https://query.yahooapis.com/v1/public/yql?q=select astronomy, location.city, item from weather.forecast where woeid in ' + '(select woeid from geo.places(1) where text=\'(' + latitude+','+longitude+')\') and u=\''+ unit +'\'&format=json';
+  var url = 'https://query.yahooapis.com/v1/public/yql?q=select astronomy, location.city, item from weather.forecast where woeid in ' + '(select woeid from geo.places(1) where text=\'(' + latitude+','+longitude+')\') and u=\'' + unit + '\'&format=json';
   
   console.log("Yahoo: " + url)
   fetch(encodeURI(url))

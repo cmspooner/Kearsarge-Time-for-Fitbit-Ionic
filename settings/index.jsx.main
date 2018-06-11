@@ -11,8 +11,11 @@ function mySettings(props) {
             {name:"Jan 31, 2018"},
             {name:"1/31/2018"},
             {name:"Mon 31 Jan"},
-            {name:"31 Jan 2018"},
+            {name:"31. Jan 2018"},
             {name:"31/1/2018"},
+            {name:"2018.01.31"},
+            {name:"31. 1. 2018"},
+            {name:"31.01.2018"},
           ]}
           />
         <Toggle
@@ -75,6 +78,10 @@ function mySettings(props) {
          <Toggle
            settingsKey="failCountToggle"
            label="Show number of weather attempts"
+         />
+        <Toggle
+           settingsKey="fetchToggle"
+           label="Show when weather is fetched"
          />
         <Text align="left">
           These are mostly for information for nerds and debugging.
@@ -187,6 +194,9 @@ function mySettings(props) {
       </Section>
       <Section
         title={<Text bold align="center">Build Version and Notes</Text>}>
+        <Text>
+           6.0: New date formats and now moves date/steps when low battery or when charging
+        </Text>
         <Text>
            5.0: Weather now loaded from file on load, Multiple date formats, and new battery bar option.
         </Text>

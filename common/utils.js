@@ -132,7 +132,10 @@ export function dateParse(fmt, today){
   } 
 }
 
-export function shortenText(text){
+export function shortenText(text, isDay){
+  if (!isDay)
+    text = text.replace("Sunny", "Clear");
+  
   text = text.replace("North", "N.");
   text = text.replace("East", "E.");
   text = text.replace("South", "S.");

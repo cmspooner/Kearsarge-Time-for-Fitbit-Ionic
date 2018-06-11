@@ -17,6 +17,7 @@ import { user } from "user-profile";
 import { display } from "display";
 import { preferences } from "user-settings";
 import { units } from "user-settings";
+import { locale } from "user-settings";
 import { vibration } from "haptics"
 import { battery } from "power";
 import { memory } from "system";
@@ -24,6 +25,7 @@ console.log("JS memory: " + memory.js.used + "/" + memory.js.total);
 
 import * as util from "../common/utils";
 import * as schedUtils from "scheduleUtils.js";
+import * as allStrings from "strings.js";
 
 import { me as device } from "device";
 if (!device.screen) device.screen = { width: 348, height: 250 };
@@ -47,6 +49,13 @@ weather.setMaximumAge(10 * 60 * 1000);
 weather.setFeelsLike(false);
 weather.setUnit(userUnits);
 
+console.log(locale.language);
+
+//let myLocale = "zh-cn";
+let myLocale = locale.language
+let strings = allStrings.getStrings(myLocale);
+console.log(strings["bpm"]);
+
 let sched = "Regular";
 let inSched = null;
 
@@ -55,7 +64,7 @@ let failCount = 0;
 
 let isBatteryAlert = false;
 let wasBatteryAlert = true;
-
+let isFetching = false;
 
 let today = new Date();
 let time = schedUtils.hourAndMinToTime(today.getHours(), today.getMinutes());
@@ -192,6 +201,7 @@ function drawWeather(data){
   let weatherImage = document.getElementById("weatherImage");
   
   failCount = 0;
+  isFetching = false;
   weather.setMaximumAge(settings.updateInterval * 60 * 1000); 
   if (weatherInterval != null)
     clearInterval(weatherInterval);
@@ -205,12 +215,11 @@ function drawWeather(data){
     timeStamp = timeStamp.getMonth()+1+"/"+timeStamp.getDate()
   else
     timeStamp = schedUtils.hourAndMinToTime(timeStamp.getHours(), timeStamp.getMinutes());
-  //
-  //console.log(settings.showDataAge)
+
   if (settings.showDataAge)
-    weatherLocationLabel.text = `${util.shortenText(data.location)} (${timeStamp})`;
+    weatherLocationLabel.text = `${util.shortenText(data.location, data.isDay)} (${timeStamp})`;
   else
-    weatherLocationLabel.text = `${util.shortenText(data.location)}`;
+    weatherLocationLabel.text = `${util.shortenText(data.location, data.isDay)}`;
   
   weatherImage.href = util.getWeatherIcon(data);  
 }
@@ -247,7 +256,7 @@ function drawError(error){
     else
       weatherLocationLabel.text = ``;
   } else {
-      tempAndConditionLabel.text = `${weatherData.temperature}° ${util.shortenText(weatherData.description)}`;
+      tempAndConditionLabel.text = `${weatherData.temperature}° ${util.shortenText(weatherData.description, weatherData.isDay)}`;
       if (settings.showError)
         weatherLocationLabel.text = `${error}`;
       else {
@@ -257,9 +266,9 @@ function drawError(error){
         else
           timeStamp = schedUtils.hourAndMinToTime(timeStamp.getHours(), timeStamp.getMinutes());
         if (settings.showDataAge)
-          weatherLocationLabel.text = `${util.shortenText(weatherData.location)} (${timeStamp})`;
+          weatherLocationLabel.text = `${util.shortenText(weatherData.location, weatherData.isDay)} (${timeStamp})`;
         else
-          weatherLocationLabel.text = `${util.shortenText(weatherData.location)}`;
+          weatherLocationLabel.text = `${util.shortenText(weatherData.location, weatherData.isDay)}`;
       }
       weatherImage.href = util.getWeatherIcon(weatherData);  
   }
@@ -417,14 +426,14 @@ function updateClockData() {
     } else if (user.heartRateZone(hrm.heartRate) == "peak"){
       hrLabel.style.fill = 'fb-red'; // #F83C40
     }
-    hrLabel.text = `${hrm.heartRate} bpm`;
+    hrLabel.text = `${hrm.heartRate} ${strings["bpm"]}`;
   }
     
   stepsLabel.style.fill = util.goalToColor(todayActivity.adjusted.steps ? todayActivity.adjusted.steps: 0, goals.steps);
-  stepsLabel.text = `${(todayActivity.adjusted.steps ? todayActivity.adjusted.steps: 0).toLocaleString()} steps`;
+  stepsLabel.text = `${(todayActivity.adjusted.steps ? todayActivity.adjusted.steps: 0).toLocaleString()} ${strings["steps"]}`;
   if (deviceType == "Versa") {
     calsLabel.style.fill = util.goalToColor(todayActivity.adjusted.calories ? todayActivity.adjusted.calories: 0, goals.calories);
-    calsLabel.text = `${(todayActivity.adjusted.calories ? todayActivity.adjusted.calories: 0).toLocaleString()} kcal`;
+    calsLabel.text = `${(todayActivity.adjusted.calories ? todayActivity.adjusted.calories: 0).toLocaleString()} ${strings["kcal"]}`;
   }
 }
 
@@ -660,7 +669,7 @@ function updateForecastData(){
     todayDateLabel.text  = "Today".toUpperCase();
     todayWeatherImage.href = util.getForecastIcon(weatherData.todayCondition, 
                                                   weatherData.tomorrowDescription);
-    todayDescriptionLabel.text = util.shortenText(weatherData.todayDescription);
+    todayDescriptionLabel.text = util.shortenText(weatherData.todayDescription, true);
     todayHighLabel.text = "High:"
     todayHighValLabel.text = weatherData.todayHigh + "°"
     todayLowLabel.text = "Low:"
@@ -669,7 +678,7 @@ function updateForecastData(){
     tomorrowDateLabel.text = util.toDay(day+1, "long").toUpperCase();
     tomorrowWeatherImage.href = util.getForecastIcon(weatherData.tomorrowCondition, 
                                                      weatherData.tomorrowDescription);
-    tomorrowDescriptionLabel.text = util.shortenText(weatherData.tomorrowDescription);
+    tomorrowDescriptionLabel.text = util.shortenText(weatherData.tomorrowDescription, true);
     tomorrowHighLabel.text = "High:"
     tomorrowHighValLabel.text = weatherData.tomorrowHigh + "°"
     tomorrowLowLabel.text = "Low:"
@@ -678,7 +687,7 @@ function updateForecastData(){
     day3DateLabel.text = util.toDay(day+2, "long").toUpperCase();
     day3WeatherImage.href = util.getForecastIcon(weatherData.day3Condition, 
                                                      weatherData.day3Description);
-    day3DescriptionLabel.text = util.shortenText(weatherData.day3Description);
+    day3DescriptionLabel.text = util.shortenText(weatherData.day3Description, true);
     day3HighLabel.text = "High:"
     day3HighValLabel.text = weatherData.day3High + "°"
     day3LowLabel.text = "Low:"
@@ -1022,9 +1031,9 @@ function setDataAge(){
     //
     //console.log(settings.showDataAge)
     if (settings.showDataAge)
-      weatherLocationLabel.text = `${util.shortenText(weatherData.location)} (${timeStamp})`;
+      weatherLocationLabel.text = `${util.shortenText(weatherData.location, weatherData.isDay)} (${timeStamp})`;
     else
-      weatherLocationLabel.text = `${util.shortenText(weatherData.location)}`;
+      weatherLocationLabel.text = `${util.shortenText(weatherData.location, weatherData,isDay)}`;
   }
 }
 
@@ -1043,7 +1052,7 @@ function setUnit(){
     if (oldUnits != userUnits){
       weather.setMaximumAge(0 * 60 * 1000); 
       weather.setUnit(userUnits);
-      tempAndConditionLabel.text = `${weatherData.temperature}° ${util.shortenText(weatherData.description)}`;
+      tempAndConditionLabel.text = `${weatherData.temperature}° ${util.shortenText(weatherData.description, weatherData.isDay)}`;
       if (!openedWeatherRequest){
         console.log("Forcing Update Unit Change");
         openedWeatherRequest = true;
@@ -1067,7 +1076,7 @@ function setWeatherScroll(){
     tempAndConditionLabel.state = "disabled"
     tempAndConditionLabel.text = "";
     if (weatherData)
-      tempAndConditionLabel.text = `${weatherData.temperature}° ${util.shortenText(weatherData.description)}`;
+      tempAndConditionLabel.text = `${weatherData.temperature}° ${util.shortenText(weatherData.description, weatherData.isDay)}`;
     else
       tempAndConditionLabel.text = "Updating..."
   } else
@@ -1093,9 +1102,9 @@ function setLocationScroll(){
       //
       //console.log(settings.showDataAge)
       if (settings.showDataAge)
-        weatherLocationLabel.text = `${util.shortenText(weatherData.location)} (${timeStamp})`;
+        weatherLocationLabel.text = `${util.shortenText(weatherData.location, weatherData.isDay)} (${timeStamp})`;
       else
-        weatherLocationLabel.text = `${util.shortenText(weatherData.location)}`;
+        weatherLocationLabel.text = `${util.shortenText(weatherData.location, weatherData.isDat)}`;
       }
   }  else
     weatherLocationLabel.state = "enabled"
@@ -1171,11 +1180,12 @@ function fetchWeather(){
   if (!inSched){
     openedWeatherRequest = false;
     console.log("auto fetch");
-    if (settings.fetchToggle){
+    if (settings.fetchToggle && !isFetching){
       let weatherLocationLabel = document.getElementById("weatherLocationLabel");
       let timeStamp = new Date();
       timeStamp = schedUtils.hourAndMinToTime(timeStamp.getHours(), timeStamp.getMinutes());
       weatherLocationLabel.text = "Fetching at " + timeStamp;
+      isFetching = true;
     }
     weather.fetch();
   }
@@ -1184,7 +1194,7 @@ function fetchWeather(){
 //-----------------Startup------------------------
 // Update the clock every tick event
 clock.ontick = () => updateClock();
-setInterval(updateClockData, 3*1000);
+setInterval(updateClockData, 1*1000);
 
 updateClock();
 updateClockData();
