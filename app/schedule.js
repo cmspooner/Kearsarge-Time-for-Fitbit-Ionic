@@ -1,33 +1,28 @@
-export function dayToSchedule(day){                
-  switch(day){
-    case "Sunday": return "No School";
-    case "Monday": return "Normal";
-    case "Tuesday": return "Normal";
-    case "Wednesday": return "Normal";
-    case "Thursday": return "Normal";
-    case "Friday": return "Normal";
-    case "Saturday": return "No School";
-  }
+export const dayToSchedule = {
+    "Sunday": "No School",
+    "Monday": "Normal",
+    "Tuesday": "Normal",
+    "Wednesday": "Normal",
+    "Thursday": "Normal",
+    "Friday": "Normal",
+    "Saturday": "No School"
 }
 
-export function ignoredPeriods(){ 
-  return [
+export const ignoredPeriods= [
           "No School",
           "Before School",
           "Warning Bell",
           "Passing Time",
           "Teacher Time"
-         ];
-}
+];
 
-export function splitPeriods(){
-  return {
+
+export const splitPeriods={
       "Period 5": [
               "Period 5, 1st Wave",
               "Period 5, 2nd Wave",
               "Period 5, 3rd Wave"
        ]
-    }
 }
 
 export function schedule(typeOfDay){
@@ -39,132 +34,131 @@ export function schedule(typeOfDay){
       break;
     case "Normal": 
       return [
-           {name: "Before School", start: "6:35a", end: "7:35a"},
-           {name: "Warning Bell", start: "7:35a", end: "7:40a"},
-           {name: "Period 1", start: "7:40a", end: "8:25a"},
-           {name: "Passing Time", start: "8:25a", end: "8:29a"},
-           {name: "Period 2", start: "8:29a", end: "9:17a"}, 
-           {name: "Passing Time", start: "9:17a", end: "9:21a"},
-           {name: "Period 3", start: "9:21a", end: "10:06a"},
-           {name: "Passing Time", start: "10:06a", end: "10:10a"},
-           {name: "Period 4", start: "10:10a", end: "10:55a"}, 
-           {name: "Passing Time", start: "10:55a", end: "10:59a"},
-           {name: "Period 5, 1st Wave", start: "10:59a", end: "11:21a"},
-           {name: "Period 5, 2nd Wave", start: "11:21a", end: "11:47a"},
-           {name: "Period 5, 3rd Wave", start: "11:47a", end: "12:13p"},
-           {name: "Passing Time", start: "12:13p", end: "12:17pa"},
-           {name: "Period 6", start: "12:17p", end: "1:02p"},
-           {name: "Passing Time", start: "1:02p", end: "1:06p"},
-           {name: "Period 7", start: "1:06p", end: "1:51p"},
-           {name: "Passing Time", start: "1:51p", end: "1:55p"},
-           {name: "Period 8", start: "1:55p", end: "2:35p"},
-           {name: "Teacher Time", start: "2:35p", end: "3:15p"}
+           {name: "Before School", start: 395, end: 455},
+           {name: "Warning Bell", start: 455, end: 460},
+           {name: "Period 1", start: 460, end: 505},
+           {name: "Passing Time", start: 505, end: 509},
+           {name: "Period 2", start: 509, end: 557}, 
+           {name: "Passing Time", start: 557, end: 561},
+           {name: "Period 3", start: 561, end: 606},
+           {name: "Passing Time", start: 606, end: 610},
+           {name: "Period 4", start: 610, end: 655}, 
+           {name: "Passing Time", start: 655, end: 659},
+           {name: "Period 5, 1st Wave", start: 659, end: 681},
+           {name: "Period 5, 2nd Wave", start: 681, end: 707},
+           {name: "Period 5, 3rd Wave", start: 707, end: 733},
+           {name: "Passing Time", start: 733, end: 737},
+           {name: "Period 6", start: 737, end: 782},
+           {name: "Passing Time", start: 782, end: 786},
+           {name: "Period 7", start: 786, end: 831},
+           {name: "Passing Time", start: 831, end: 835},
+           {name: "Period 8", start: 835, end: 875},
+           {name: "Teacher Time", start: 875, end: 915}
           ];
       break;
     case "2 Hour Delay": 
       return [
-           {name: "Before School", start: "8:35a", end: "9:35a"}, 
-           {name: "Warning Bell", start: "9:35a", end: "9:40a"},
-           {name: "Period 1", start: "9:40a", end: "10:12a"},
-           {name: "Passing Time", start: "10:12a", end: "10:16a"},
-           {name: "Period 2", start: "10:16a", end: "10:50a"}, 
-           {name: "Passing Time", start: "10:50a", end: "10:54a"},
-           {name: "Period 3", start: "10:54a", end: "11:26a"},
-           {name: "Passing Time", start: "11:26a", end: "11:30a"},
-           {name: "Period 4", start: "11:30a", end: "12:02p"}, 
-           {name: "Passing Time", start: "12:02p", end: "12:06p"},
-           {name: "Period 5, 1st Wave", start: "12:06p", end: "12:28p"},
-           {name: "Period 5, 2nd Wave", start: "12:28p", end: "12:54p"},
-           {name: "Period 5, 3rd Wave", start: "12:54p", end: "1:20p"},
-           {name: "Passing Time", start: "1:20p", end: "1:24p"},
-           {name: "Period 6", start: "1:24p", end: "1:56p"},
-           {name: "Passing Time", start: "1:56p", end: "2:00p"},
-           {name: "Period 7", start: "2:00p", end: "2:35p"},
-           {name: "Teacher Time", start: "2:35p", end: "3:15p"}
+           {name: "Before School", start: 515, end: 575}, 
+           {name: "Warning Bell", start: 575, end: 580},
+           {name: "Period 1", start: 580, end: 612},
+           {name: "Passing Time", start: 612, end: 616},
+           {name: "Period 2", start: 616, end: 650}, 
+           {name: "Passing Time", start: 650, end: 654},
+           {name: "Period 3", start: 654, end: 686},
+           {name: "Passing Time", start: 686, end: 690},
+           {name: "Period 4", start: 690, end: 722}, 
+           {name: "Passing Time", start: 722, end: 726},
+           {name: "Period 5, 1st Wave", start: 726, end: 748},
+           {name: "Period 5, 2nd Wave", start: 748, end: 774},
+           {name: "Period 5, 3rd Wave", start: 774, end: 800},
+           {name: "Passing Time", start: 800, end: 804},
+           {name: "Period 6", start: 804, end: 836},
+           {name: "Passing Time", start: 836, end: 840},
+           {name: "Period 7", start: 840, end: 875},
+           {name: "Teacher Time", start: 875, end: 915}
           ];
       break;
    case "PM Activity": 
       return [
-           {name: "Before School", start: "6:35a", end: "7:35a"}, 
-           {name: "Warning Bell", start: "7:35a", end: "7:40a"},
-           {name: "Period 1", start: "7:40a", end: "8:20a"},
-           {name: "Passing Time", start: "8:20a", end: "8:24a"},
-           {name: "Period 2", start: "8:24a", end: "9:07a"}, 
-           {name: "Passing Time", start: "9:07a", end: "9:11a"},
-           {name: "Period 3", start: "9:11a", end: "9:51a"},
-           {name: "Passing Time", start: "9:51a", end: "9:55a"},
-           {name: "Period 4", start: "9:55a", end: "10:35a"}, 
-           {name: "Passing Time", start: "10:35a", end: "10:39a"},
-           {name: "Period 5, 1st Wave", start: "10:39a", end: "11:01a"},
-           {name: "Period 5, 2nd Wave", start: "11:01a", end: "11:27a"},
-           {name: "Period 5, 3rd Wave", start: "11:27a", end: "11:53a"},
-           {name: "Passing Time", start: "11:53a", end: "11:57a"},
-           {name: "Period 6", start: "11:57a", end: "12:37p"},
-           {name: "Passing Time", start: "12:37p", end: "12:41p"},
-           {name: "Period 7", start: "12:41p", end: "1:21p"},
-           {name: "Passing Time", start: "1:21p", end: "1:25p"},
-           {name: "PM Activity", start: "1:25p", end: "2:35p"},
-           {name: "Teacher Time", start: "2:35p", end: "3:15p"}
+           {name: "Before School", start: 395, end: 455}, 
+           {name: "Warning Bell", start: 455, end: 460},
+           {name: "Period 1", start: 460, end: 500},
+           {name: "Passing Time", start: 500, end: 504},
+           {name: "Period 2", start: 504, end: 547}, 
+           {name: "Passing Time", start: 547, end: 551},
+           {name: "Period 3", start: 551, end: 591},
+           {name: "Passing Time", start: 591, end: 595},
+           {name: "Period 4", start: 595, end: 635}, 
+           {name: "Passing Time", start: 635, end: 639},
+           {name: "Period 5, 1st Wave", start: 639, end: 661},
+           {name: "Period 5, 2nd Wave", start: 661, end: 687},
+           {name: "Period 5, 3rd Wave", start: 687, end: 713},
+           {name: "Passing Time", start: 713, end: 717},
+           {name: "Period 6", start: 717, end: 757},
+           {name: "Passing Time", start: 757, end: 761},
+           {name: "Period 7", start: 761, end: 801},
+           {name: "Passing Time", start: 801, end: 805},
+           {name: "PM Activity", start: 805, end: 875},
+           {name: "Teacher Time", start: 875, end: 915}
           ];
       break;
     case "Assembly":
       return [
-           {name: "Before School", start: "6:35a", end: "7:35a"},
-           {name: "Warning Bell", start: "7:35a", end: "7:40a"},
-           {name: "Period 1", start: "7:40a", end: "8:25a"},
-           {name: "Passing Time", start: "8:25a", end: "8:29a"},
-           {name: "Period 2", start: "8:29a", end: "9:17a"}, 
-           {name: "Passing Time", start: "9:17a", end: "9:21a"},
-           {name: "Period 3", start: "9:21a", end: "10:06a"},
-           {name: "Passing Time", start: "10:06a", end: "10:10a"},
-           {name: "Assembly", start: "10:10a", end: "10:50a"},
-           {name: "Passing Time", start: "10:50a", end: "10:54a"},
-           {name: "Period 5, 1st Wave", start: "10:54a", end: "11:16a"},
-           {name: "Period 5, 2nd Wave", start: "11:16a", end: "11:42a"},
-           {name: "Period 5, 3rd Wave", start: "11:42a", end: "12:08p"},
-           {name: "Passing Time", start: "12:08p", end: "12:12p"},
-           {name: "Period 4", start: "12:12p", end: "12:57p"},
-           {name: "Passing Time", start: "12:57p", end: "1:01p"},
-           {name: "Period 6", start: "1:01p", end: "1:46p"},
-           {name: "Passing Time", start: "1:46p", end: "1:50p"},
-           {name: "Period 7", start: "1:50p", end: "2:35p"},
-           {name: "Teacher Time", start: "2:35p", end: "3:15p"}
+           {name: "Before School", start: 395, end: 455},
+           {name: "Warning Bell", start: 455, end: 460},
+           {name: "Period 1", start: 460, end: 505},
+           {name: "Passing Time", start: 505, end: 509},
+           {name: "Period 2", start: 509, end: 557}, 
+           {name: "Passing Time", start: 557, end: 561},
+           {name: "Period 3", start: 561, end: 606},
+           {name: "Passing Time", start: 606, end: 610},
+           {name: "Assembly", start: 610, end: 650},
+           {name: "Passing Time", start: 650, end: 654},
+           {name: "Period 5, 1st Wave", start: 654, end: 676},
+           {name: "Period 5, 2nd Wave", start: 676, end: 702},
+           {name: "Period 5, 3rd Wave", start: 702, end: 728},
+           {name: "Passing Time", start: 728, end: 732},
+           {name: "Period 4", start: 732, end: 777},
+           {name: "Passing Time", start: 777, end: 781},
+           {name: "Period 6", start: 781, end: 826},
+           {name: "Passing Time", start: 826, end: 830},
+           {name: "Period 7", start: 830, end: 875},
+           {name: "Teacher Time", start: 875, end: 915}
           ];
       break;
     case "7 Period": 
       return [
-           {name: "Before School", start: "6:35a", end: "7:35a"},
-           {name: "Warning Bell", start: "7:35a", end: "7:40a"},
-           {name: "Period 1", start: "7:40a", end: "8:32a"},
-           {name: "Passing Time", start: "8:32a", end: "8:36a"},
-           {name: "Period 2", start: "8:36a", end: "9:31a"}, 
-           {name: "Passing Time", start: "9:31a", end: "9:35a"},
-           {name: "Period 3", start: "9:35a", end: "10:27a"},
-           {name: "Passing Time", start: "10:27a", end: "10:31a"},
-           {name: "Period 4", start: "10:31a", end: "11:23a"},
-           {name: "Passing Time", start: "11:23a", end: "11:27a"},
-           {name: "Period 5, 1st Wave", start: "11:27a", end: "11:52a"},
-           {name: "Period 5, 2nd Wave", start: "11:52a", end: "12:18p"},
-           {name: "Period 5, 3rd Wave", start: "12:18p", end: "12:44p"},
-           {name: "Passing Time", start: "12:44p", end: "12:48p"},
-           {name: "Period 6", start: "12:48p", end: "1:40p"},
-           {name: "Passing Time", start: "1:40p", end: "1:44p"},
-           {name: "Period 7", start: "1:44p", end: "2:35p"},
-           {name: "Teacher Time", start: "2:35p", end: "3:15p"}
+           {name: "Before School", start: 395, end: 455},
+           {name: "Warning Bell", start: 455, end: 460},
+           {name: "Period 1", start: 460, end: 512},
+           {name: "Passing Time", start: 512, end: 516},
+           {name: "Period 2", start: 516, end: 571}, 
+           {name: "Passing Time", start: 571, end: 575},
+           {name: "Period 3", start: 575, end: 627},
+           {name: "Passing Time", start: 627, end: 631},
+           {name: "Period 4", start: 631, end: 683},
+           {name: "Passing Time", start: 683, end: 687},
+           {name: "Period 5, 1st Wave", start: 687, end: 712},
+           {name: "Period 5, 2nd Wave", start: 712, end: 738},
+           {name: "Period 5, 3rd Wave", start: 738, end: 764},
+           {name: "Passing Time", start: 764, end: 768},
+           {name: "Period 6", start: 768, end: 820},
+           {name: "Passing Time", start: 820, end: 824},
+           {name: "Period 7", start: 824, end: 875},
+           {name: "Teacher Time", start: 875, end: 915}
           ];
       break;
     case "Exam": 
       return [
-           {name: "Before School", start: "6:35a", end: "7:30a"},
-           {name: "Before Exam 1", start: "7:30a", end: "8:00a"},
-           {name: "Exam 1", start: "8:00a", end: "9:30a"},
-           {name: "Passing Time", start: "9:30a", end: "10:00a"},
-           {name: "Exam 2", start: "10:00a", end: "11:30a"}, 
-           {name: "Lunch", start: "11:30a", end: "12:45p"},
-           {name: "Make-Up", start: "12:45p", end: "2:15p"},
-           {name: "Teacher Time", start: "2:15p", end: "3:15p"}
+           {name: "Before School", start: 395, end: 450},
+           {name: "Before Exam 1", start: 450, end: 480},
+           {name: "Exam 1", start: 480, end: 570},
+           {name: "Passing Time", start: 570, end: 600},
+           {name: "Exam 2", start: 600, end: 690}, 
+           {name: "Lunch", start: 690, end: 765},
+           {name: "Make-Up", start: 765, end: 855},
+           {name: "Teacher Time", start: 855, end: 915}
           ];
       break;
   }
 }
-

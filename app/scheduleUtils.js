@@ -61,13 +61,13 @@ export function getDailySchedule(typeOfDay){
   if (typeOfDay == "Regular"){
     let today = new Date();
     let day = today.getDay();
-    typeOfDay = sched.dayToSchedule(util.toDay(day, "long"));
+    typeOfDay = sched.dayToSchedule[util.toDay(day, "long")];
   }
   return sched.schedule(typeOfDay);
 }
 
 export function isInSchedule(typeOfDay, time){
-  return util.isInRange(timeToMin(time), timeToMin(getStartofDay(typeOfDay)), timeToMin(getEndofDay(typeOfDay)));
+  return util.isInRange(timeToMin(time), getStartofDay(typeOfDay), getEndofDay(typeOfDay));
 }
 
 export function getStartofDay(typeOfDay){
@@ -92,7 +92,7 @@ export function getCurrentPeriod(typeOfDay, time){
   
   if (isInSchedule(typeOfDay, time)){
     for (let i = 0; i < todaySched.length; i++){
-      if (timeToMin(time) < timeToMin(todaySched[i].end)){
+      if (timeToMin(time) < todaySched[i].end){
         return todaySched[i].name;
       }
     }
@@ -109,8 +109,8 @@ export function getTimeLeftInPeriod(typeOfDay, time){
 
   if (isInSchedule(typeOfDay, time)){
     for (let i = 0; i < todaySched.length; i++){
-      if (timeToMin(time) < timeToMin(todaySched[i].end)){
-        return timeToMin(todaySched[i].end) - timeToMin(time);
+      if (timeToMin(time) < todaySched[i].end){
+        return todaySched[i].end - timeToMin(time);
       }
     }
   } else {
@@ -122,5 +122,5 @@ export function getPeriodList(typeOfDay){
   //let todaySched = getDailySchedule(typeOfDay);
   //let periods = getDailySchedule(typeOfDay).filter(x => sched.ignoredPeriods.indexOf(x.name) === -1);
   
-  return getDailySchedule(typeOfDay).filter(x => sched.ignoredPeriods().indexOf(x.name) === -1);
+  return getDailySchedule(typeOfDay).filter(x => sched.ignoredPeriods.indexOf(x.name) === -1);
 }
