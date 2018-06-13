@@ -171,7 +171,7 @@
 }
 
 .forecastLow {
-  font-size: 28;
+  font-size: 24;
   font-family: Colfax-Regular;
   text-length: 50;
   text-anchor: start;
@@ -180,7 +180,7 @@
 }
 
 .forecastLowVal{
-  font-size: 28;
+  font-size: 24;
   font-family: Colfax-Regular;
   text-length: 50;
   text-anchor: start;

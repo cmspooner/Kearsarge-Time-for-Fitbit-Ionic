@@ -187,6 +187,9 @@ function mySettings(props) {
       <Section
         title={<Text bold align="center">Build Version and Notes</Text>}>
         <Text>
+          Beta 7.11.5: Fix ionic style sheet and index
+        </Text>
+        <Text>
           Beta 7.11.4: Even More memory and loading optimizations; mostly in style sheet
         </Text>
         <Text>
