@@ -71,14 +71,6 @@ function mySettings(props) {
            settingsKey="dataAgeToggle"
            label="Show time of last weather update"
          />
-         <Toggle
-           settingsKey="errorMessageToggle"
-           label="Show weather error messages"
-         />
-         <Toggle
-           settingsKey="failCountToggle"
-           label="Show number of weather attempts"
-         />
         <Toggle
            settingsKey="fetchToggle"
            label="Show when weather is fetched"
@@ -194,6 +186,69 @@ function mySettings(props) {
       </Section>
       <Section
         title={<Text bold align="center">Build Version and Notes</Text>}>
+        <Text>
+          Beta 7.11.2: Fixed Weather Load Errors
+        </Text>
+        <Text>
+          Beta 7.11.1: Fixed scroll toggle error!
+        </Text>
+        <Text>
+          Beta 7.11: Moved forecase stuff around...noticed low was big and chinese cut the top off of today
+        </Text>
+        <Text>
+          Beta 7.10.2: Another fix
+        </Text>
+        <Text>
+          Beta 7.10.1: Wait 3 seconds befroe load weather
+        </Text>
+        <Text>
+          Beta 7.10: Wait 3 seconds befroe load weather
+        </Text>
+         <Text>
+          Beta 7.9: More Translation Work
+        </Text>
+        <Text>
+          Beta 7.8.2: Removed some debugging settings
+        </Text>
+        <Text>
+          Beta 7.8.1: Clear files before writing
+        </Text>
+        <Text>
+          Beta 7.8: Changed string times to minutes from midnight
+        </Text>
+        <Text>
+          Beta 7.7.2: Even More Cleaning for memory improvement
+        </Text>
+        <Text>
+          Beta 7.7.1: More Cleaning for memory improvement
+        </Text>
+        <Text>
+          Beta 7.7: Cleaning for memory improvement
+        </Text>
+        <Text>
+          Beta 7.6: Modified Strings file and trying localization again
+        </Text>
+        <Text>
+          Beta 7.5: Removed localization until fix memory issue
+        </Text>
+        <Text>
+          Beta 7.4.2: Stil trying to fix memory issues
+        </Text>
+        <Text>
+          Beta 7.4.1: Trying to fix memory issues
+        </Text>
+        <Text>
+          Beta 7.4: Trying to fix memory issues
+        </Text>
+        <Text>
+          Beta 7.3.2.1: Un-force chinese!
+        </Text>
+        <Text>
+          Beta 7.3.2: Only using first two characters of locale
+        </Text>
+        <Text>
+          Beta 7.3.1: More Translations and some memory work
+        </Text>
         <Text>
           Beta 7.3: Raised stats update to once a second from once every 3 seconds. Started translation for chinese and spanish!
         </Text>

@@ -29,9 +29,12 @@ import * as allStrings from "strings.js";
 
 import { me as device } from "device";
 if (!device.screen) device.screen = { width: 348, height: 250 };
-let deviceType = "Ionic";
+
 if (device.screen.width == 300 && device.screen.height == 300)
-  deviceType = "Versa";
+  const deviceType = "Versa";
+else
+  const deviceType = "Ionic";
+
 
 import Weather from '../common/weather/device';
 
@@ -49,18 +52,14 @@ weather.setMaximumAge(10 * 60 * 1000);
 weather.setFeelsLike(false);
 weather.setUnit(userUnits);
 
-console.log(locale.language);
-
-//let myLocale = "zh-cn";
-let myLocale = locale.language
-let strings = allStrings.getStrings(myLocale);
-console.log(strings["bpm"]);
+//let myLocale = "es";
+//let myLocale = "zh";
+let myLocale = locale.language.substring(0,2);
 
 let sched = "Regular";
 let inSched = null;
 
 let userUnits =  units.temperature.toLowerCase();
-let failCount = 0;
 
 let isBatteryAlert = false;
 let wasBatteryAlert = true;
@@ -88,6 +87,8 @@ let hrm = new HeartRateSensor();
 let settings = {};
 updateClock();  
 settings = loadSettings();
+applySettings();
+
 
 let weatherData = loadWeather();
 if (weatherData == null){
@@ -108,69 +109,86 @@ function drawWeatherUpdatingMsg(){
 messaging.peerSocket.onmessage = evt => {
   console.log(`App received: ${JSON.stringify(evt)}`);
   if (evt.data.key === "dateFormat" && evt.data.newValue) {
-    settings.dateFormat = JSON.parse(evt.data.newValue).values[0].name;
-    setDateFormat();
+    if(settings.dateFormat != JSON.parse(evt.data.newValue).values[0].name){
+      settings.dateFormat = JSON.parse(evt.data.newValue).values[0].name;
+      setDateFormat();
+    }
   }
   if (evt.data.key === "batteryToggle" && evt.data.newValue) {
-    settings.batteryToggle = JSON.parse(evt.data.newValue);
-    setBattery();
+    if (settings.batteryToggle != JSON.parse(evt.data.newValue)){
+      settings.batteryToggle = JSON.parse(evt.data.newValue);
+      setBattery();
+    }
   }
   if (evt.data.key === "updateInterval" && evt.data.newValue) {
-    let oldInterval = settings.updateInterval;
-    settings.updateInterval = JSON.parse(evt.data.newValue).values[0].name
-    setUpdateInterval(oldInterval);
+    if (settings.updateInterval != JSON.parse(evt.data.newValue).values[0].name){
+      let oldInterval = settings.updateInterval;
+      settings.updateInterval = JSON.parse(evt.data.newValue).values[0].name;
+      setUpdateInterval(oldInterval);
+    }
   }
   if (evt.data.key === "locationUpdateInterval" && evt.data.newValue) {
-    let oldInterval = settings.updateLocationInterval;
-    settings.updateLocationInterval = JSON.parse(evt.data.newValue).values[0].name
-    setLocationUpdateInterval(oldInterval);
+    if (settings.updateLocationInterval = JSON.parse(evt.data.newValue).values[0].name){
+      let oldInterval = settings.updateLocationInterval;
+      settings.updateLocationInterval = JSON.parse(evt.data.newValue).values[0].name;
+      setLocationUpdateInterval(oldInterval);
+    }
   }
   if (evt.data.key === "color" && evt.data.newValue) {
-    settings.color = JSON.parse(evt.data.newValue);
-    setColor();
+    if (settings.color != JSON.parse(evt.data.newValue)){
+      settings.color = JSON.parse(evt.data.newValue);
+      setColor();
+    }
   }
   if (evt.data.key === "schedule" && evt.data.newValue) {
-    settings.schedule = JSON.parse(evt.data.newValue).values[0].name;
-    setSchedule();
+    if (settings.schedule != JSON.parse(evt.data.newValue).values[0].name){
+      settings.schedule = JSON.parse(evt.data.newValue).values[0].name;
+      setSchedule();
+    }
   }
   if (evt.data.key === "seperatorToggle" && evt.data.newValue) {
-    settings.sepratorGoal = JSON.parse(evt.data.newValue);
-    setSeperator();
+    if (settings.sepratorGoal != JSON.parse(evt.data.newValue)){
+      settings.sepratorGoal = JSON.parse(evt.data.newValue);
+      setSeperator();
+    }
   }
   if (evt.data.key === "dataAgeToggle" && evt.data.newValue) {
-    settings.showDataAge = JSON.parse(evt.data.newValue);
-    setDataAge();
+    if (settings.showDataAge != JSON.parse(evt.data.newValue)){
+      settings.showDataAge = JSON.parse(evt.data.newValue);
+      setDataAge();
+    }
   }
   if (evt.data.key === "unitToggle" && evt.data.newValue) {
-    settings.unitToggle = JSON.parse(evt.data.newValue) 
-    setUnit();
+    if (settings.unitToggle != JSON.parse(evt.data.newValue)){
+      settings.unitToggle = JSON.parse(evt.data.newValue);
+      setUnit();
+    }
   }
-  if (evt.data.key === "errorMessageToggle" && evt.data.newValue) {
-    settings.showError = JSON.parse(evt.data.newValue);
-  }
-  if (evt.data.key === "failCountToggle" && evt.data.newValue) {
-    settings.showFailCount = JSON.parse(evt.data.newValue);
-  }  
   if (evt.data.key === "fetchToggle" && evt.data.newValue) {
     settings.fetchToggle = JSON.parse(evt.data.newValue);
   }  
   if (evt.data.key === "weatherScrollToggle" && evt.data.newValue) {
-    settings.weatherScrollToggle = JSON.parse(evt.data.newValue);
-    setWeatherScroll();
+    if (settings.weatherScrollToggle != JSON.parse(evt.data.newValue)){
+      settings.weatherScrollToggle = JSON.parse(evt.data.newValue);
+      setWeatherScroll();
+    }
   }
   if (evt.data.key === "locationScrollToggle" && evt.data.newValue) {
-    settings.locationScrollToggle = JSON.parse(evt.data.newValue);
-    setLocationScroll();
+    if (settings.locationScrollToggle != JSON.parse(evt.data.newValue)){
+      settings.locationScrollToggle = JSON.parse(evt.data.newValue);
+      setLocationScroll();
+    }
   }
-  saveSettings();
+  //saveSettings();
   console.log("JS memory: " + memory.js.used + "/" + memory.js.total);
 };
 
 // Message socket opens
 messaging.peerSocket.onopen = () => {
   console.log("App Socket Open");
-  weather.fetch();
+  
   openedWeatherRequest = true;
+  fetchWeather();
 };
 
 // Message socket closes
@@ -181,17 +199,15 @@ messaging.peerSocket.close = () => {
 //----------------Weather Setup------------------------
 
 
-applySettings();
+//
 
 if (settings.noFile){
   console.log("No Settings File");
-  weather.fetch();
+  fetchWeather();
 }
 
 weather.onsuccess = (data) =>{
   weatherData = data;
-  openedWeatherRequest = false;
-
   drawWeather(data);
 }
 
@@ -200,8 +216,9 @@ function drawWeather(data){
   let weatherLocationLabel = document.getElementById("weatherLocationLabel");
   let weatherImage = document.getElementById("weatherImage");
   
-  failCount = 0;
   isFetching = false;
+  openedWeatherRequest = false;
+  
   weather.setMaximumAge(settings.updateInterval * 60 * 1000); 
   if (weatherInterval != null)
     clearInterval(weatherInterval);
@@ -217,11 +234,11 @@ function drawWeather(data){
     timeStamp = schedUtils.hourAndMinToTime(timeStamp.getHours(), timeStamp.getMinutes());
 
   if (settings.showDataAge)
-    weatherLocationLabel.text = `${util.shortenText(data.location, data.isDay)} (${timeStamp})`;
+    weatherLocationLabel.text = `${util.shortenText(data.location)} (${timeStamp})`;
   else
-    weatherLocationLabel.text = `${util.shortenText(data.location, data.isDay)}`;
+    weatherLocationLabel.text = `${util.shortenText(data.location)}`;
   
-  weatherImage.href = util.getWeatherIcon(data);  
+  weatherImage.href = util.getForecastIcon(data.code, data.description, data.isDay);  
 }
 
 weather.onerror = (error) => {
@@ -246,31 +263,20 @@ function drawError(error){
   if (!weatherData){
     weatherImage.href = "";
     
-    failCount++;
-    if (settings.showFailCount)
-      tempAndConditionLabel.text = `Updating, try ${failCount}`;
-    else
-      tempAndConditionLabel.text = "Updating...";
-    if (settings.showError)
-      weatherLocationLabel.text = `${error}`;
-    else
-      weatherLocationLabel.text = ``;
+    tempAndConditionLabel.text = "Updating...";
+    weatherLocationLabel.text = ``;
   } else {
-      tempAndConditionLabel.text = `${weatherData.temperature}° ${util.shortenText(weatherData.description, weatherData.isDay)}`;
-      if (settings.showError)
-        weatherLocationLabel.text = `${error}`;
-      else {
-        let timeStamp = new Date(weatherData.timestamp);
-        if (timeStamp.getDate()!=today.getDate())
-          timeStamp = timeStamp.getMonth()+1+"/"+timeStamp.getDate()
-        else
-          timeStamp = schedUtils.hourAndMinToTime(timeStamp.getHours(), timeStamp.getMinutes());
-        if (settings.showDataAge)
-          weatherLocationLabel.text = `${util.shortenText(weatherData.location, weatherData.isDay)} (${timeStamp})`;
-        else
-          weatherLocationLabel.text = `${util.shortenText(weatherData.location, weatherData.isDay)}`;
-      }
-      weatherImage.href = util.getWeatherIcon(weatherData);  
+      tempAndConditionLabel.text = `${weatherData.temperature}° ${weatherData.description}`;
+      let timeStamp = new Date(weatherData.timestamp);
+      if (timeStamp.getDate()!=today.getDate())
+        timeStamp = timeStamp.getMonth()+1+"/"+timeStamp.getDate()
+      else
+        timeStamp = schedUtils.hourAndMinToTime(timeStamp.getHours(), timeStamp.getMinutes());
+      if (settings.showDataAge)
+        weatherLocationLabel.text = `${util.shortenText(weatherData.location, weatherData.isDay)} (${timeStamp})`;
+      else
+        weatherLocationLabel.text = `${util.shortenText(weatherData.location, weatherData.isDay)}`;error
+      weatherImage.href = util.getForecastIcon(weatherData.code, weatherData.description, weatherData.isDay);  
   }
 }
 
@@ -296,6 +302,8 @@ function updateClock() {
   let mins = util.zeroPad(today.getMinutes());
   let ampm = " am";
   
+  let strings = allStrings.getStrings(myLocale, "date");
+  
   //console.log(preferences.clockDisplay);
   if (preferences.clockDisplay == "12h"){
     if (hours > 12){
@@ -312,7 +320,7 @@ function updateClock() {
 
   if (!settings.dateFormat){
     settings.dateFormat = "Mon, Jan 31"
-  dateLabel.text = util.dateParse(settings.dateFormat, today) ? util.dateParse(settings.dateFormat, today) : util.toDay(today.getDay(), "short") + ", " + util.toMonth(today.getMonth()) + " " + today.getDate();
+  dateLabel.text = util.dateParse(settings.dateFormat, today, myLocale) ? util.dateParse(settings.dateFormat, today, myLocale) : strings[util.toDay(today.getDay(), "short")] + ", " + strings[util.toMonth(today.getMonth())] + " " + today.getDate();
   }
   
   //let batterychargeLevel = 14;
@@ -367,7 +375,6 @@ function updateClock() {
   }
   
   clockLabel.text = `${hours}:${mins}${ampm}`;
-  console.log("We should have a clock!")
  
   let oldSched = inSched;
   inSched = schedUtils.isInSchedule(sched, time)
@@ -380,13 +387,19 @@ function updateClock() {
       console.log("-----------------School Mode---------------------")
       weatherView.style.display = "none";
       periodView.style.display = "inline";
+      openedWeatherRequest = false;
     } else {
       clearInterval(periodInterval);
       if (weatherInterval != null)
         clearInterval(weatherInterval);
       weatherInterval = setInterval(fetchWeather,settings.updateInterval * 60 * 1000);
       console.log("-----------------Weather Mode---------------------")
-      fetchWeather();
+      setTimeout(function (){
+        if (!openedWeatherRequest) {
+          openedWeatherRequest = true;
+          fetchWeather();
+        }
+      },  1000);
       weatherView.style.display = "inline";
       periodView.style.display = "none";
     } 
@@ -401,6 +414,8 @@ function updateClockData() {
   let stepsLabel = document.getElementById("stepsLabel");
   if (deviceType == "Versa")
     let calsLabel = document.getElementById("calsLabel");
+  let strings = allStrings.getStrings(myLocale, "clockData");
+
 
   hrLabel.style.fill = 'white';
   stepsLabel.style.fill = 'white';
@@ -465,8 +480,8 @@ function updatePeriodData() {
       timeRemainingLabel.text = `Remaining: ${remaining} min`;
 
     if (settings.sepratorGoal){
-      let scaledNow = schedUtils.timeToMin(time)-schedUtils.timeToMin(schedUtils.getStartofDay(sched))
-      let scaledEnd = schedUtils.timeToMin(schedUtils.getEndofDay(sched))-schedUtils.timeToMin(schedUtils.getStartofDay(sched))
+      let scaledNow = schedUtils.timeToMin(time)-schedUtils.getStartofDay(sched)
+      let scaledEnd = schedUtils.getEndofDay(sched)-schedUtils.getStartofDay(sched)
       seperatorEndLeft.style.fill = util.goalToColor(scaledNow, scaledEnd);
       seperatorLine.style.fill = util.goalToColor(scaledNow, scaledEnd);
       seperatorEndRight.style.fill = util.goalToColor(scaledNow, scaledEnd);
@@ -499,7 +514,8 @@ function updateStatsData(){
     }
   }
   if (show == "stats" && display.on){
-    
+    let strings = allStrings.getStrings(myLocale, "stats");
+
     // Stats View
     let stepStatsLabel = document.getElementById("stepStatsLabel");
     let distStatsLabel = document.getElementById("distStatsLabel");
@@ -515,54 +531,54 @@ function updateStatsData(){
       let calsGoalLabel = document.getElementById("calsGoalLabel");
       
       stepStatsLabel.style.fill = util.goalToColor(todayActivity.adjusted.steps, goals.steps);
-      stepStatsLabel.text = "Steps:";
+      stepStatsLabel.text = strings["Steps"] + ":";
       stepGoalLabel.style.fill = util.goalToColor(todayActivity.adjusted.steps, goals.steps);
       stepGoalLabel.text = `${todayActivity.adjusted.steps ? todayActivity.adjusted.steps.toLocaleString() : 0} / ${goals.steps.toLocaleString()}`;
       
       distStatsLabel.style.fill = util.goalToColor(todayActivity.adjusted.distance, goals.distance);
-      distStatsLabel.text = "Distance:";
+      distStatsLabel.text = strings["Distance"] + ":";
       distGoalLabel.style.fill = util.goalToColor(todayActivity.adjusted.distance, goals.distance);
       if (units.distance == "us")
-        distGoalLabel.text = `${todayActivity.adjusted.distance ? util.round2(todayActivity.adjusted.distance * 0.000621371) : 0 } / ${util.round2(goals.distance*0.000621371)}`;
+        distGoalLabel.text = `${todayActivity.adjusted.distance ? util.round2(todayActivity.adjusted.distance * 0.000621) : 0 } / ${util.round2(goals.distance*0.000621)}`;
       else
         distGoalLabel.text = `${todayActivity.adjusted.distance ? util.round2(todayActivity.adjusted.distance * 0.001) : 0 } / ${util.round2(goals.distance*0.001)}`;
       
       floorsStatsLabel.style.fill = util.goalToColor(todayActivity.adjusted.elevationGain, goals.elevationGain);
-      floorsStatsLabel.text = "Floors:";
+      floorsStatsLabel.text = strings["Floors"] + ":";
       floorsGoalLabel.style.fill = util.goalToColor(todayActivity.adjusted.elevationGain, goals.elevationGain);
       floorsGoalLabel.text = `${todayActivity.adjusted.elevationGain ? todayActivity.adjusted.elevationGain : 0} / ${goals.elevationGain}`;
       
       activeStatsLabel.style.fill = util.goalToColor(todayActivity.adjusted.activeMinutes, goals.activeMinutes);
-      activeStatsLabel.text = "Active:";
+      activeStatsLabel.text = strings["Active"] + ":";
       activeGoalLabel.style.fill = util.goalToColor(todayActivity.adjusted.activeMinutes, goals.activeMinutes);
       activeGoalLabel.text = `${todayActivity.adjusted.activeMinutes ? todayActivity.adjusted.activeMinutes.toLocaleString() : 0} / ${goals.activeMinutes}`;
  
       calsStatsLabel.style.fill = util.goalToColor(todayActivity.adjusted.calories, goals.calories);
-      calsStatsLabel.text = "Calories:";
+      calsStatsLabel.text = strings["Calories"] + ":";
       calsGoalLabel.style.fill = util.goalToColor(todayActivity.adjusted.calories, goals.calories);
       calsGoalLabel.text = `${todayActivity.adjusted.calories ? todayActivity.adjusted.calories.toLocaleString() : 0} / ${parseInt(goals.calories).toLocaleString()}`;
     } else {
       stepStatsLabel.style.fill = util.goalToColor(todayActivity.adjusted.steps, goals.steps);
       if (isBatteryAlert){
-        stepStatsLabel.text = `Steps: ${todayActivity.adjusted.steps ? todayActivity.adjusted.steps.toLocaleString() : 0} / ${parseInt(goals.steps/1000)}k`;
+        stepStatsLabel.text = `${strings["Steps"]}: ${todayActivity.adjusted.steps ? todayActivity.adjusted.steps.toLocaleString() : 0} / ${parseInt(goals.steps/1000)}k`;
       } else {
-       stepStatsLabel.text = `Steps: ${todayActivity.adjusted.steps ? todayActivity.adjusted.steps.toLocaleString() : 0} / ${goals.steps.toLocaleString()}`;
+       stepStatsLabel.text = `${strings["Steps"]}: ${todayActivity.adjusted.steps ? todayActivity.adjusted.steps.toLocaleString() : 0} / ${goals.steps.toLocaleString()}`;
       }
       // Multiply by .000621371 to convert from meters to miles
       distStatsLabel.style.fill = util.goalToColor(todayActivity.adjusted.distance, goals.distance);
       if (units.distance == "us")
-        distStatsLabel.text = `Distance: ${todayActivity.adjusted.distance ? util.round2(todayActivity.adjusted.distance * 0.000621371) : 0 } / ${util.round2(goals.distance*0.000621371)}`;
+        distStatsLabel.text = `${strings["Distance"]}: ${todayActivity.adjusted.distance ? util.round2(todayActivity.adjusted.distance * 0.000621) : 0 } / ${util.round2(goals.distance*0.000621)}`;
       else
-         distStatsLabel.text = `Distance: ${todayActivity.adjusted.distance ? util.round2(todayActivity.adjusted.distance * 0.001) : 0 } / ${util.round2(goals.distance*0.001)}`;
+         distStatsLabel.text = `${strings["Distance"]}: ${todayActivity.adjusted.distance ? util.round2(todayActivity.adjusted.distance * 0.001) : 0 } / ${util.round2(goals.distance*0.001)}`;
       
       floorsStatsLabel.style.fill = util.goalToColor(todayActivity.adjusted.elevationGain, goals.elevationGain);
-      floorsStatsLabel.text = `Floors: ${todayActivity.adjusted.elevationGain ? todayActivity.adjusted.elevationGain : 0} / ${goals.elevationGain}`;
+      floorsStatsLabel.text = `${strings["Floors"]}: ${todayActivity.adjusted.elevationGain ? todayActivity.adjusted.elevationGain : 0} / ${goals.elevationGain}`;
 
       activeStatsLabel.style.fill = util.goalToColor(todayActivity.adjusted.activeMinutes, goals.activeMinutes);
-      activeStatsLabel.text = `Active: ${todayActivity.adjusted.activeMinutes ? todayActivity.adjusted.activeMinutes.toLocaleString() : 0} / ${goals.activeMinutes}`;
+      activeStatsLabel.text = `${strings["Active"]}: ${todayActivity.adjusted.activeMinutes ? todayActivity.adjusted.activeMinutes.toLocaleString() : 0} / ${goals.activeMinutes}`;
 
       calsStatsLabel.style.fill = util.goalToColor(todayActivity.adjusted.calories, goals.calories);
-      calsStatsLabel.text = `Calories: ${todayActivity.adjusted.calories ? todayActivity.adjusted.calories.toLocaleString() : 0} / ${parseInt(goals.calories).toLocaleString()}`;
+      calsStatsLabel.text = `${strings["Calories"]}: ${todayActivity.adjusted.calories ? todayActivity.adjusted.calories.toLocaleString() : 0} / ${parseInt(goals.calories).toLocaleString()}`;
     }
   }
 }
@@ -622,9 +638,9 @@ function updateScheduleData(){
         periodLabels[i].end.style.fontFamily = 'Colfax-Regular';
         periodLabels[i].end.style.fill = 'white';
       }
-      periodLabels[i].start.text = `${periods[i].start}`;
+      periodLabels[i].start.text = `${schedUtils.minToTime(periods[i].start)}`;
       periodLabels[i].name.text = `${periods[i].name}`;
-      periodLabels[i].end.text = `${periods[i].end}`;
+      periodLabels[i].end.text = `${schedUtils.minToTime(periods[i].end)}`;
     } for (let j = i; j < periodLabels.length; j++){
       periodLabels[j].start.text = ``;
       periodLabels[j].name.text = ``;
@@ -665,32 +681,37 @@ function updateForecastData(){
     let day3LowValLabel = document.getElementById("day3LowValLabel");
     
     let day = new Date().getDay()
+    let strings = allStrings.getStrings(myLocale, "weather");
+
     
-    todayDateLabel.text  = "Today".toUpperCase();
+    todayDateLabel.text  = strings["Today"].toUpperCase();
     todayWeatherImage.href = util.getForecastIcon(weatherData.todayCondition, 
-                                                  weatherData.tomorrowDescription);
-    todayDescriptionLabel.text = util.shortenText(weatherData.todayDescription, true);
-    todayHighLabel.text = "High:"
+                                                  weatherData.tomorrowDescription,
+                                                  true);
+    todayDescriptionLabel.text = weatherData.todayDescription;
+    todayHighLabel.text = strings["High"] + ":"
     todayHighValLabel.text = weatherData.todayHigh + "°"
-    todayLowLabel.text = "Low:"
+    todayLowLabel.text = strings["Low"] + ":"
     todayLowValLabel.text = weatherData.todayLow + "°"
     
-    tomorrowDateLabel.text = util.toDay(day+1, "long").toUpperCase();
+    tomorrowDateLabel.text = strings[util.toDay(day+1, "long")].toUpperCase();
     tomorrowWeatherImage.href = util.getForecastIcon(weatherData.tomorrowCondition, 
-                                                     weatherData.tomorrowDescription);
-    tomorrowDescriptionLabel.text = util.shortenText(weatherData.tomorrowDescription, true);
-    tomorrowHighLabel.text = "High:"
+                                                     weatherData.tomorrowDescription,
+                                                     true);
+    tomorrowDescriptionLabel.text = weatherData.tomorrowDescription;
+    tomorrowHighLabel.text = strings["High"] + ":"
     tomorrowHighValLabel.text = weatherData.tomorrowHigh + "°"
-    tomorrowLowLabel.text = "Low:"
+    tomorrowLowLabel.text = strings["Low"] + ":"
     tomorrowLowValLabel.text = weatherData.tomorrowLow + "°"
     
-    day3DateLabel.text = util.toDay(day+2, "long").toUpperCase();
+    day3DateLabel.text = strings[util.toDay(day+2, "long")].toUpperCase();
     day3WeatherImage.href = util.getForecastIcon(weatherData.day3Condition, 
-                                                     weatherData.day3Description);
-    day3DescriptionLabel.text = util.shortenText(weatherData.day3Description, true);
-    day3HighLabel.text = "High:"
+                                                 weatherData.day3Description,
+                                                 true);
+    day3DescriptionLabel.text = weatherData.day3Description, true;
+    day3HighLabel.text = strings["High"] + ":"
     day3HighValLabel.text = weatherData.day3High + "°"
-    day3LowLabel.text = "Low:"
+    day3LowLabel.text = strings["Low"] + ":"
     day3LowValLabel.text = weatherData.day3Low + "°"
   }
 }
@@ -833,8 +854,8 @@ function setDateFormat(){
   console.log(`dateFormat is: ${settings.dateFormat}`);
   
   let dateLabel = document.getElementById("dateLabel");
-  
-  dateLabel.text = util.dateParse(settings.dateFormat, today);
+ 
+  dateLabel.text = util.dateParse(settings.dateFormat, today, myLocale);
 }
 
 function setBattery(){
@@ -908,7 +929,7 @@ function setUpdateInterval(oldInterval){
     if (!openedWeatherRequest){
       console.log("Forcing Update Interval Change");
       openedWeatherRequest = true;
-      weather.fetch();
+      fetchWeather();
     }
   }
   weather.setMaximumAge(settings.updateInterval * 60 * 1000); 
@@ -933,9 +954,9 @@ function setLocationUpdateInterval(oldLocationInterval){
   if (settings.updateLocationInterval < oldLocationInterval){
     weather.setMaximumLocationAge(1 * 60 * 1000); 
     if (!openedWeatherRequest){
-    console.log("Forcing Location Update Interval Change");
+      console.log("Forcing Location Update Interval Change");
       openedWeatherRequest = true;
-      weather.fetch();
+      fetchWeather();
     }
   }
   weather.setMaximumLocationAge(settings.updateLocationInterval * 60 * 1000);
@@ -948,8 +969,8 @@ function setColor(){
   let seperatorEndRight = document.getElementById("seperatorEndRight");
   
   if (inSched && settings.sepratorGoal){
-    let scaledNow = schedUtils.timeToMin(time)-schedUtils.timeToMin(schedUtils.getStartofDay(sched))
-    let scaledEnd = schedUtils.timeToMin(schedUtils.getEndofDay(sched))-schedUtils.timeToMin(schedUtils.getStartofDay(sched))
+    let scaledNow = schedUtils.timeToMin(time)-schedUtils.getStartofDay(sched)
+    let scaledEnd = schedUtils.getEndofDay(sched)-schedUtils.getStartofDay(sched)
     seperatorEndLeft.style.fill = util.goalToColor(scaledNow, scaledEnd);
     seperatorLine.style.fill = util.goalToColor(scaledNow, scaledEnd);
     seperatorEndRight.style.fill = util.goalToColor(scaledNow, scaledEnd);
@@ -977,12 +998,15 @@ function setSchedule(){
         clearInterval(periodInterval);
       periodInterval = setInterval(updatePeriodData, 15*1000);
       console.log("-----------------School Mode---------------------")
+      openedWeatherRequest = false;
     } else {
       clearInterval(periodInterval);
       if (weatherInterval != null)
         clearInterval(weatherInterval);
       weatherInterval = setInterval(fetchWeather,settings.updateInterval * 60 * 1000);
       console.log("-----------------Weather Mode---------------------")
+      openedWeatherRequest = true;
+      fetchWeather();
     } 
   }
   if (inSched && show == "clock"){
@@ -1002,8 +1026,8 @@ function setSeperator(){
   let seperatorEndRight = document.getElementById("seperatorEndRight");
   
   if (inSched && settings.sepratorGoal){
-    let scaledNow = schedUtils.timeToMin(time)-schedUtils.timeToMin(schedUtils.getStartofDay(sched))
-    let scaledEnd = schedUtils.timeToMin(schedUtils.getEndofDay(sched))-schedUtils.timeToMin(schedUtils.getStartofDay(sched))
+    let scaledNow = schedUtils.timeToMin(time)-schedUtils.getStartofDay(sched)
+    let scaledEnd = schedUtils.getEndofDay(sched)-schedUtils.getStartofDay(sched)
     seperatorEndLeft.style.fill = util.goalToColor(scaledNow, scaledEnd);
     seperatorLine.style.fill = util.goalToColor(scaledNow, scaledEnd);
     seperatorEndRight.style.fill = util.goalToColor(scaledNow, scaledEnd);
@@ -1031,9 +1055,9 @@ function setDataAge(){
     //
     //console.log(settings.showDataAge)
     if (settings.showDataAge)
-      weatherLocationLabel.text = `${util.shortenText(weatherData.location, weatherData.isDay)} (${timeStamp})`;
+      weatherLocationLabel.text = `${util.shortenText(weatherData.location)} (${timeStamp})`;
     else
-      weatherLocationLabel.text = `${util.shortenText(weatherData.location, weatherData,isDay)}`;
+      weatherLocationLabel.text = `${util.shortenText(weatherData.location)}`;
   }
 }
 
@@ -1052,11 +1076,11 @@ function setUnit(){
     if (oldUnits != userUnits){
       weather.setMaximumAge(0 * 60 * 1000); 
       weather.setUnit(userUnits);
-      tempAndConditionLabel.text = `${weatherData.temperature}° ${util.shortenText(weatherData.description, weatherData.isDay)}`;
+      tempAndConditionLabel.text = `${weatherData.temperature}° ${weatherData.description, weatherData.isDay}`;
       if (!openedWeatherRequest){
         console.log("Forcing Update Unit Change");
         openedWeatherRequest = true;
-        weather.fetch();
+        fetchWeather();
       }
       weather.setMaximumAge(settings.updateInterval * 60 * 1000); 
     }
@@ -1076,7 +1100,7 @@ function setWeatherScroll(){
     tempAndConditionLabel.state = "disabled"
     tempAndConditionLabel.text = "";
     if (weatherData)
-      tempAndConditionLabel.text = `${weatherData.temperature}° ${util.shortenText(weatherData.description, weatherData.isDay)}`;
+      tempAndConditionLabel.text = `${weatherData.temperature}° ${weatherData.description}`;
     else
       tempAndConditionLabel.text = "Updating..."
   } else
@@ -1084,7 +1108,7 @@ function setWeatherScroll(){
 }
 
 function setLocationScroll(){
-  console.log(`Weather Scroll Dissable: ${settings.locationScrollToggle}`);
+  console.log(`Location Scroll Dissable: ${settings.locationScrollToggle}`);
   // Weather View
   let tempAndConditionLabel = document.getElementById("tempAndConditionLabel");
   let weatherLocationLabel = document.getElementById("weatherLocationLabel");
@@ -1129,8 +1153,6 @@ function loadSettings() {
       sepratorGoal : false,
       unitToggle : false,
       showDataAge : true,
-      showError: false,
-      showFailCount : false,
       fetchToggle : false,
       weatherScrollToggle : false,
       locationScrollToggle : false,
@@ -1147,7 +1169,6 @@ function loadWeather(){
   const WEATHER_FILE = "weather.cbor";
   const SETTINGS_TYPE = "cbor";
 
-  
   try {
     return fs.readFileSync(WEATHER_FILE, SETTINGS_TYPE);
   } catch (ex) {
@@ -1163,6 +1184,7 @@ function saveSettings() {
   const SETTINGS_TYPE = "cbor";
   
   settings.noFile = false;
+  //fs.unlinkSync(SETTINGS_FILE)
   fs.writeFileSync(SETTINGS_FILE, settings, SETTINGS_TYPE);
   saveWeather();
 }
@@ -1172,32 +1194,37 @@ function saveWeather() {
   
   const WEATHER_FILE = "weather.cbor";
   const SETTINGS_TYPE = "cbor";
+  //fs.unlinkSync(WEATHER_FILE)
 
   fs.writeFileSync(WEATHER_FILE, weatherData, SETTINGS_TYPE);
 }
 
 function fetchWeather(){
   if (!inSched){
-    openedWeatherRequest = false;
-    console.log("auto fetch");
-    if (settings.fetchToggle && !isFetching){
-      let weatherLocationLabel = document.getElementById("weatherLocationLabel");
-      let timeStamp = new Date();
-      timeStamp = schedUtils.hourAndMinToTime(timeStamp.getHours(), timeStamp.getMinutes());
-      weatherLocationLabel.text = "Fetching at " + timeStamp;
+    if (!isFetching){
+      console.log("Doing Fetch");
+      if (settings.fetchToggle){
+        let weatherLocationLabel = document.getElementById("weatherLocationLabel");
+        let timeStamp = new Date();
+        timeStamp = schedUtils.hourAndMinToTime(timeStamp.getHours(), timeStamp.getMinutes());
+        weatherLocationLabel.text = "Fetching at " + timeStamp;
+
+      }
       isFetching = true;
+      weather.fetch();
     }
-    weather.fetch();
   }
 }
 
 //-----------------Startup------------------------
 // Update the clock every tick event
 clock.ontick = () => updateClock();
-setInterval(updateClockData, 1*1000);
+
 
 updateClock();
+hrm.start();
 updateClockData();
 updatePeriodData();
-hrm.start();
+setInterval(updateClockData, 1*1000);
+
 console.log("JS memory: " + memory.js.used + "/" + memory.js.total);

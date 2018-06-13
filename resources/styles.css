@@ -450,17 +450,17 @@
 
 /* Forcast Labels */
 #todayDateLabel {
-  font-size: 28;
+  font-size: 26;
   font-family: Colfax-Bold;
   text-length: 50;
   text-anchor: start;
   x: 50;
-  y: 8%;
+  y: 22;
   fill: white;
 }
 
 #todayDescriptionLabel {
-  font-size: 26;
+  font-size: 24;
   font-family: Colfax-Medium;
   text-length: 16;
   text-anchor: start;
@@ -471,7 +471,7 @@
 }
 
 #todayHighLabel {
-  font-size: 24;
+  font-size: 22;
   font-family: Colfax-Regular;
   text-length: 50;
   text-anchor: start;
@@ -480,7 +480,7 @@
   fill: white;
 }
 #todayHighValLabel {
-  font-size: 24;
+  font-size: 22;
   font-family: Colfax-Regular;
   text-length: 50;
   text-anchor: start;
@@ -490,7 +490,7 @@
 }
 
 #todayLowLabel {
-  font-size: 28;
+  font-size: 22;
   font-family: Colfax-Regular;
   text-length: 50;
   text-anchor: start;
@@ -499,7 +499,7 @@
   fill: white;
 }
 #todayLowValLabel {
-  font-size: 28;
+  font-size: 22;
   font-family: Colfax-Regular;
   text-length: 50;
   text-anchor: start;
@@ -509,17 +509,17 @@
 }
 
 #tomorrowDateLabel {
-  font-size: 28;
+  font-size: 26;
   font-family: Colfax-Bold;
   text-length: 50;
   text-anchor: start;
   x: 50;
-  y: 42%;
+  y: 107;
   fill: white;
 }
 
 #tomorrowDescriptionLabel {
-  font-size: 26;
+  font-size: 24;
   font-family: Colfax-Medium;
   text-length: 16;
   text-anchor: start;
@@ -530,7 +530,7 @@
 }
 
 #tomorrowHighLabel {
-  font-size: 24;
+  font-size: 22;
   font-family: Colfax-Regular;
   text-length: 50;
   text-anchor: start;
@@ -539,7 +539,7 @@
   fill: white;
 }
 #tomorrowHighValLabel {
-  font-size: 24;
+  font-size: 22;
   font-family: Colfax-Regular;
   text-length: 50;
   text-anchor: start;
@@ -549,7 +549,7 @@
 }
 
 #tomorrowLowLabel {
-  font-size: 28;
+  font-size: 22;
   font-family: Colfax-Regular;
   text-length: 50;
   text-anchor: start;
@@ -558,7 +558,7 @@
   fill: white;
 }
 #tomorrowLowValLabel {
-  font-size: 28;
+  font-size: 22;
   font-family: Colfax-Regular;
   text-length: 50;
   text-anchor: start;
@@ -568,17 +568,17 @@
 }
 
 #day3DateLabel {
-  font-size: 28;
+  font-size: 26;
   font-family: Colfax-Bold;
   text-length: 50;
   text-anchor: start;
   x: 50;
-  y: 77%;
+  y: 195;
   fill: white;
 }
 
 #day3DescriptionLabel {
-  font-size: 26;
+  font-size: 24;
   font-family: Colfax-Medium;
   text-length: 16;
   text-anchor: start;
@@ -589,7 +589,7 @@
 }
 
 #day3HighLabel {
-  font-size: 24;
+  font-size: 22;
   font-family: Colfax-Regular;
   text-length: 50;
   text-anchor: start;
@@ -598,7 +598,7 @@
   fill: white;
 }
 #day3HighValLabel {
-  font-size: 24;
+  font-size: 22;
   font-family: Colfax-Regular;
   text-length: 50;
   text-anchor: start;
@@ -608,7 +608,7 @@
 }
 
 #day3LowLabel {
-  font-size: 28;
+  font-size: 22;
   font-family: Colfax-Regular;
   text-length: 50;
   text-anchor: start;
@@ -617,7 +617,7 @@
   fill: white;
 }
 #day3LowValLabel {
-  font-size: 28;
+  font-size: 22;
   font-family: Colfax-Regular;
   text-length: 50;
   text-anchor: start;

@@ -19,6 +19,12 @@
     "i18n": {
       "en": {
         "name": "KRHS Time Beta"
+      },
+      "es": {
+        "name": "KRHS Time Beta"
+      },
+      "zh-tw": {
+        "name": "KRHS Time Beta"
       }
     }
   }
