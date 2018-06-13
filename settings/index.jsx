@@ -187,6 +187,12 @@ function mySettings(props) {
       <Section
         title={<Text bold align="center">Build Version and Notes</Text>}>
         <Text>
+          Beta 7.11.4: Even More memory and loading optimizations; mostly in style sheet
+        </Text>
+        <Text>
+          Beta 7.11.3: More memory and loading optimizations
+        </Text>
+        <Text>
           Beta 7.11.2: Fixed Weather Load Errors
         </Text>
         <Text>

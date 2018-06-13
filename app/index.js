@@ -24,6 +24,7 @@ import { memory } from "system";
 console.log("JS memory: " + memory.js.used + "/" + memory.js.total);
 
 import * as util from "../common/utils";
+import Weather from '../common/weather/device';
 import * as schedUtils from "scheduleUtils.js";
 import * as allStrings from "strings.js";
 
@@ -35,26 +36,12 @@ if (device.screen.width == 300 && device.screen.height == 300)
 else
   const deviceType = "Ionic";
 
-
-import Weather from '../common/weather/device';
-
 let clockView = document.getElementById("clock");
 let periodView = document.getElementById("period");
 let weatherView = document.getElementById("weather");
 let statsView = document.getElementById("stats");
 let scheduleView = document.getElementById("schedule");
 let forecastView = document.getElementById("forecast");
-
-let weather = new Weather();
-weather.setProvider("yahoo"); 
-weather.setApiKey("");
-weather.setMaximumAge(10 * 60 * 1000); 
-weather.setFeelsLike(false);
-weather.setUnit(userUnits);
-
-//let myLocale = "es";
-//let myLocale = "zh";
-let myLocale = locale.language.substring(0,2);
 
 let sched = "Regular";
 let inSched = null;
@@ -64,6 +51,8 @@ let userUnits =  units.temperature.toLowerCase();
 let isBatteryAlert = false;
 let wasBatteryAlert = true;
 let isFetching = false;
+let settings = {};
+let weather = new Weather();
 
 let today = new Date();
 let time = schedUtils.hourAndMinToTime(today.getHours(), today.getMinutes());
@@ -82,20 +71,11 @@ let openedWeatherRequest = false;
 // Heart Rate Monitor
 let hrm = new HeartRateSensor();
 
+//let myLocale = "es";
+//let myLocale = "zh";
+let myLocale = locale.language.substring(0,2);
+
 //----------------------------Messaging and Settings--------------
-
-let settings = {};
-updateClock();  
-settings = loadSettings();
-applySettings();
-
-
-let weatherData = loadWeather();
-if (weatherData == null){
-  drawWeatherUpdatingMsg();
-} else {
-  drawWeather(weatherData);
-}
 
 function drawWeatherUpdatingMsg(){
   let tempAndConditionLabel = document.getElementById("tempAndConditionLabel");
@@ -196,20 +176,8 @@ messaging.peerSocket.close = () => {
   console.log("App Socket Closed");
 };
 
-//----------------Weather Setup------------------------
+//----------------Weather------------------------
 
-
-//
-
-if (settings.noFile){
-  console.log("No Settings File");
-  fetchWeather();
-}
-
-weather.onsuccess = (data) =>{
-  weatherData = data;
-  drawWeather(data);
-}
 
 function drawWeather(data){
   let tempAndConditionLabel = document.getElementById("tempAndConditionLabel");
@@ -280,10 +248,6 @@ function drawError(error){
   }
 }
 
-
-
-//-----------------End Weather Setup--------------
-
 //-------------------------------Update Functions-----------------
 
 // Update the <text> element with the current time
@@ -291,9 +255,7 @@ function updateClock() {
   // Clock view
   let clockLabel = document.getElementById("clockLabel");
   let dateLabel = document.getElementById("dateLabel");
-  let batteryLevelLabel = document.getElementById("batteryLevelLabel");
-  let batteryLevelRect = document.getElementById("batteryLevelRect");
-  let batteryLevelImage = document.getElementById("batteryLevelImage");
+  
 
   today = new Date();
   time = schedUtils.hourAndMinToTime(today.getHours(), today.getMinutes());
@@ -323,56 +285,6 @@ function updateClock() {
   dateLabel.text = util.dateParse(settings.dateFormat, today, myLocale) ? util.dateParse(settings.dateFormat, today, myLocale) : strings[util.toDay(today.getDay(), "short")] + ", " + strings[util.toMonth(today.getMonth())] + " " + today.getDate();
   }
   
-  //let batterychargeLevel = 14;
-  
-  wasBatteryAlert = isBatteryAlert;
-  if ((battery.chargeLevel <= 15 || battery.charging) && !isBatteryAlert) {
-    console.log("battery Alert on");
-    isBatteryAlert = true;
-  } else if (battery.chargeLevel > 15 && !battery.charging) {
-    console.log("battery Alert off");
-    isBatteryAlert = false;
-  }
-  
-  if (isBatteryAlert != wasBatteryAlert){
-    if (isBatteryAlert){
-      dateLabel.x = 44;
-      batteryLevelLabel.style.fontSize = 30;
-      if (deviceType == "Versa"){
-        batteryLevelLabel.x = 285;
-        batteryLevelLabel.y = 35;
-      } else{ 
-        batteryLevelLabel.y = 24;
-      }
-      batteryLevelRect.style.display = "none";
-      batteryLevelImage.href = "";
-    } else {
-      dateLabel.x = 15;
-      if (deviceType == "Versa"){
-        batteryLevelLabel.x = 276;
-        batteryLevelLabel.y = 28;
-      } else {
-        batteryLevelLabel.y = 20;
-      }
-      batteryLevelLabel.style.fontSize = 14;
-      batteryLevelImage.href = "icons/battery/battery.png";
-    }
-    updateStatsData();
-  }
-  if (!settings.batteryToggle)
-    settings.batteryToggle = false;
-  
-  if (settings.batteryToggle || isBatteryAlert){
-    batteryLevelLabel.style.fill = util.goalToColor(battery.chargeLevel, 90)
-    batteryLevelLabel.text = `${battery.chargeLevel}%`
-    batteryLevelRect.style.display = "none";
-    batteryLevelLabel.style.display = "inline";
-  } else {
-    batteryLevelRect.style.fill = util.goalToColor(battery.chargeLevel, 90)
-    batteryLevelRect.width = parseInt((battery.chargeLevel/100) * 39);
-    batteryLevelRect.style.display = "inline";
-    batteryLevelLabel.style.display = "none";
-  }
   
   clockLabel.text = `${hours}:${mins}${ampm}`;
  
@@ -716,138 +628,32 @@ function updateForecastData(){
   }
 }
 
-//------------------Event Handleing--------------------
-
-background.onclick = function(evt) {
-  console.log("Click");
-  if (show == "clock"){           // In Clock -> Switching to Stats
-    show = "stats";
-    //let clockView = document.getElementById("clock");
-    //let periodView = document.getElementById("period");
-    //let weatherView = document.getElementById("weather");
-    //let statsView = document.getElementById("stats");
-    clockView.style.display = "none";
-    periodView.style.display = "none";
-    weatherView.style.display = "none";
-    updateStatsData()
-    statsView.style.display = "inline";
-    console.log("stats Loaded");
-    display.poke()
-  } else if (show == "stats"){                   // In Stats -> Switching to forcast or schedule    
-    if (inSched){  
-      show = "schedule";
-      //let statsView = document.getElementById("stats");
-      //let scheduleView = document.getElementById("schedule");
-      statsView.style.display = "none";
-      updateScheduleData();
-      scheduleView.style.display = "inline";
-      console.log("schedule Loaded");
-    } else if(weatherData != null) {
-      show = "forecast";
-      //let statsView = document.getElementById("stats");
-      //let forecastView = document.getElementById("forecast");
-      statsView.style.display = "none";
-      updateForecastData();
-      forecastView.style.display = "inline";//test
-      console.log("forecast Loaded");
-    } else {
-      show = "clock";
-      //let statsView = document.getElementById("stats");
-      //let clockView = document.getElementById("clock");
-      statsView.style.display = "none";
-      updateClock();
-      updateClockData();
-      clockView.style.display = "inline";//test
-      if (inSched){ 
-        //let weatherView = document.getElementById("weather");
-        //let periodView = document.getElementById("period");
-        updatePeriodData();
-        weatherView.style.display = "none";
-        periodView.style.display = "inline";
-      } else {
-        //let periodView = document.getElementById("period");
-        //let weatherView = document.getElementById("weather");
-        periodView.style.display = "none";
-        weatherView.style.display = "inline";//test
-      }
-      console.log("Clock Loaded");
-    } 
-  } else {                                  // In Schedule -> Switching to Clock
-    show = "clock";
-    //let scheduleView = document.getElementById("schedule");
-    //let forecastView = document.getElementById("forecast");
-    //let clockView = document.getElementById("clock");
-    scheduleView.style.display = "none";
-    forecastView.style.display = "none";
-    updateClock();
-    updateClockData();
-    clockView.style.display = "inline";//test
-    if (inSched){ 
-      //let weatherView = document.getElementById("weather");
-      //let periodView = document.getElementById("period");
-      weatherView.style.display = "none";
-      updatePeriodData();
-      periodView.style.display = "inline";
-    } else {
-      //let periodView = document.getElementById("period");
-      //let weatherView = document.getElementById("weather");
-      periodView.style.display = "none";
-      weatherView.style.display = "inline";//test
-    }
-    console.log("Clock Loaded");
-
-  }
-}
-
-battery.onchange = function() {updateClockData()};
-
-display.onchange = function() {
-  if (!display.on && show != "clock") {
-    show = "clock";
-    updateClock();
-    updateClockData();
-    // Views
-    //let clockView = document.getElementById("clock");
-    //let periodView = document.getElementById("period");
-    //let weatherView = document.getElementById("weather");
-    //let statsView = document.getElementById("stats");
-    //let scheduleView = document.getElementById("schedule");
-    //let forecastView = document.getElementById("forecast");
-    
-    statsView.style.display = "none";
-    scheduleView.style.display = "none";
-    forecastView.style.display = "none";
-    hrm.start();
-    
-    clockView.style.display = "inline"; //test
-    if (inSched){ 
-      weatherView.style.display = "none";
-      updatePeriodData();
-      periodView.style.display = "inline";
-    } else {
-      periodView.style.display = "none";
-      weatherView.style.display = "inline";//test
-    }
-    //hrm.stop();
-  }
-}
-
 
 //------------------Settings and FS--------------------
 
-function applySettings(){
-  setDateFormat();
-  setBattery();
-  setUpdateInterval();
-  setLocationUpdateInterval();
-  setColor();
-  setSchedule();
-  setSeperator();
-  setDataAge();
-  setUnit();
-  setWeatherScroll();
-  setLocationScroll();
-  openedWeatherRequest = false;
+function applySettings(startIndex = 0){
+  let functions = [
+      setDateFormat,
+      setBattery,
+      setUpdateInterval,
+      setLocationUpdateInterval,
+      setColor,
+      setSchedule,
+      setSeperator,
+      setDataAge,
+      setUnit,
+      setWeatherScroll,
+      setLocationScroll,
+    ]
+  for (let i = startIndex; i < functions.length; i++) {
+    functions[i]();
+    
+    if (i - startIndex >= 3) {
+      setTimeout(applySettings.bind(this, i + 1), 1);
+      console.log("taking a break...");
+      break;
+    }
+  }
 }
 
 function setDateFormat(){
@@ -1134,7 +940,6 @@ function setLocationScroll(){
     weatherLocationLabel.state = "enabled"
 }
 
-me.onunload = saveSettings;
 
 function loadSettings() {
   console.log("Loading Settings!")
@@ -1216,15 +1021,164 @@ function fetchWeather(){
   }
 }
 
+//------------------Event Handleing--------------------
+
+background.onclick = function(evt) {
+  console.log("Click");
+  console.log("JS memory: " + memory.js.used + "/" + memory.js.total);
+  if (show == "clock"){           // In Clock -> Switching to Stats
+    show = "stats";
+    //let clockView = document.getElementById("clock");
+    //let periodView = document.getElementById("period");
+    //let weatherView = document.getElementById("weather");
+    //let statsView = document.getElementById("stats");
+    clockView.style.display = "none";
+    periodView.style.display = "none";
+    weatherView.style.display = "none";
+    updateStatsData()
+    statsView.style.display = "inline";
+    console.log("stats Loaded");
+    display.poke()
+  } else if (show == "stats"){                   // In Stats -> Switching to forcast or schedule    
+    if (inSched){  
+      show = "schedule";
+      //let statsView = document.getElementById("stats");
+      //let scheduleView = document.getElementById("schedule");
+      statsView.style.display = "none";
+      updateScheduleData();
+      scheduleView.style.display = "inline";
+      console.log("schedule Loaded");
+    } else if(weatherData != null) {
+      show = "forecast";
+      //let statsView = document.getElementById("stats");
+      //let forecastView = document.getElementById("forecast");
+      statsView.style.display = "none";
+      updateForecastData();
+      forecastView.style.display = "inline";//test
+      console.log("forecast Loaded");
+    } else {
+      show = "clock";
+      //let statsView = document.getElementById("stats");
+      //let clockView = document.getElementById("clock");
+      statsView.style.display = "none";
+      updateClock();
+      updateClockData();
+      clockView.style.display = "inline";//test
+      if (inSched){ 
+        //let weatherView = document.getElementById("weather");
+        //let periodView = document.getElementById("period");
+        updatePeriodData();
+        weatherView.style.display = "none";
+        periodView.style.display = "inline";
+      } else {
+        //let periodView = document.getElementById("period");
+        //let weatherView = document.getElementById("weather");
+        periodView.style.display = "none";
+        weatherView.style.display = "inline";//test
+      }
+      console.log("Clock Loaded");
+    } 
+  } else {                                  // In Schedule -> Switching to Clock
+    show = "clock";
+    //let scheduleView = document.getElementById("schedule");
+    //let forecastView = document.getElementById("forecast");
+    //let clockView = document.getElementById("clock");
+    scheduleView.style.display = "none";
+    forecastView.style.display = "none";
+    updateClock();
+    updateClockData();
+    clockView.style.display = "inline";//test
+    if (inSched){ 
+      //let weatherView = document.getElementById("weather");
+      //let periodView = document.getElementById("period");
+      weatherView.style.display = "none";
+      updatePeriodData();
+      periodView.style.display = "inline";
+    } else {
+      //let periodView = document.getElementById("period");
+      //let weatherView = document.getElementById("weather");
+      periodView.style.display = "none";
+      weatherView.style.display = "inline";//test
+    }
+    console.log("Clock Loaded");
+
+  }
+}
+
+battery.onchange = function() {
+  updateClockData()
+};
+
+display.onchange = function() {
+  if (!display.on && show != "clock") {
+    show = "clock";
+    updateClock();
+    updateClockData();
+    // Views
+    //let clockView = document.getElementById("clock");
+    //let periodView = document.getElementById("period");
+    //let weatherView = document.getElementById("weather");
+    //let statsView = document.getElementById("stats");
+    //let scheduleView = document.getElementById("schedule");
+    //let forecastView = document.getElementById("forecast");
+    
+    statsView.style.display = "none";
+    scheduleView.style.display = "none";
+    forecastView.style.display = "none";
+    hrm.start();
+    
+    clockView.style.display = "inline"; //test
+    if (inSched){ 
+      weatherView.style.display = "none";
+      updatePeriodData();
+      periodView.style.display = "inline";
+    } else {
+      periodView.style.display = "none";
+      weatherView.style.display = "inline";//test
+    }
+    //hrm.stop();
+  }
+}
+
+me.onunload = saveSettings;
+
 //-----------------Startup------------------------
 // Update the clock every tick event
 clock.ontick = () => updateClock();
 
+updateClock();  
+settings = loadSettings();
+applySettings();
 
-updateClock();
 hrm.start();
 updateClockData();
 updatePeriodData();
+setBattery();
+
+weather.setProvider("yahoo"); 
+weather.setApiKey("");
+weather.setMaximumAge(10 * 60 * 1000); 
+weather.setFeelsLike(false);
+weather.setUnit(userUnits);
+
+let weatherData = loadWeather();
+if (weatherData == null){
+  drawWeatherUpdatingMsg();
+} else {
+  drawWeather(weatherData);
+}
+
+if (settings.noFile){
+  console.log("No Settings File");
+  fetchWeather();
+}
+
+weather.onsuccess = (data) =>{
+  weatherData = data;
+  drawWeather(data);
+}
+
 setInterval(updateClockData, 1*1000);
+setInterval(setBattery, 60*1000);
 
 console.log("JS memory: " + memory.js.used + "/" + memory.js.total);

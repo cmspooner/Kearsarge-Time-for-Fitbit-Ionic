@@ -1,12 +1,12 @@
-export const dayToSchedule = {
-    "Sunday": "No School",
-    "Monday": "Normal",
-    "Tuesday": "Normal",
-    "Wednesday": "Normal",
-    "Thursday": "Normal",
-    "Friday": "Normal",
-    "Saturday": "No School"
-}
+export const dayToSchedule = [
+    "No School",
+    "Normal",
+    "Normal",
+    "Normal",
+    "Normal",
+    "Normal",
+    "No School"
+]
 
 export const ignoredPeriods= [
           "No School",

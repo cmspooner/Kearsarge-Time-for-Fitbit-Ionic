@@ -87,11 +87,11 @@ export function goalToColor(value, total, low = 'fb-red',
     return color;
   }
   
-  let percent = value/total*100;
+  let percent = value*100/total;
   let color = 'white'; // #FFFFFF
-  if (percent < 33.33){
+  if (percent < 33){
     color = low; // #F83C40
-  } else if (percent < 66.66){
+  } else if (percent < 66){
     color = medium; // #FFCC33
   } else if (percent < 100){
     color = high;  // #14D3F5
