@@ -1,4 +1,4 @@
-import * as allStrings from "../app/strings.js";
+//import * as allStrings from "../app/strings.js";
 
 function months (){
   return [
@@ -110,29 +110,38 @@ export function isInRange(value, low, high){
 }
 
 export function dateParse(fmt, today, loc){
-  let strings = allStrings.getStrings(loc, "date");
+  //let strings = allStrings.getStrings(loc, "date");
 
   //dateLabel.text = `${util.toDay(today.getDay(), "short")}, ${util.toMonth(today.getMonth())} ${today.getDate()}`;
   //return toDay(today.getDay(), "short")+", " + toMonth(today.getMonth()) + " " + today.getDate();
   switch (fmt){
     case "Mon, Jan 31":
-      return strings[toDay(today.getDay(), "short")] + ", " + strings[toMonth(today.getMonth())] + " " + today.getDate();
+      return toDay(today.getDay(), "short") + ", " + toMonth(today.getMonth()) + " " + today.getDate();
+      //return strings[toDay(today.getDay(), "short")] + ", " + strings[toMonth(today.getMonth())] + " " + today.getDate();
     case "Jan 31, 2018":
-      return strings[toMonth(today.getMonth())] + " " + today.getDate() + ", " + (today.getYear()+1900);
+      return toMonth(today.getMonth()) + " " + today.getDate() + ", " + (today.getYear()+1900);
+      //return strings[toMonth(today.getMonth())] + " " + today.getDate() + ", " + (today.getYear()+1900);
     case "1/31/2018":
       return today.getMonth()+1 + "/" + today.getDate() + "/" + (today.getYear()+1900);
+      //return today.getMonth()+1 + "/" + today.getDate() + "/" + (today.getYear()+1900);
     case "Mon 31 Jan":
-      return strings[toDay(today.getDay(), "short")] + " " + today.getDate() + " " + strings[toMonth(today.getMonth())];
+      return toDay(today.getDay(), "short") + " " + today.getDate() + " " + toMonth(today.getMonth());
+      //return strings[toDay(today.getDay(), "short")] + " " + today.getDate() + " " + strings[toMonth(today.getMonth())];
     case "31. Jan 2018":
-      return today.getDate() + ". " + strings[toMonth(today.getMonth())] + " " + (today.getYear()+1900);
+      return today.getDate() + ". " + toMonth(today.getMonth()) + " " + (today.getYear()+1900);
+      //return today.getDate() + ". " + strings[toMonth(today.getMonth())] + " " + (today.getYear()+1900);
     case "31/1/2018":
       return today.getDate() + "/" + (today.getMonth()+1) + "/" + (today.getYear()+1900);
+      //return today.getDate() + "/" + (today.getMonth()+1) + "/" + (today.getYear()+1900);
     case "2018.01.31":
       return today.getYear()+1900 + "." + zeroPad((today.getMonth()+1)) + "." + zeroPad(today.getDate());
+      //return today.getYear()+1900 + "." + zeroPad((today.getMonth()+1)) + "." + zeroPad(today.getDate());
     case "31. 1. 2018":
       return today.getDate() + ". " + (today.getMonth()+1) + ". " + (today.getYear()+1900);
+      //return today.getDate() + ". " + (today.getMonth()+1) + ". " + (today.getYear()+1900);
     case "31.01.2018":
       return zeroPad(today.getDate()) + "." + zeroPad(today.getMonth()+1) + "." + (today.getYear()+1900);
+      //return zeroPad(today.getDate()) + "." + zeroPad(today.getMonth()+1) + "." + (today.getYear()+1900);
   } 
 }
 

@@ -187,6 +187,12 @@ function mySettings(props) {
       <Section
         title={<Text bold align="center">Build Version and Notes</Text>}>
         <Text>
+          Beta 7.12: Removed Translations moving dev to forecast time directly in a new beta :-(
+        </Text>
+        <Text>
+          Beta 7.11.6: Slowed down settings loading
+        </Text>
+        <Text>
           Beta 7.11.5: Fix ionic style sheet and index
         </Text>
         <Text>

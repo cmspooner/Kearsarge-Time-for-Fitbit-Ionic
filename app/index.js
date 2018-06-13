@@ -26,7 +26,7 @@ console.log("JS memory: " + memory.js.used + "/" + memory.js.total);
 import * as util from "../common/utils";
 import Weather from '../common/weather/device';
 import * as schedUtils from "scheduleUtils.js";
-import * as allStrings from "strings.js";
+//import * as allStrings from "strings.js";
 
 import { me as device } from "device";
 if (!device.screen) device.screen = { width: 348, height: 250 };
@@ -51,6 +51,7 @@ let userUnits =  units.temperature.toLowerCase();
 let isBatteryAlert = false;
 let wasBatteryAlert = true;
 let isFetching = false;
+let doneApplySettings = true;
 let settings = {};
 let weather = new Weather();
 
@@ -180,6 +181,7 @@ messaging.peerSocket.close = () => {
 
 
 function drawWeather(data){
+  console.log("Drawing Weather")
   let tempAndConditionLabel = document.getElementById("tempAndConditionLabel");
   let weatherLocationLabel = document.getElementById("weatherLocationLabel");
   let weatherImage = document.getElementById("weatherImage");
@@ -264,7 +266,7 @@ function updateClock() {
   let mins = util.zeroPad(today.getMinutes());
   let ampm = " am";
   
-  let strings = allStrings.getStrings(myLocale, "date");
+  //let strings = allStrings.getStrings(myLocale, "date");
   
   //console.log(preferences.clockDisplay);
   if (preferences.clockDisplay == "12h"){
@@ -282,7 +284,8 @@ function updateClock() {
 
   if (!settings.dateFormat){
     settings.dateFormat = "Mon, Jan 31"
-  dateLabel.text = util.dateParse(settings.dateFormat, today, myLocale) ? util.dateParse(settings.dateFormat, today, myLocale) : strings[util.toDay(today.getDay(), "short")] + ", " + strings[util.toMonth(today.getMonth())] + " " + today.getDate();
+  dateLabel.text = util.dateParse(settings.dateFormat, today, myLocale) ? util.dateParse(settings.dateFormat, today, myLocale) : util.toDay(today.getDay(), "short") + ", " + util.toMonth(today.getMonth()) + " " + today.getDate();
+  //dateLabel.text = util.dateParse(settings.dateFormat, today, myLocale) ? util.dateParse(settings.dateFormat, today, myLocale) : strings[util.toDay(today.getDay(), "short")] + ", " + strings[util.toMonth(today.getMonth())] + " " + today.getDate();
   }
   
   
@@ -326,7 +329,7 @@ function updateClockData() {
   let stepsLabel = document.getElementById("stepsLabel");
   if (deviceType == "Versa")
     let calsLabel = document.getElementById("calsLabel");
-  let strings = allStrings.getStrings(myLocale, "clockData");
+  //let strings = allStrings.getStrings(myLocale, "clockData");
 
 
   hrLabel.style.fill = 'white';
@@ -353,14 +356,17 @@ function updateClockData() {
     } else if (user.heartRateZone(hrm.heartRate) == "peak"){
       hrLabel.style.fill = 'fb-red'; // #F83C40
     }
-    hrLabel.text = `${hrm.heartRate} ${strings["bpm"]}`;
+    hrLabel.text = `${hrm.heartRate} ${"bpm"}`;
+    //hrLabel.text = `${hrm.heartRate} ${strings["bpm"]}`;
   }
     
   stepsLabel.style.fill = util.goalToColor(todayActivity.adjusted.steps ? todayActivity.adjusted.steps: 0, goals.steps);
-  stepsLabel.text = `${(todayActivity.adjusted.steps ? todayActivity.adjusted.steps: 0).toLocaleString()} ${strings["steps"]}`;
+  stepsLabel.text = `${(todayActivity.adjusted.steps ? todayActivity.adjusted.steps: 0).toLocaleString()} ${"steps"}`;
+  //stepsLabel.text = `${(todayActivity.adjusted.steps ? todayActivity.adjusted.steps: 0).toLocaleString()} ${strings["steps"]}`;
   if (deviceType == "Versa") {
     calsLabel.style.fill = util.goalToColor(todayActivity.adjusted.calories ? todayActivity.adjusted.calories: 0, goals.calories);
-    calsLabel.text = `${(todayActivity.adjusted.calories ? todayActivity.adjusted.calories: 0).toLocaleString()} ${strings["kcal"]}`;
+    calsLabel.text = `${(todayActivity.adjusted.calories ? todayActivity.adjusted.calories: 0).toLocaleString()} ${"kcal"}`;
+    //calsLabel.text = `${(todayActivity.adjusted.calories ? todayActivity.adjusted.calories: 0).toLocaleString()} ${strings["kcal"]}`;
   }
 }
 
@@ -426,7 +432,7 @@ function updateStatsData(){
     }
   }
   if (show == "stats" && display.on){
-    let strings = allStrings.getStrings(myLocale, "stats");
+    //let strings = allStrings.getStrings(myLocale, "stats");
 
     // Stats View
     let stepStatsLabel = document.getElementById("stepStatsLabel");
@@ -443,12 +449,14 @@ function updateStatsData(){
       let calsGoalLabel = document.getElementById("calsGoalLabel");
       
       stepStatsLabel.style.fill = util.goalToColor(todayActivity.adjusted.steps, goals.steps);
-      stepStatsLabel.text = strings["Steps"] + ":";
+      stepStatsLabel.text = "Steps" + ":";
+      //stepStatsLabel.text = strings["Steps"] + ":";
       stepGoalLabel.style.fill = util.goalToColor(todayActivity.adjusted.steps, goals.steps);
       stepGoalLabel.text = `${todayActivity.adjusted.steps ? todayActivity.adjusted.steps.toLocaleString() : 0} / ${goals.steps.toLocaleString()}`;
       
       distStatsLabel.style.fill = util.goalToColor(todayActivity.adjusted.distance, goals.distance);
-      distStatsLabel.text = strings["Distance"] + ":";
+      distStatsLabel.text = "Distance" + ":";
+      //distStatsLabel.text = strings["Distance"] + ":";
       distGoalLabel.style.fill = util.goalToColor(todayActivity.adjusted.distance, goals.distance);
       if (units.distance == "us")
         distGoalLabel.text = `${todayActivity.adjusted.distance ? util.round2(todayActivity.adjusted.distance * 0.000621) : 0 } / ${util.round2(goals.distance*0.000621)}`;
@@ -456,41 +464,51 @@ function updateStatsData(){
         distGoalLabel.text = `${todayActivity.adjusted.distance ? util.round2(todayActivity.adjusted.distance * 0.001) : 0 } / ${util.round2(goals.distance*0.001)}`;
       
       floorsStatsLabel.style.fill = util.goalToColor(todayActivity.adjusted.elevationGain, goals.elevationGain);
-      floorsStatsLabel.text = strings["Floors"] + ":";
+      floorsStatsLabel.text = "Floors" + ":";
+      //floorsStatsLabel.text = strings["Floors"] + ":";
       floorsGoalLabel.style.fill = util.goalToColor(todayActivity.adjusted.elevationGain, goals.elevationGain);
       floorsGoalLabel.text = `${todayActivity.adjusted.elevationGain ? todayActivity.adjusted.elevationGain : 0} / ${goals.elevationGain}`;
       
       activeStatsLabel.style.fill = util.goalToColor(todayActivity.adjusted.activeMinutes, goals.activeMinutes);
-      activeStatsLabel.text = strings["Active"] + ":";
+      activeStatsLabel.text = "Active" + ":";
+      //activeStatsLabel.text = strings["Active"] + ":";
       activeGoalLabel.style.fill = util.goalToColor(todayActivity.adjusted.activeMinutes, goals.activeMinutes);
       activeGoalLabel.text = `${todayActivity.adjusted.activeMinutes ? todayActivity.adjusted.activeMinutes.toLocaleString() : 0} / ${goals.activeMinutes}`;
  
       calsStatsLabel.style.fill = util.goalToColor(todayActivity.adjusted.calories, goals.calories);
-      calsStatsLabel.text = strings["Calories"] + ":";
+      calsStatsLabel.text = "Calories" + ":";
+      //calsStatsLabel.text = strings["Calories"] + ":";
       calsGoalLabel.style.fill = util.goalToColor(todayActivity.adjusted.calories, goals.calories);
       calsGoalLabel.text = `${todayActivity.adjusted.calories ? todayActivity.adjusted.calories.toLocaleString() : 0} / ${parseInt(goals.calories).toLocaleString()}`;
     } else {
       stepStatsLabel.style.fill = util.goalToColor(todayActivity.adjusted.steps, goals.steps);
       if (isBatteryAlert){
-        stepStatsLabel.text = `${strings["Steps"]}: ${todayActivity.adjusted.steps ? todayActivity.adjusted.steps.toLocaleString() : 0} / ${parseInt(goals.steps/1000)}k`;
+        stepStatsLabel.text = `${"Steps"}: ${todayActivity.adjusted.steps ? todayActivity.adjusted.steps.toLocaleString() : 0} / ${parseInt(goals.steps/1000)}k`;
+        //stepStatsLabel.text = `${strings["Steps"]}: ${todayActivity.adjusted.steps ? todayActivity.adjusted.steps.toLocaleString() : 0} / ${parseInt(goals.steps/1000)}k`;
       } else {
-       stepStatsLabel.text = `${strings["Steps"]}: ${todayActivity.adjusted.steps ? todayActivity.adjusted.steps.toLocaleString() : 0} / ${goals.steps.toLocaleString()}`;
+        stepStatsLabel.text = `${"Steps"}: ${todayActivity.adjusted.steps ? todayActivity.adjusted.steps.toLocaleString() : 0} / ${goals.steps.toLocaleString()}`;
+        //stepStatsLabel.text = `${strings["Steps"]}: ${todayActivity.adjusted.steps ? todayActivity.adjusted.steps.toLocaleString() : 0} / ${goals.steps.toLocaleString()}`;
       }
       // Multiply by .000621371 to convert from meters to miles
       distStatsLabel.style.fill = util.goalToColor(todayActivity.adjusted.distance, goals.distance);
-      if (units.distance == "us")
-        distStatsLabel.text = `${strings["Distance"]}: ${todayActivity.adjusted.distance ? util.round2(todayActivity.adjusted.distance * 0.000621) : 0 } / ${util.round2(goals.distance*0.000621)}`;
-      else
-         distStatsLabel.text = `${strings["Distance"]}: ${todayActivity.adjusted.distance ? util.round2(todayActivity.adjusted.distance * 0.001) : 0 } / ${util.round2(goals.distance*0.001)}`;
-      
+      if (units.distance == "us"){
+        distStatsLabel.text = `${"Distance"}: ${todayActivity.adjusted.distance ? util.round2(todayActivity.adjusted.distance * 0.000621) : 0 } / ${util.round2(goals.distance*0.000621)}`;
+        //distStatsLabel.text = `${strings["Distance"]}: ${todayActivity.adjusted.distance ? util.round2(todayActivity.adjusted.distance * 0.000621) : 0 } / ${util.round2(goals.distance*0.000621)}`;
+      } else {
+        distStatsLabel.text = `${"Distance"}: ${todayActivity.adjusted.distance ? util.round2(todayActivity.adjusted.distance * 0.001) : 0 } / ${util.round2(goals.distance*0.001)}`;
+        //distStatsLabel.text = `${strings["Distance"]}: ${todayActivity.adjusted.distance ? util.round2(todayActivity.adjusted.distance * 0.001) : 0 } / ${util.round2(goals.distance*0.001)}`;
+      }
       floorsStatsLabel.style.fill = util.goalToColor(todayActivity.adjusted.elevationGain, goals.elevationGain);
-      floorsStatsLabel.text = `${strings["Floors"]}: ${todayActivity.adjusted.elevationGain ? todayActivity.adjusted.elevationGain : 0} / ${goals.elevationGain}`;
+      floorsStatsLabel.text = `${"Floors"}: ${todayActivity.adjusted.elevationGain ? todayActivity.adjusted.elevationGain : 0} / ${goals.elevationGain}`;
+      //floorsStatsLabel.text = `${strings["Floors"]}: ${todayActivity.adjusted.elevationGain ? todayActivity.adjusted.elevationGain : 0} / ${goals.elevationGain}`;
 
       activeStatsLabel.style.fill = util.goalToColor(todayActivity.adjusted.activeMinutes, goals.activeMinutes);
-      activeStatsLabel.text = `${strings["Active"]}: ${todayActivity.adjusted.activeMinutes ? todayActivity.adjusted.activeMinutes.toLocaleString() : 0} / ${goals.activeMinutes}`;
+      activeStatsLabel.text = `${"Active"}: ${todayActivity.adjusted.activeMinutes ? todayActivity.adjusted.activeMinutes.toLocaleString() : 0} / ${goals.activeMinutes}`;
+      //activeStatsLabel.text = `${strings["Active"]}: ${todayActivity.adjusted.activeMinutes ? todayActivity.adjusted.activeMinutes.toLocaleString() : 0} / ${goals.activeMinutes}`;
 
       calsStatsLabel.style.fill = util.goalToColor(todayActivity.adjusted.calories, goals.calories);
-      calsStatsLabel.text = `${strings["Calories"]}: ${todayActivity.adjusted.calories ? todayActivity.adjusted.calories.toLocaleString() : 0} / ${parseInt(goals.calories).toLocaleString()}`;
+      calsStatsLabel.text = `${"Calories"}: ${todayActivity.adjusted.calories ? todayActivity.adjusted.calories.toLocaleString() : 0} / ${parseInt(goals.calories).toLocaleString()}`;
+      //calsStatsLabel.text = `${strings["Calories"]}: ${todayActivity.adjusted.calories ? todayActivity.adjusted.calories.toLocaleString() : 0} / ${parseInt(goals.calories).toLocaleString()}`;
     }
   }
 }
@@ -593,37 +611,46 @@ function updateForecastData(){
     let day3LowValLabel = document.getElementById("day3LowValLabel");
     
     let day = new Date().getDay()
-    let strings = allStrings.getStrings(myLocale, "weather");
+    //let strings = allStrings.getStrings(myLocale, "weather");
 
     
-    todayDateLabel.text  = strings["Today"].toUpperCase();
+    todayDateLabel.text  = "Today".toUpperCase();
+    //todayDateLabel.text  = strings["Today"].toUpperCase();
     todayWeatherImage.href = util.getForecastIcon(weatherData.todayCondition, 
                                                   weatherData.tomorrowDescription,
                                                   true);
     todayDescriptionLabel.text = weatherData.todayDescription;
-    todayHighLabel.text = strings["High"] + ":"
+    todayHighLabel.text = "High" + ":"
+    //todayHighLabel.text = strings["High"] + ":"
     todayHighValLabel.text = weatherData.todayHigh + "°"
-    todayLowLabel.text = strings["Low"] + ":"
+    todayLowLabel.text = "Low" + ":"
+    //todayLowLabel.text = strings["Low"] + ":"
     todayLowValLabel.text = weatherData.todayLow + "°"
     
-    tomorrowDateLabel.text = strings[util.toDay(day+1, "long")].toUpperCase();
+    tomorrowDateLabel.text = util.toDay(day+1, "long").toUpperCase();
+    //tomorrowDateLabel.text = strings[util.toDay(day+1, "long")].toUpperCase();
     tomorrowWeatherImage.href = util.getForecastIcon(weatherData.tomorrowCondition, 
                                                      weatherData.tomorrowDescription,
                                                      true);
     tomorrowDescriptionLabel.text = weatherData.tomorrowDescription;
-    tomorrowHighLabel.text = strings["High"] + ":"
+    tomorrowHighLabel.text = "High" + ":"
+    //tomorrowHighLabel.text = strings["High"] + ":"
     tomorrowHighValLabel.text = weatherData.tomorrowHigh + "°"
-    tomorrowLowLabel.text = strings["Low"] + ":"
+    tomorrowLowLabel.text = "Low" + ":"
+    //tomorrowLowLabel.text = strings["Low"] + ":"
     tomorrowLowValLabel.text = weatherData.tomorrowLow + "°"
     
-    day3DateLabel.text = strings[util.toDay(day+2, "long")].toUpperCase();
+    day3DateLabel.text = util.toDay(day+2, "long").toUpperCase();
+    //day3DateLabel.text = strings[util.toDay(day+2, "long")].toUpperCase();
     day3WeatherImage.href = util.getForecastIcon(weatherData.day3Condition, 
                                                  weatherData.day3Description,
                                                  true);
     day3DescriptionLabel.text = weatherData.day3Description, true;
-    day3HighLabel.text = strings["High"] + ":"
+    day3HighLabel.text = "High" + ":"
+    //day3HighLabel.text = strings["High"] + ":"
     day3HighValLabel.text = weatherData.day3High + "°"
-    day3LowLabel.text = strings["Low"] + ":"
+    day3LowLabel.text = "Low" + ":"
+    //day3LowLabel.text = strings["Low"] + ":"
     day3LowValLabel.text = weatherData.day3Low + "°"
   }
 }
@@ -632,6 +659,7 @@ function updateForecastData(){
 //------------------Settings and FS--------------------
 
 function applySettings(startIndex = 0){
+  doneApplySettings = false;
   let functions = [
       setDateFormat,
       setBattery,
@@ -644,16 +672,21 @@ function applySettings(startIndex = 0){
       setUnit,
       setWeatherScroll,
       setLocationScroll,
+      finishApplySettings
     ]
   for (let i = startIndex; i < functions.length; i++) {
     functions[i]();
     
-    if (i - startIndex >= 3) {
+    if (i - startIndex >= 1) {
       setTimeout(applySettings.bind(this, i + 1), 1);
       console.log("taking a break...");
       break;
     }
   }
+}
+
+function finishApplySettings() {
+  doneApplySettings = true;
 }
 
 function setDateFormat(){
@@ -945,11 +978,11 @@ function loadSettings() {
   console.log("Loading Settings!")
   const SETTINGS_TYPE = "cbor";
   const SETTINGS_FILE = "settings.cbor";
-  
   try {
     return fs.readFileSync(SETTINGS_FILE, SETTINGS_TYPE);
   } catch (ex) {
     // Defaults
+    console.log("Loading stock settings")
     return {
       dateFormat : "Mon, Jan 31",
       batteryToggle : false,
@@ -1148,12 +1181,7 @@ clock.ontick = () => updateClock();
 
 updateClock();  
 settings = loadSettings();
-applySettings();
-
-hrm.start();
-updateClockData();
-updatePeriodData();
-setBattery();
+console.log(settings.color)
 
 weather.setProvider("yahoo"); 
 weather.setApiKey("");
@@ -1162,6 +1190,16 @@ weather.setFeelsLike(false);
 weather.setUnit(userUnits);
 
 let weatherData = loadWeather();
+
+applySettings();
+
+hrm.start();
+  
+updateClockData();
+updatePeriodData();
+setBattery();
+
+
 if (weatherData == null){
   drawWeatherUpdatingMsg();
 } else {
