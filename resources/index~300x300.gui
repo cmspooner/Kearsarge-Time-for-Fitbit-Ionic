@@ -8,11 +8,11 @@
     <line id = "seperatorLine" x1="3%" y1="15%" x2="97%" y2="15%"/>
     <circle id = "seperatorEndRight"cx="97%" cy="15%" />
     <text id="clockLabel" />
-    <image x="23%" y="44%" width="18" height="18" href="icons/21/heart.png" load="sync"/>
+    <image id="heartIcon" x="23%" y="44%" width="18" height="18" href="icons/21/heart.png" load="sync"/>
     <text id="hrLabel" class="data" y="50%"/>
-    <image x="23%" y="55%" width="18" height="18" href="icons/21/steps.png" load="sync"/>
+    <image id="stepsIcon"x="23%" y="55%" width="18" height="18" href="icons/21/steps.png" load="sync"/>
     <text id="stepsLabel" class="data" y="61%" />
-    <image x="23%" y="66%" width="18" height="18" href="icons/21/calories.png" load="sync"/>
+    <image id="calsIcon" x="23%" y="66%" width="18" height="18" href="icons/21/calories.png" load="sync"/>
     <text id="calsLabel" class="data" y="72%"/>
   </svg>
   <svg id="period" display="none">
@@ -34,16 +34,16 @@
     <image id="stepsStatsImage" x="0" y="2%" width="21" height="21" href="icons/21/steps.png" load="sync"/>
     <text id="stepStatsLabel" class="stats" y="10%"/>
     <text id="stepGoalLabel" class="goal" y="19%"/>
-    <image x="0" y="22%" width="21" height="21" href="icons/21/distance.png" load="sync"/>
+    <image id="distIcon" x="0" y="22%" width="21" height="21" href="icons/21/distance.png" load="sync"/>
     <text id="distStatsLabel" class="stats" y="29%"/>
     <text id="distGoalLabel" class="goal" y="38%"/>
-    <image x="0" y="41%" width="21" height="21" href="icons/21/stairs.png" load="sync"/>
+    <image id="flrsIcon" x="0" y="41%" width="21" height="21" href="icons/21/stairs.png" load="sync"/>
     <text id="floorsStatsLabel" class="stats" y="48%"/>
     <text id="floorsGoalLabel" class="goal" y="57%"/>
-    <image x="0" y="60%" width="21" height="21" href="icons/21/watch.png" load="sync"/>
+    <image id="actIcon" x="0" y="60%" width="21" height="21" href="icons/21/watch.png" load="sync"/>
     <text id="activeStatsLabel" class="stats" y="67%"/>
     <text id="activeGoalLabel" class="goal" y="76%"/>
-    <image x="0" y="79%" width="21" height="21" href="icons/21/calories.png" load="sync"/>
+    <image id="calIcon" x="0" y="79%" width="21" height="21" href="icons/21/calories.png" load="sync"/>
     <text id="calsStatsLabel" class="stats" y="86%"/>
     <text id="calsGoalLabel" class="goal" y="95%"/>
   </svg>

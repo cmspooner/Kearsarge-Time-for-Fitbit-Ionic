@@ -187,6 +187,15 @@ function mySettings(props) {
       <Section
         title={<Text bold align="center">Build Version and Notes</Text>}>
         <Text>
+          Beta 7.15: Fixed weather icon issue
+        </Text>
+        <Text>
+          Beta 7.14: Fixed Date update issue
+        </Text>
+        <Text>
+          Beta 7.13: Try to fix weather update issue
+        </Text>
+        <Text>
           Beta 7.12: Removed Translations moving dev to forecast time directly in a new beta :-(
         </Text>
         <Text>

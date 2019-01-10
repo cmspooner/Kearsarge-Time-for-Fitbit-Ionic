@@ -284,9 +284,10 @@ function updateClock() {
 
   if (!settings.dateFormat){
     settings.dateFormat = "Mon, Jan 31"
+  }
   dateLabel.text = util.dateParse(settings.dateFormat, today, myLocale) ? util.dateParse(settings.dateFormat, today, myLocale) : util.toDay(today.getDay(), "short") + ", " + util.toMonth(today.getMonth()) + " " + today.getDate();
   //dateLabel.text = util.dateParse(settings.dateFormat, today, myLocale) ? util.dateParse(settings.dateFormat, today, myLocale) : strings[util.toDay(today.getDay(), "short")] + ", " + strings[util.toMonth(today.getMonth())] + " " + today.getDate();
-  }
+
   
   
   clockLabel.text = `${hours}:${mins}${ampm}`;
@@ -514,8 +515,10 @@ function updateStatsData(){
 }
   
 function updateScheduleData(){
+  console.log("Loading Schedule");
   if (show == "schedule" && display.on){
     // Schedule View
+    console.log("Loading more Schedule");
     let periodLabels = [
       {start: document.getElementById("period0StartLabel"), 
         name: document.getElementById("period0NameLabel"), 
@@ -569,7 +572,7 @@ function updateScheduleData(){
         periodLabels[i].end.style.fill = 'white';
       }
       periodLabels[i].start.text = `${schedUtils.minToTime(periods[i].start)}`;
-      periodLabels[i].name.text = `${periods[i].name}`;
+      periodLabels[i].name.text = `${periods[i].name.substring(0, 8)}`;
       periodLabels[i].end.text = `${schedUtils.minToTime(periods[i].end)}`;
     } for (let j = i; j < periodLabels.length; j++){
       periodLabels[j].start.text = ``;
@@ -1039,18 +1042,16 @@ function saveWeather() {
 
 function fetchWeather(){
   if (!inSched){
-    if (!isFetching){
-      console.log("Doing Fetch");
-      if (settings.fetchToggle){
-        let weatherLocationLabel = document.getElementById("weatherLocationLabel");
-        let timeStamp = new Date();
-        timeStamp = schedUtils.hourAndMinToTime(timeStamp.getHours(), timeStamp.getMinutes());
-        weatherLocationLabel.text = "Fetching at " + timeStamp;
+    console.log("Doing Fetch");
+    if (settings.fetchToggle){
+      let weatherLocationLabel = document.getElementById("weatherLocationLabel");
+      let timeStamp = new Date();
+      timeStamp = schedUtils.hourAndMinToTime(timeStamp.getHours(), timeStamp.getMinutes());
+      weatherLocationLabel.text = "Fetching at " + timeStamp;
 
-      }
-      isFetching = true;
-      weather.fetch();
     }
+    isFetching = true;
+    weather.fetch();
   }
 }
 
@@ -1075,9 +1076,12 @@ background.onclick = function(evt) {
   } else if (show == "stats"){                   // In Stats -> Switching to forcast or schedule    
     if (inSched){  
       show = "schedule";
+      console.log("schedule up!")
       //let statsView = document.getElementById("stats");
       //let scheduleView = document.getElementById("schedule");
       statsView.style.display = "none";
+      clockView.style.display = "none";
+      weatherView.style.display = "none";
       updateScheduleData();
       scheduleView.style.display = "inline";
       console.log("schedule Loaded");
@@ -1136,6 +1140,7 @@ background.onclick = function(evt) {
     console.log("Clock Loaded");
 
   }
+  console.log("done switch")
 }
 
 battery.onchange = function() {
